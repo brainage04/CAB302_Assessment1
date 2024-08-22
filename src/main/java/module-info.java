@@ -5,4 +5,6 @@ module com.example.cab222a {
 
     opens com.example.cab222a to javafx.fxml;
     exports com.example.cab222a;
+    exports com.example.cab222a.controllers;
+    opens com.example.cab222a.controllers to javafx.fxml;
 }
