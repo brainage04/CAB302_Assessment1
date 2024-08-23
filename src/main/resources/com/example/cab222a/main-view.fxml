@@ -22,8 +22,8 @@
             <Button text="New" maxWidth="Infinity" onAction="#onAdd"/>
         </VBox>
         <VBox spacing="10.0" prefWidth="400" fx:id="userContainer">
-            <Label text="Enter the user's details below." />
-            <GridPane hgap="5.0" vgap="5.0" >
+            <Label text="Enter the user's details below." alignment="TOP_CENTER"/>
+            <GridPane hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                 <columnConstraints>
                     <ColumnConstraints minWidth="70" />
                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -39,11 +39,12 @@
                 <TextField fx:id="phoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <TextField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </GridPane>
-            <HBox spacing="10.0" alignment="CENTER">
-                <Button text="Confirm" onAction="#onEditConfirm"/>
-                <Button text="Cancel" onAction="#onCancel"/>
-                <Button text="Delete" onAction="#onDelete"/>
-            </HBox>
+            <GridPane hgap="5.0" vgap="5.0" alignment="CENTER">
+                <Button text="Confirm" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="120" onAction="#onEditConfirm"/>
+                <Button text="Cancel" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="120" onAction="#onCancel"/>
+                <Button text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="0" prefWidth="120" onAction="#onDelete"/>
+            </GridPane>
+            <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
         </VBox>
     </HBox>
 </VBox>
