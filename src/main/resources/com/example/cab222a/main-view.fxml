@@ -13,18 +13,18 @@
     </padding>
 
     <Label text="Welcome back!" wrapText="true"/>
-    <HBox alignment="TOP_CENTER">
-        <Button text="Resistance Training" onAction="#onResistTrainButtonClick" fx:id="resistTrainButton"/>
-        <Button text="Cardiovascular Training" onAction="#onCardioTrainButtonClick" fx:id="cardioTrainButton"/>
-        <Button text="Caloric Intake" onAction="#onCaloricIntakeButtonClick" fx:id="caloricIntakeButton"/>
+    <HBox maxWidth="Infinity" alignment="TOP_CENTER">
+        <Button text="Resistance Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onResistTrainButtonClick" fx:id="resistTrainButton"/>
+        <Button text="Cardiovascular Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCardioTrainButtonClick" fx:id="cardioTrainButton"/>
+        <Button text="Caloric Intake" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCaloricIntakeButtonClick" fx:id="caloricIntakeButton"/>
     </HBox>
-    <HBox alignment="TOP_CENTER">
-        <Button text="Height" onAction="#onHeightButtonClick" fx:id="heightButton"/>
-        <Button text="Weight" onAction="#onWeightButtonClick" fx:id="weightButton"/>
-        <Button text="Body Mass Index" onAction="#onBodyMassIndexButtonClick" fx:id="bodyMassIndexButton"/>
-        <Button text="Body Fat Percentage" onAction="#onBodyFatButtonClick" fx:id="bodyFatButton"/>
-        <Button text="Blood Pressure" onAction="#onBloodPressureButtonClick" fx:id="bloodPressureButton"/>
-        <Button text="Sleep" onAction="#onSleepButtonClick" fx:id="sleepButton"/>
+    <HBox maxWidth="Infinity" alignment="TOP_CENTER">
+        <Button text="Height" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onHeightButtonClick" fx:id="heightButton"/>
+        <Button text="Weight" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onWeightButtonClick" fx:id="weightButton"/>
+        <Button text="Body Mass Index" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBodyMassIndexButtonClick" fx:id="bodyMassIndexButton"/>
+        <Button text="Body Fat Percentage" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBodyFatButtonClick" fx:id="bodyFatButton"/>
+        <Button text="Blood Pressure" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBloodPressureButtonClick" fx:id="bloodPressureButton"/>
+        <Button text="Sleep" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onSleepButtonClick" fx:id="sleepButton"/>
     </HBox>
     <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
 </VBox>
