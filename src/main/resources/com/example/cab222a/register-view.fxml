@@ -35,4 +35,5 @@
         <Button fx:id="registerButton" text="Register" onAction="#onRegisterButtonClick" />
         <Button fx:id="returnButton" text="Return" onAction="#onReturnButtonClick" />
     </HBox>
+    <Label fx:id="errorMessageLabel" textFill="red" wrapText="true"/>
 </VBox>
