@@ -1,4 +1,4 @@
-package com.example.cab222a.controllers;
+package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
 import javafx.fxml.FXML;
