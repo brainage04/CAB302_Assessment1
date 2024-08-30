@@ -29,6 +29,13 @@ public interface IUserDAO {
      */
     User getItem(int id);
     /**
+     * Retrieves a user from the database (used when logging in).
+     * @param email The email of the user to retrieve.
+     * @param password The password of the user to retrieve.
+     * @return The user with the given email and password, or null if not found.
+     */
+    User getItem(String email, String password);
+    /**
      * Retrieves all items from the database.
      * @return A list of all items in the database.
      */

@@ -1,10 +1,12 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
+import com.example.cab222a.common.SqliteConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +30,10 @@ public class MainController {
     public Button bloodPressureButton;
     @FXML
     public Button sleepButton;
+    @FXML
+    public Label welcomeBackLabel;
+    @FXML
+    public Label debugLabel;
 
     @FXML
     private Button logoutButton;
@@ -82,6 +88,12 @@ public class MainController {
         // logout user here
 
         changeScene(logoutButton, "hello-view.fxml");
+    }
+
+    @FXML
+    public void initialize() {
+        welcomeBackLabel.setText("Welcome back, " + SqliteConnection.getCurrentUser().getFirstName() + "!");
+        debugLabel.setText(SqliteConnection.getCurrentUser().toString());
     }
 
     public void changeScene(Button source, String sceneName) throws IOException {
