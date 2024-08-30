@@ -8,6 +8,15 @@ public class User {
     private String phone;
     private String password;
 
+    public User(int id, String firstName, String lastName, String email, String phone, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
     public User(String firstName, String lastName, String email, String phone, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,5 +75,17 @@ public class User {
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
