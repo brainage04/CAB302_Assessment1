@@ -1,4 +1,4 @@
-package com.example.cab222a.common;
+package com.example.cab222a.model;
 
 public class ResistTrainSet {
     private int weight;

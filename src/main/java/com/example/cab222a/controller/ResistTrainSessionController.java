@@ -1,7 +1,9 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
-import com.example.cab222a.common.*;
+import com.example.cab222a.model.IResistTrainSessionDAO;
+import com.example.cab222a.model.MockResistTrainSessionDAO;
+import com.example.cab222a.model.ResistTrainSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
