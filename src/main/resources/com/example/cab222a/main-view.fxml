@@ -12,7 +12,8 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label text="Welcome back!" wrapText="true"/>
+    <Label text="Welcome back, user!" fx:id="welcomeBackLabel" wrapText="true"/>
+    <Label text="put debug information here" fx:id="debugLabel" wrapText="true"/>
     <HBox maxWidth="Infinity" alignment="TOP_CENTER">
         <Button text="Resistance Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onResistTrainButtonClick" fx:id="resistTrainButton"/>
         <Button text="Cardiovascular Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCardioTrainButtonClick" fx:id="cardioTrainButton"/>
