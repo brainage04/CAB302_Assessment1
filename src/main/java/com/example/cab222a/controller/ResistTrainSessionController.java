@@ -2,9 +2,9 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.IResistTrainSessionDAO;
-import com.example.cab222a.model.ResistTrainSession;
-import com.example.cab222a.model.SqliteResistTrainSessionDAO;
+import com.example.cab222a.model.resist_train.IResistTrainSessionDAO;
+import com.example.cab222a.model.resist_train.ResistTrainSession;
+import com.example.cab222a.model.resist_train.SqliteResistTrainSessionDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

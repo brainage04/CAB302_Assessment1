@@ -1,6 +1,6 @@
 package com.example.cab222a.common;
 
-import com.example.cab222a.model.User;
+import com.example.cab222a.model.user.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

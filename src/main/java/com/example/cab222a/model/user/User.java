@@ -1,4 +1,4 @@
-package com.example.cab222a.model;
+package com.example.cab222a.model.user;
 
 public class User {
     private int id;

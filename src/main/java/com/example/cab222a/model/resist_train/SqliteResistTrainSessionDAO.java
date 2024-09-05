@@ -1,4 +1,4 @@
-package com.example.cab222a.model;
+package com.example.cab222a.model.resist_train;
 
 import com.example.cab222a.common.SqliteConnection;
 
