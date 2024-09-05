@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteResistTrainSessionDAO implements IResistTrainSessionDAO {
+public class SqliteResistTrainSessionDAO implements IResistTrainDAO<ResistTrainSession> {
     private Connection connection = SqliteConnection.getInstance();
 
     public SqliteResistTrainSessionDAO() {

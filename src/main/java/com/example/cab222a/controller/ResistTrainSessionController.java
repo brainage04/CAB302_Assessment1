@@ -2,7 +2,7 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.resist_train.IResistTrainSessionDAO;
+import com.example.cab222a.model.resist_train.IResistTrainDAO;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import com.example.cab222a.model.resist_train.SqliteResistTrainSessionDAO;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ResistTrainSessionController {
     @FXML
     private ListView<ResistTrainSession> itemListView;
-    private final IResistTrainSessionDAO itemDAO;
+    private final IResistTrainDAO<ResistTrainSession> itemDAO;
     public ResistTrainSessionController() {
         itemDAO = new SqliteResistTrainSessionDAO();
     }
