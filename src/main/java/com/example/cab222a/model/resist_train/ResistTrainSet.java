@@ -2,20 +2,23 @@ package com.example.cab222a.model.resist_train;
 
 public class ResistTrainSet {
     private int id;
+    private String name;
     private int weight;
     private int repetitions;
     private int restSeconds;
     private int exerciseId;
 
-    public ResistTrainSet(int id, int weight, int repetitions, int restSeconds, int exerciseId) {
+    public ResistTrainSet(int id, String name, int weight, int repetitions, int restSeconds, int exerciseId) {
         this.id = id;
+        this.name = name;
         this.weight = weight;
         this.repetitions = repetitions;
         this.restSeconds = restSeconds;
         this.exerciseId = exerciseId;
     }
 
-    public ResistTrainSet(int weight, int repetitions, int restSeconds, int exerciseId) {
+    public ResistTrainSet(String name, int weight, int repetitions, int restSeconds, int exerciseId) {
+        this.name = name;
         this.weight = weight;
         this.repetitions = repetitions;
         this.restSeconds = restSeconds;
@@ -28,6 +31,14 @@ public class ResistTrainSet {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getWeight() {
@@ -60,5 +71,16 @@ public class ResistTrainSet {
 
     public void setExerciseId(int exerciseId) {
         this.exerciseId = exerciseId;
+    }
+
+    @Override
+    public String toString() {
+        return "ResistTrainSet{" +
+                "id=" + id +
+                ", weight=" + weight +
+                ", repetitions=" + repetitions +
+                ", restSeconds=" + restSeconds +
+                ", exerciseId=" + exerciseId +
+                '}';
     }
 }

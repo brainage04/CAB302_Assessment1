@@ -85,7 +85,7 @@ public class MainController {
 
     @FXML
     public void onLogoutButtonClick() throws IOException {
-        // logout user here
+        SqliteConnection.logOut();
 
         changeScene(logoutButton, "hello-view.fxml");
     }
@@ -96,7 +96,7 @@ public class MainController {
         debugLabel.setText(SqliteConnection.getCurrentUser().toString());
     }
 
-    public void changeScene(Button source, String sceneName) throws IOException {
+    public static void changeScene(Button source, String sceneName) throws IOException {
         Stage stage = (Stage) source.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);

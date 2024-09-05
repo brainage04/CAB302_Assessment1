@@ -39,4 +39,13 @@ public class ResistTrainExercise {
     public void setSessionId(int sessionId) {
         this.sessionId = sessionId;
     }
+
+    @Override
+    public String toString() {
+        return "ResistTrainExercise{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sessionId=" + sessionId +
+                '}';
+    }
 }

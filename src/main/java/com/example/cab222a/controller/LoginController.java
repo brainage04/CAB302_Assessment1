@@ -1,17 +1,13 @@
 package com.example.cab222a.controller;
 
-import com.example.cab222a.HelloApplication;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.user.IUserDAO;
 import com.example.cab222a.model.user.SqliteUserDAO;
 import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -40,10 +36,7 @@ public class LoginController {
         if (user != null) {
             SqliteConnection.setCurrentUser(user);
 
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-            stage.setScene(scene);
+            MainController.changeScene(loginButton, "main-view.fxml");
         } else {
             errorMessageLabel.setText("Incorrect email or password.");
         }
@@ -51,9 +44,6 @@ public class LoginController {
 
     @FXML
     public void onReturnButtonClick() throws IOException {
-        Stage stage = (Stage) returnButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
+        MainController.changeScene(returnButton, "hello-view.fxml");
     }
 }
