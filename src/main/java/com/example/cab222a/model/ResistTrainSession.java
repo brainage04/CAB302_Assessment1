@@ -1,14 +1,19 @@
 package com.example.cab222a.model;
 
-import java.util.List;
-
 public class ResistTrainSession {
     private int id;
     private String name;
-    private List<ResistTrainExercise> exercises;
+    private int userId;
 
-    public ResistTrainSession(String name) {
+    public ResistTrainSession(int id, String name, int userId) {
+        this.id = id;
         this.name = name;
+        this.userId = userId;
+    }
+
+    public ResistTrainSession(String name, int userId) {
+        this.name = name;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -27,11 +32,11 @@ public class ResistTrainSession {
         this.name = name;
     }
 
-    public List<ResistTrainExercise> getExercises() {
-        return exercises;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setExercises(List<ResistTrainExercise> exercises) {
-        this.exercises = exercises;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

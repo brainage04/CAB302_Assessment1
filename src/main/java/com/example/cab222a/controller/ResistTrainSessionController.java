@@ -1,9 +1,10 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.HelloApplication;
+import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.IResistTrainSessionDAO;
-import com.example.cab222a.model.MockResistTrainSessionDAO;
 import com.example.cab222a.model.ResistTrainSession;
+import com.example.cab222a.model.SqliteResistTrainSessionDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +24,7 @@ public class ResistTrainSessionController {
     private ListView<ResistTrainSession> itemListView;
     private final IResistTrainSessionDAO itemDAO;
     public ResistTrainSessionController() {
-        itemDAO = new MockResistTrainSessionDAO();
+        itemDAO = new SqliteResistTrainSessionDAO();
     }
 
     @FXML
@@ -146,7 +147,7 @@ public class ResistTrainSessionController {
     private void onAdd() {
         // Default values for a new item
         final String DEFAULT_NAME = "New Session";
-        ResistTrainSession newItem = new ResistTrainSession(DEFAULT_NAME);
+        ResistTrainSession newItem = new ResistTrainSession(DEFAULT_NAME, SqliteConnection.getCurrentUser().getId());
         // Add the new item to the database
         itemDAO.addItem(newItem);
         syncItems();
