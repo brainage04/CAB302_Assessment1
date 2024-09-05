@@ -3,11 +3,9 @@ package com.example.cab222a.controller;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -25,11 +23,17 @@ public class ResistTrainExerciseController {
     private TextField nameTextField;
 
     @FXML
+    public Label detailsLabel;
+
+    @FXML
     private Button editButton;
     @FXML
     private Button goBackButton;
+
     @FXML
     private VBox itemContainer;
+    @FXML
+    public GridPane gridPaneContainer;
 
     /**
      * Programmatically selects an item in the list view and
@@ -174,5 +178,7 @@ public class ResistTrainExerciseController {
         if (firstItem != null) {
             selectItem(firstItem);
         }
+
+        detailsLabel.setText("Currently editing: " + SqliteConnection.getCurrentResistTrainSession().getName());
     }
 }

@@ -5,11 +5,9 @@ import com.example.cab222a.model.resist_train.IResistTrainDAO;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import com.example.cab222a.model.resist_train.SqliteResistTrainSessionDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -30,8 +28,11 @@ public class ResistTrainSessionController {
     private Button editButton;
     @FXML
     private Button goBackButton;
+
     @FXML
     private VBox itemContainer;
+    @FXML
+    public GridPane gridPaneContainer;
 
     /**
      * Programmatically selects an item in the list view and
@@ -168,6 +169,24 @@ public class ResistTrainSessionController {
 
     @FXML
     public void initialize() {
+        // populate item container
+
+        Label sessionName = new Label("Session Name:");
+        GridPane.setColumnIndex(sessionName, 0);
+        GridPane.setRowIndex(sessionName, 0);
+
+        nameTextField = new TextField();
+        nameTextField.setId("nameTextField");
+        GridPane.setColumnIndex(nameTextField, 1);
+        GridPane.setRowIndex(nameTextField, 0);
+        nameTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+
+        gridPaneContainer.getChildren().add(sessionName);
+        gridPaneContainer.getChildren().add(nameTextField);
+
+        //                    <Label text="Session Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        //                    <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+
         itemListView.setCellFactory(this::renderCell);
         syncItems();
         // Select the first item and display its information

@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ResistTrainSessionController">
@@ -24,14 +23,12 @@
         </VBox>
         <VBox spacing="10.0" prefWidth="400">
             <VBox spacing="10.0" fx:id="itemContainer">
-                <Label text="Details" alignment="TOP_CENTER"/>
-                <GridPane hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
+                <Label text="Resistance Training" alignment="TOP_CENTER"/>
+                <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                     <columnConstraints>
                         <ColumnConstraints minWidth="70" />
                         <ColumnConstraints hgrow="ALWAYS"/>
                     </columnConstraints>
-                    <Label text="Session Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
                 </GridPane>
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
