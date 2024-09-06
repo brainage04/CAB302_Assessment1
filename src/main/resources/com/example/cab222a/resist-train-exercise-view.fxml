@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ResistTrainExerciseController">
@@ -30,8 +29,6 @@
                         <ColumnConstraints minWidth="70" />
                         <ColumnConstraints hgrow="ALWAYS"/>
                     </columnConstraints>
-                    <Label text="Exercise Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
                 </GridPane>
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
@@ -41,7 +38,7 @@
             </VBox>
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
-                    <Button text="Edit Exercise" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditButtonClick" fx:id="editButton"/>
+                    <Button text="Edit Item" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditButtonClick" fx:id="editButton"/>
                     <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
                 </HBox>
             </VBox>

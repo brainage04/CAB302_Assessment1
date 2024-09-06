@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ResistTrainSetController">
@@ -30,14 +29,6 @@
                         <ColumnConstraints minWidth="70" />
                         <ColumnConstraints hgrow="ALWAYS"/>
                     </columnConstraints>
-                    <Label text="Session Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
-                    <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
-                    <Label text="Repetitions:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="repetitionsTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
-                    <Label text="Rest Seconds:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="restSecondsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity"/>
                 </GridPane>
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>

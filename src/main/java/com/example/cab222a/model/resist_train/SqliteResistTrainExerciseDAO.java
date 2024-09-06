@@ -1,13 +1,14 @@
 package com.example.cab222a.model.resist_train;
 
 import com.example.cab222a.common.SqliteConnection;
+import com.example.cab222a.model.core.IObjectDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrainExercise> {
-    private Connection connection = SqliteConnection.getInstance();
+public class SqliteResistTrainExerciseDAO implements IObjectDAO<ResistTrainExercise> {
+    private final Connection connection = SqliteConnection.getInstance();
 
     public SqliteResistTrainExerciseDAO() {
         createTable();
@@ -24,7 +25,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
                     + ")";
             statement.execute(query);
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -42,7 +43,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
                 item.setId(set.getInt(1));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -54,7 +55,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
             statement.setInt(2, item.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -65,7 +66,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
             statement.setInt(1, item.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -83,7 +84,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
                 return new ResistTrainExercise(id, name, sessionId);
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
         return null;
@@ -108,7 +109,7 @@ public class SqliteResistTrainExerciseDAO implements IResistTrainDAO<ResistTrain
                 );
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
         return items;

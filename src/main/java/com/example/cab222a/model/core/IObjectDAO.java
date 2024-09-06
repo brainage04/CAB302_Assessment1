@@ -1,12 +1,12 @@
-package com.example.cab222a.model.resist_train;
+package com.example.cab222a.model.core;
 
 import java.util.List;
 
 /**
  * Generic interface for a Data Access Object that handles the
- * CRUD operations for resistance training classes within the database.
+ * CRUD operations for generic classes within the database.
  */
-public interface IResistTrainDAO<T> {
+public interface IObjectDAO<T> {
     /**
      * Adds a new item to the database.
      * @param item The item to add.

@@ -19,7 +19,7 @@ public class SqliteConnection {
         try {
             instance = DriverManager.getConnection(url);
         } catch (SQLException sqlEx) {
-            System.err.println(sqlEx);
+            sqlEx.printStackTrace();
         }
     }
 
@@ -42,19 +42,19 @@ public class SqliteConnection {
         setCurrentUser(null);
     }
 
-    public static ResistTrainExercise getCurrentResistTrainExercise() {
-        return currentResistTrainExercise;
-    }
-
-    public static void setCurrentResistTrainExercise(ResistTrainExercise currentResistTrainExercise) {
-        SqliteConnection.currentResistTrainExercise = currentResistTrainExercise;
-    }
-
     public static ResistTrainSession getCurrentResistTrainSession() {
         return currentResistTrainSession;
     }
 
     public static void setCurrentResistTrainSession(ResistTrainSession currentResistTrainSession) {
         SqliteConnection.currentResistTrainSession = currentResistTrainSession;
+    }
+
+    public static ResistTrainExercise getCurrentResistTrainExercise() {
+        return currentResistTrainExercise;
+    }
+
+    public static void setCurrentResistTrainExercise(ResistTrainExercise currentResistTrainExercise) {
+        SqliteConnection.currentResistTrainExercise = currentResistTrainExercise;
     }
 }

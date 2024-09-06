@@ -23,7 +23,7 @@
         </VBox>
         <VBox spacing="10.0" prefWidth="400">
             <VBox spacing="10.0" fx:id="itemContainer">
-                <Label text="Resistance Training" alignment="TOP_CENTER"/>
+                <Label fx:id="detailsLabel" text="Details" alignment="TOP_CENTER"/>
                 <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                     <columnConstraints>
                         <ColumnConstraints minWidth="70" />
@@ -38,7 +38,7 @@
             </VBox>
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
-                    <Button text="Edit Session" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditButtonClick" fx:id="editButton"/>
+                    <Button text="Edit Item" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditButtonClick" fx:id="editButton"/>
                     <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
                 </HBox>
             </VBox>

@@ -1,179 +1,108 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
+import com.example.cab222a.controller.core.SqliteControllerFunctions;
+import com.example.cab222a.model.core.IObjectDAO;
 import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.util.List;
-
-public class ResistTrainSetController {
-    @FXML
-    private ListView<ResistTrainSet> itemListView;
-    private final IResistTrainDAO<ResistTrainSet> itemDAO;
-    public ResistTrainSetController() {
-        itemDAO = new SqliteResistTrainSetDAO();
+public class ResistTrainSetController extends SqliteControllerFunctions<ResistTrainSet> {
+    @Override
+    public IObjectDAO<ResistTrainSet> initItemDAO() {
+        return new SqliteResistTrainSetDAO();
+    }
+    @Override
+    public String initNextScene() {
+        return null;
+    }
+    @Override
+    public String initPreviousScene() {
+        return "resist-train-exercise-view.fxml";
+    }
+    @Override
+    public ResistTrainSet generateDefaultItem() {
+        return new ResistTrainSet("New Set", 20, 10, 60, SqliteConnection.getCurrentResistTrainExercise().getId());
     }
 
-    @FXML
-    private TextField nameTextField;
-    @FXML
-    private TextField weightTextField;
-    @FXML
-    private TextField repetitionsTextField;
-    @FXML
-    private TextField restSecondsTextField;
+    @FXML private TextField weightTextField;
+    @FXML private TextField repetitionsTextField;
+    @FXML private TextField restSecondsTextField;
 
-    @FXML
-    public Label detailsLabel;
+    @Override
+    protected void selectItem(ResistTrainSet item) {
+        super.selectItem(item);
 
-    @FXML
-    private Button goBackButton;
-
-    @FXML
-    private VBox itemContainer;
-    @FXML
-    public GridPane gridPaneContainer;
-
-    /**
-     * Programmatically selects an item in the list view and
-     * updates the text fields with the item's information.
-     * @param item The item to select.
-     */
-    private void selectItem(ResistTrainSet item) {
-        itemListView.getSelectionModel().select(item);
-
-        nameTextField.setText(item.getName());
         weightTextField.setText("" + item.getWeight());
         repetitionsTextField.setText("" + item.getRepetitions());
         restSecondsTextField.setText("" + item.getRestSeconds());
     }
 
-    /**
-     * Renders a cell in the item list view by setting the text to the item's full name.
-     * @param listView The list view to render the cell for.
-     * @return The rendered cell.
-     */
-    private ListCell<ResistTrainSet> renderCell(ListView<ResistTrainSet> listView) {
-        return new ListCell<>() {
-            /**
-             * Handles the event when an item is selected in the list view.
-             * @param mouseEvent The event to handle.
-             */
-            private void onItemSelected(MouseEvent mouseEvent) {
-                ListCell<ResistTrainSet> clickedCell = (ListCell<ResistTrainSet>) mouseEvent.getSource();
-                // Get the selected item from the list view
-                ResistTrainSet selectedItem = clickedCell.getItem();
-                if (selectedItem != null) selectItem(selectedItem);
-            }
-
-            /**
-             * Updates the item in the cell by setting the text to the item's full name.
-             * @param item The item to update the cell with.
-             * @param empty Whether the cell is empty.
-             */
-            @Override
-            protected void updateItem(ResistTrainSet item, boolean empty) {
-                super.updateItem(item, empty);
-                // If the cell is empty, set the text to null, otherwise set it to the item's full name
-                if (empty || item == null || item.getName() == null) {
-                    setText(null);
-                    super.setOnMouseClicked(this::onItemSelected);
-                } else {
-                    setText(item.getName());
-                }
-            }
-        };
-    }
-
-    /**
-     * Synchronizes the item list view with the items in the database.
-     */
-    private void syncItems() {
-        ResistTrainSet currentItem = itemListView.getSelectionModel().getSelectedItem();
-
-        itemListView.getItems().clear();
-        List<ResistTrainSet> items = itemDAO.getAllItems();
-        boolean hasItem = !items.isEmpty();
-        if (hasItem) {
-            itemListView.getItems().addAll(items);
-
-            // If the current item is still in the list, re-select it
-            // Otherwise, select the first item in the list
-            ResistTrainSet nextItem = items.contains(currentItem) ? currentItem : items.getFirst();
-            itemListView.getSelectionModel().select(nextItem);
-            selectItem(nextItem);
-        }
-        // Show / hide based on whether there are items
-        itemContainer.setVisible(hasItem);
-    }
-
-    @FXML
-    private void onEditConfirm() {
-        // Get the selected item from the list view
-        ResistTrainSet selectedItem = itemListView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            selectedItem.setName(nameTextField.getText());
-
-            itemDAO.updateItem(selectedItem);
-            syncItems();
-        }
-    }
-
-    @FXML
-    private void onCancel() {
-        // Find the selected item
-        ResistTrainSet selectedItem = itemListView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            // Since the item hasn't been modified,
-            // we can just re-select it to refresh the text fields
-            selectItem(selectedItem);
-        }
-    }
-
-    @FXML
-    private void onDelete() {
-        // Get the selected item from the list view
-        ResistTrainSet selectedItem = itemListView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            itemDAO.deleteItem(selectedItem);
-            syncItems();
-        }
-    }
-
-    @FXML
-    private void onAdd() {
-        // Default values for a new item
-        ResistTrainSet newItem = new ResistTrainSet("New Set", 20, 10, 60, SqliteConnection.getCurrentResistTrainExercise().getId());
-        // Add the new item to the database
-        itemDAO.addItem(newItem);
-        syncItems();
-        // Select the new item in the list view
-        // and focus the first text field
-        selectItem(newItem);
-        nameTextField.requestFocus();
-    }
-
-    @FXML
-    public void onGoBackButtonClick() throws IOException {
-        MainController.changeScene(goBackButton, "resist-train-exercise-view.fxml");
-    }
-
     @FXML
     public void initialize() {
-        itemListView.setCellFactory(this::renderCell);
-        syncItems();
-        // Select the first item and display its information
-        itemListView.getSelectionModel().selectFirst();
-        ResistTrainSet firstItem = itemListView.getSelectionModel().getSelectedItem();
-        if (firstItem != null) {
-            selectItem(firstItem);
-        }
+        // populate item container
+        // <Label text="Set Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        // <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+        // <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        // <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+        // <Label text="Repetitions:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        // <TextField fx:id="repetitionsTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
+        // <Label text="Rest Seconds:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        // <TextField fx:id="restSecondsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity"/>
 
-        detailsLabel.setText("Currently editing: " + SqliteConnection.getCurrentResistTrainSession().getName() + " - " + SqliteConnection.getCurrentResistTrainExercise().getName());
+        Label itemLabel = new Label("Set Name:");
+        GridPane.setColumnIndex(itemLabel, 0);
+        GridPane.setRowIndex(itemLabel, 0);
+
+        setNameTextField(new TextField());
+        getNameTextField().setId("nameTextField");
+        GridPane.setColumnIndex(getNameTextField(), 1);
+        GridPane.setRowIndex(getNameTextField(), 0);
+        getNameTextField().setMaxWidth(Double.POSITIVE_INFINITY);
+
+        Label weightLabel = new Label("Weight:");
+        GridPane.setColumnIndex(itemLabel, 0);
+        GridPane.setRowIndex(itemLabel, 1);
+
+        weightTextField = new TextField();
+        weightTextField.setId("nameTextField");
+        GridPane.setColumnIndex(weightTextField, 1);
+        GridPane.setRowIndex(weightTextField, 1);
+        weightTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+
+        Label repetitionsLabel = new Label("Weight:");
+        GridPane.setColumnIndex(itemLabel, 0);
+        GridPane.setRowIndex(itemLabel, 2);
+
+        repetitionsTextField = new TextField();
+        repetitionsTextField.setId("nameTextField");
+        GridPane.setColumnIndex(repetitionsTextField, 1);
+        GridPane.setRowIndex(repetitionsTextField, 2);
+        repetitionsTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+
+        Label restSecondsLabel = new Label("Weight:");
+        GridPane.setColumnIndex(itemLabel, 0);
+        GridPane.setRowIndex(itemLabel, 3);
+
+        restSecondsTextField = new TextField();
+        restSecondsTextField.setId("nameTextField");
+        GridPane.setColumnIndex(restSecondsTextField, 1);
+        GridPane.setRowIndex(restSecondsTextField, 3);
+        restSecondsTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+
+        getGridPaneContainer().getChildren().add(itemLabel);
+        getGridPaneContainer().getChildren().add(getNameTextField());
+        getGridPaneContainer().getChildren().add(weightLabel);
+        getGridPaneContainer().getChildren().add(weightTextField);
+        getGridPaneContainer().getChildren().add(repetitionsLabel);
+        getGridPaneContainer().getChildren().add(repetitionsTextField);
+        getGridPaneContainer().getChildren().add(restSecondsLabel);
+        getGridPaneContainer().getChildren().add(restSecondsTextField);
+
+        // Set relevant labels
+        getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentResistTrainSession().getName() + " - " + SqliteConnection.getCurrentResistTrainExercise().getName());
+
+        super.initialize();
     }
 }
