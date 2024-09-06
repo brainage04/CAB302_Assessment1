@@ -7,84 +7,58 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteResistTrainSetDAO implements IObjectDAO<ResistTrainSet> {
-    private final Connection connection = SqliteConnection.getInstance();
-
-    public SqliteResistTrainSetDAO() {
-        createTable();
-    }
-
-    private void createTable() {
-        try {
-            Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS resist_train_sets ("
-                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + "name VARCHAR NOT NULL,"
-                    + "weight INTEGER NOT NULL,"
-                    + "repetitions INTEGER NOT NULL,"
-                    + "rest_seconds INTEGER NOT NULL,"
-                    + "exercise_id INTEGER NOT NULL,"
-                    + "FOREIGN KEY (exercise_id) REFERENCES resist_train_exercises(id)"
-                    + ")";
-            statement.execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+public class SqliteResistTrainSetDAO extends IObjectDAO<ResistTrainSet> {
+    @Override
+    protected String tableName() {
+        return "resist_train_sets";
     }
 
     @Override
-    public void addItem(ResistTrainSet item) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO resist_train_sets (name, weight, repetitions, rest_seconds, exercise_id) VALUES (?, ?, ?, ?, ?)");
-            statement.setString(1, item.getName());
-            statement.setInt(2, item.getWeight());
-            statement.setInt(3, item.getRepetitions());
-            statement.setInt(4, item.getRestSeconds());
-            statement.setInt(5, SqliteConnection.getCurrentResistTrainExercise().getId());
-            statement.executeUpdate();
-
-            // get auto incremented id from database
-            ResultSet set = statement.getGeneratedKeys();
-            if (set.next()) {
-                item.setId(set.getInt(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected String createTableQuery() {
+        return "CREATE TABLE IF NOT EXISTS " + tableName() + " ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "name VARCHAR NOT NULL,"
+                + "weight INTEGER NOT NULL,"
+                + "repetitions INTEGER NOT NULL,"
+                + "rest_seconds INTEGER NOT NULL,"
+                + "exercise_id INTEGER NOT NULL,"
+                + "FOREIGN KEY (exercise_id) REFERENCES resist_train_exercises(id)"
+                + ")";
     }
 
     @Override
-    public void updateItem(ResistTrainSet item) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE resist_train_sets SET name = ?, weight = ?, repetitions = ?, rest_seconds = ? WHERE id = ?");
-            statement.setString(1, item.getName());
-            statement.setInt(2, item.getWeight());
-            statement.setInt(3, item.getRepetitions());
-            statement.setInt(4, item.getRestSeconds());
-            statement.setInt(5, item.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected PreparedStatement addItemStatement(ResistTrainSet item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, weight, repetitions, rest_seconds, exercise_id) VALUES (?, ?, ?, ?, ?)");
+        statement.setString(1, item.getName());
+        statement.setInt(2, item.getWeight());
+        statement.setInt(3, item.getRepetitions());
+        statement.setInt(4, item.getRestSeconds());
+        statement.setInt(5, SqliteConnection.getCurrentResistTrainExercise().getId());
+        return statement;
     }
 
     @Override
-    public void deleteItem(ResistTrainSet item) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM resist_train_sets WHERE id = ?");
-            statement.setInt(1, item.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected PreparedStatement updateItemStatement(ResistTrainSet item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, weight = ?, repetitions = ?, rest_seconds = ? WHERE id = ?");
+        statement.setString(1, item.getName());
+        statement.setInt(2, item.getWeight());
+        statement.setInt(3, item.getRepetitions());
+        statement.setInt(4, item.getRestSeconds());
+        statement.setInt(5, item.getId());
+        return statement;
+    }
+
+    @Override
+    protected PreparedStatement getAllItemsStatement() throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE exercise_id = ?");
+        statement.setInt(1, SqliteConnection.getCurrentResistTrainExercise().getId());
+        return statement;
     }
 
     @Override
     public ResistTrainSet getItem(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM resist_train_sets WHERE id = ?");
-            statement.setInt(1, id);
-            ResultSet set = statement.executeQuery();
+            ResultSet set = getItemStatement(id).executeQuery();
 
             if (set.next()) {
                 int weight = set.getInt("weight");
@@ -107,9 +81,7 @@ public class SqliteResistTrainSetDAO implements IObjectDAO<ResistTrainSet> {
         List<ResistTrainSet> items = new ArrayList<>();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM resist_train_sets WHERE exercise_id = ?");
-            statement.setInt(1, SqliteConnection.getCurrentResistTrainExercise().getId());
-            ResultSet set = statement.executeQuery();
+            ResultSet set = getAllItemsStatement().executeQuery();
 
             while (set.next()) {
                 int id = set.getInt("id");

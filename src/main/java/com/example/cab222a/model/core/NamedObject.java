@@ -1,7 +1,12 @@
 package com.example.cab222a.model.core;
 
-public class NamedObject {
+public class NamedObject extends IdentifiedObject {
     private String name;
+
+    public NamedObject(int id, String name) {
+        super(id);
+        this.name = name;
+    }
 
     public NamedObject(String name) {
         this.name = name;

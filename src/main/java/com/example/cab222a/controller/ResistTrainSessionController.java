@@ -47,7 +47,7 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         getGridPaneContainer().getChildren().add(getNameTextField());
 
         // Set relevant labels
-        getEditButton().setText("Edit Exercise");
+        getEditButton().setText("Edit Session");
 
         super.initialize();
     }

@@ -3,15 +3,13 @@ package com.example.cab222a.model.resist_train;
 import com.example.cab222a.model.core.NamedObject;
 
 public class ResistTrainSet extends NamedObject {
-    private int id;
     private int weight;
     private int repetitions;
     private int restSeconds;
     private int exerciseId;
 
     public ResistTrainSet(int id, String name, int weight, int repetitions, int restSeconds, int exerciseId) {
-        super(name);
-        this.id = id;
+        super(id, name);
         this.weight = weight;
         this.repetitions = repetitions;
         this.restSeconds = restSeconds;
@@ -24,14 +22,6 @@ public class ResistTrainSet extends NamedObject {
         this.repetitions = repetitions;
         this.restSeconds = restSeconds;
         this.exerciseId = exerciseId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getWeight() {

@@ -49,6 +49,10 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         return itemListView;
     }
 
+    public IObjectDAO<T> getItemDAO() {
+        return itemDAO;
+    }
+
     public TextField getNameTextField() {
         return nameTextField;
     }
@@ -90,7 +94,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
      * @return The rendered cell.
      */
     protected ListCell<T> renderCell(ListView<T> listView) {
-        return new ListCell<T>() {
+        return new ListCell<>() {
             /**
              * Handles the event when an item is selected in the list view.
              * @param mouseEvent The event to handle.
@@ -142,7 +146,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
     }
 
     @FXML
-    private void onEditConfirm() {
+    protected void onEditConfirm() {
         // Get the selected item from the list view
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
@@ -168,7 +172,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         // Get the selected item from the list view
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            itemDAO.deleteItem(selectedItem);
+            itemDAO.deleteItem(selectedItem.getId());
             syncItems();
         }
     }

@@ -1,7 +1,8 @@
 package com.example.cab222a.model.user;
 
-public class User {
-    private int id;
+import com.example.cab222a.model.core.IdentifiedObject;
+
+public class User extends IdentifiedObject {
     private String firstName;
     private String lastName;
     private String email;
@@ -9,7 +10,7 @@ public class User {
     private String password;
 
     public User(int id, String firstName, String lastName, String email, String phone, String password) {
-        this.id = id;
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -23,14 +24,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -80,12 +73,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", phone='" + getPhone() + '\'' +
+                ", password='" + getPassword() + '\'' +
                 '}';
     }
 }

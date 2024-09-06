@@ -39,17 +39,25 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
         restSecondsTextField.setText("" + item.getRestSeconds());
     }
 
+    @Override
+    protected void onEditConfirm() {
+        // Get the selected item from the list view
+        ResistTrainSet selectedItem = getItemListView().getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            selectedItem.setName(getNameTextField().getText());
+            selectedItem.setWeight(Integer.parseInt(weightTextField.getText()));
+            selectedItem.setRepetitions(Integer.parseInt(repetitionsTextField.getText()));
+            selectedItem.setRestSeconds(Integer.parseInt(restSecondsTextField.getText()));
+            getItemDAO().updateItem(selectedItem);
+            syncItems();
+        }
+    }
+
     @FXML
     public void initialize() {
         // populate item container
         // <Label text="Set Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         // <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
-        // <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        // <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
-        // <Label text="Repetitions:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        // <TextField fx:id="repetitionsTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
-        // <Label text="Rest Seconds:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        // <TextField fx:id="restSecondsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity"/>
 
         Label itemLabel = new Label("Set Name:");
         GridPane.setColumnIndex(itemLabel, 0);
@@ -61,32 +69,41 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
         GridPane.setRowIndex(getNameTextField(), 0);
         getNameTextField().setMaxWidth(Double.POSITIVE_INFINITY);
 
+        // <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        // <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+
         Label weightLabel = new Label("Weight:");
         GridPane.setColumnIndex(itemLabel, 0);
         GridPane.setRowIndex(itemLabel, 1);
 
         weightTextField = new TextField();
-        weightTextField.setId("nameTextField");
+        weightTextField.setId("weightTextField");
         GridPane.setColumnIndex(weightTextField, 1);
         GridPane.setRowIndex(weightTextField, 1);
         weightTextField.setMaxWidth(Double.POSITIVE_INFINITY);
 
-        Label repetitionsLabel = new Label("Weight:");
+        // <Label text="Repetitions:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        // <TextField fx:id="repetitionsTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
+
+        Label repetitionsLabel = new Label("Repetitions:");
         GridPane.setColumnIndex(itemLabel, 0);
         GridPane.setRowIndex(itemLabel, 2);
 
         repetitionsTextField = new TextField();
-        repetitionsTextField.setId("nameTextField");
+        repetitionsTextField.setId("repetitionsTextField");
         GridPane.setColumnIndex(repetitionsTextField, 1);
         GridPane.setRowIndex(repetitionsTextField, 2);
         repetitionsTextField.setMaxWidth(Double.POSITIVE_INFINITY);
 
-        Label restSecondsLabel = new Label("Weight:");
+        // <Label text="Rest Seconds:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        // <TextField fx:id="restSecondsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity"/>
+
+        Label restSecondsLabel = new Label("Rest Seconds:");
         GridPane.setColumnIndex(itemLabel, 0);
         GridPane.setRowIndex(itemLabel, 3);
 
         restSecondsTextField = new TextField();
-        restSecondsTextField.setId("nameTextField");
+        restSecondsTextField.setId("restSecondsTextField");
         GridPane.setColumnIndex(restSecondsTextField, 1);
         GridPane.setRowIndex(restSecondsTextField, 3);
         restSecondsTextField.setMaxWidth(Double.POSITIVE_INFINITY);

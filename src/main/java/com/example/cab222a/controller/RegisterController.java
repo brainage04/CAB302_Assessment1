@@ -1,7 +1,6 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.user.IUserDAO;
 import com.example.cab222a.model.user.SqliteUserDAO;
 import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
@@ -12,7 +11,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class RegisterController {
-    private IUserDAO userDAO = new SqliteUserDAO();
+    private final SqliteUserDAO userDAO = new SqliteUserDAO();
 
     @FXML
     public TextField firstNameTextField;
@@ -66,6 +65,7 @@ public class RegisterController {
 
         userDAO.addItem(user);
 
+        // todo: change this to use ResultSet#generatedKeys
         // we need to get the user's ID from the database, otherwise it will be read as 0 when it is not actually 0
         user = userDAO.getItem(email, password);
 
