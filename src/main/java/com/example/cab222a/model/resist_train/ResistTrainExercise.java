@@ -1,18 +1,19 @@
 package com.example.cab222a.model.resist_train;
 
-public class ResistTrainExercise {
+import com.example.cab222a.model.core.NamedObject;
+
+public class ResistTrainExercise extends NamedObject {
     private int id;
-    private String name;
     private int sessionId;
 
     public ResistTrainExercise(int id, String name, int sessionId) {
+        super(name);
         this.id = id;
-        this.name = name;
         this.sessionId = sessionId;
     }
 
     public ResistTrainExercise(String name, int sessionId) {
-        this.name = name;
+        super(name);
         this.sessionId = sessionId;
     }
 
@@ -22,14 +23,6 @@ public class ResistTrainExercise {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getSessionId() {
@@ -43,9 +36,9 @@ public class ResistTrainExercise {
     @Override
     public String toString() {
         return "ResistTrainExercise{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sessionId=" + sessionId +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", sessionId=" + getSessionId() +
                 '}';
     }
 }
