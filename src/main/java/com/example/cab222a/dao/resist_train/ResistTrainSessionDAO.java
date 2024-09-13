@@ -1,34 +1,34 @@
 package com.example.cab222a.dao.resist_train;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteResistTrainSessionDAO extends IObjectDAO<ResistTrainSession> {
+public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession> {
     @Override
     protected String tableName() {
-        return "resist_train_sessions";
+        return "resistTrainSessions";
     }
 
     @Override
-    protected String createTableQuery() {
-        return "CREATE TABLE IF NOT EXISTS " + tableName() + " ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name VARCHAR NOT NULL,"
-                + "user_id INTEGER NOT NULL,"
-                + "FOREIGN KEY (user_id) REFERENCES users(id)"
-                + ")";
+    protected String createTableVariables() {
+        return "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "name VARCHAR NOT NULL, "
+                + "userId INTEGER NOT NULL, "
+                + "created DATETIME NOT NULL, "
+                + "FOREIGN KEY (userId) REFERENCES users(id)";
     }
 
     @Override
     protected PreparedStatement addItemStatement(ResistTrainSession item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, user_id) VALUES (?, ?)");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, userId, created) VALUES (?, ?, ?)");
         statement.setString(1, item.getName());
         statement.setInt(2, SqliteConnection.getCurrentUser().getId());
+        statement.setDate(3, item.getCreated());
         return statement;
     }
 
@@ -42,7 +42,7 @@ public class SqliteResistTrainSessionDAO extends IObjectDAO<ResistTrainSession> 
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE user_id = ?");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userId = ?");
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
         return statement;
     }
@@ -54,9 +54,10 @@ public class SqliteResistTrainSessionDAO extends IObjectDAO<ResistTrainSession> 
 
             if (set.next()) {
                 String name = set.getString("name");
-                int userId = set.getInt("user_id");
+                int userId = set.getInt("userId");
+                Date created = set.getDate("created");
 
-                return new ResistTrainSession(id, name, userId);
+                return new ResistTrainSession(id, name, userId, created);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,10 +76,11 @@ public class SqliteResistTrainSessionDAO extends IObjectDAO<ResistTrainSession> 
             while (set.next()) {
                 int id = set.getInt("id");
                 String name = set.getString("name");
-                int userId = set.getInt("user_id");
+                int userId = set.getInt("userId");
+                Date created = set.getDate("created");
 
                 items.add(
-                        new ResistTrainSession(id, name, userId)
+                        new ResistTrainSession(id, name, userId, created)
                 );
             }
         } catch (SQLException e) {

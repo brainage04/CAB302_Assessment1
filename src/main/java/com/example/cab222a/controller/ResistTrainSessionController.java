@@ -2,17 +2,18 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
-import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
-import com.example.cab222a.dao.resist_train.SqliteResistTrainSessionDAO;
+import com.example.cab222a.dao.resist_train.ResistTrainSessionDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+
+import java.sql.Date;
 
 public class ResistTrainSessionController extends SqliteControllerFunctions<ResistTrainSession> {
     @Override
-    public IObjectDAO<ResistTrainSession> initItemDAO() {
-        return new SqliteResistTrainSessionDAO();
+    public AbstractObjectDAO<ResistTrainSession> initItemDAO() {
+        return new ResistTrainSessionDAO();
     }
     @Override
     public String initNextScene() {
@@ -24,7 +25,7 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
     }
     @Override
     public ResistTrainSession generateDefaultItem() {
-        return new ResistTrainSession("New Session", SqliteConnection.getCurrentUser().getId());
+        return new ResistTrainSession("New Session", SqliteConnection.getCurrentUser().getId(), new Date(System.currentTimeMillis()));
     }
 
     @FXML
@@ -34,17 +35,10 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         // <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
 
         Label itemLabel = new Label("Session Name:");
-        GridPane.setColumnIndex(itemLabel, 0);
-        GridPane.setRowIndex(itemLabel, 0);
+        setNameTextField(MainController.customTextField("nameTextField"));
 
-        setNameTextField(new TextField());
-        getNameTextField().setId("nameTextField");
-        GridPane.setColumnIndex(getNameTextField(), 1);
-        GridPane.setRowIndex(getNameTextField(), 0);
-        getNameTextField().setMaxWidth(Double.POSITIVE_INFINITY);
-
-        getGridPaneContainer().getChildren().add(itemLabel);
-        getGridPaneContainer().getChildren().add(getNameTextField());
+        getGridPaneContainer().add(itemLabel, 0, 0);
+        getGridPaneContainer().add(getNameTextField(), 1, 0);
 
         // Set relevant labels
         getEditButton().setText("Edit Session");

@@ -1,7 +1,7 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.user.SqliteUserDAO;
+import com.example.cab222a.dao.user.UserDAO;
 import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,9 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.sql.Date;
 
 public class RegisterController {
-    private final SqliteUserDAO userDAO = new SqliteUserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     public TextField firstNameTextField;
@@ -61,12 +62,12 @@ public class RegisterController {
             return;
         }
 
-        User user = new User(firstName, lastName, email, phone, password);
+        User user = new User(new Date(System.currentTimeMillis()), firstName, lastName, email, phone, password);
 
         userDAO.addItem(user);
 
         // todo: change this to use ResultSet#generatedKeys
-        // we need to get the user's ID from the database, otherwise it will be read as 0 when it is not actually 0
+        // we need to get the user's ID/created timestamp from the database, otherwise it will be read as 0 when it is not actually 0
         user = userDAO.getItem(email, password);
 
         if (user != null) {

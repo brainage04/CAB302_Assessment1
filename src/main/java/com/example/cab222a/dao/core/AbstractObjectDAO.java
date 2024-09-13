@@ -12,13 +12,14 @@ import java.util.List;
  * Generic interface for a Data Access Object that handles the
  * CRUD operations for generic classes within the database.
  */
-public abstract class IObjectDAO<T extends IdentifiedObject> {
-    public IObjectDAO() {
+public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
+    public AbstractObjectDAO() {
+        System.out.println("Creating DAO for " + tableName());
         createTable();
     }
 
     protected abstract String tableName();
-    protected abstract String createTableQuery();
+    protected abstract String createTableVariables();
     protected abstract PreparedStatement addItemStatement(T item) throws SQLException;
     protected abstract PreparedStatement updateItemStatement(T item) throws SQLException;
     protected PreparedStatement deleteItemStatement(int id) throws SQLException {
@@ -36,7 +37,7 @@ public abstract class IObjectDAO<T extends IdentifiedObject> {
     public void createTable() {
         try {
             Statement statement = SqliteConnection.getInstance().createStatement();
-            statement.execute(createTableQuery());
+            statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
         }

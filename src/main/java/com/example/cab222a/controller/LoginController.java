@@ -1,7 +1,7 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.user.SqliteUserDAO;
+import com.example.cab222a.dao.user.UserDAO;
 import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class LoginController {
-    private final SqliteUserDAO userDAO = new SqliteUserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     public TextField emailTextField;

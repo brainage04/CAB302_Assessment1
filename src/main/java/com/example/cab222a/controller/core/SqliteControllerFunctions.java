@@ -3,7 +3,7 @@ package com.example.cab222a.controller.core;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.MainController;
 import com.example.cab222a.model.core.NamedObject;
-import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import javafx.fxml.FXML;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public abstract class SqliteControllerFunctions<T extends NamedObject> {
     @FXML ListView<T> itemListView;
-    private final IObjectDAO<T> itemDAO;
+    private final AbstractObjectDAO<T> itemDAO;
 
     @FXML private TextField nameTextField;
 
@@ -39,7 +39,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
     }
 
     // abstract methods
-    public abstract IObjectDAO<T> initItemDAO();
+    public abstract AbstractObjectDAO<T> initItemDAO();
     public abstract String initNextScene();
     public abstract String initPreviousScene();
     public abstract T generateDefaultItem();
@@ -49,7 +49,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         return itemListView;
     }
 
-    public IObjectDAO<T> getItemDAO() {
+    public AbstractObjectDAO<T> getItemDAO() {
         return itemDAO;
     }
 

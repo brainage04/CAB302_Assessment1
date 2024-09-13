@@ -2,15 +2,19 @@ package com.example.cab222a.model.user;
 
 import com.example.cab222a.model.core.IdentifiedObject;
 
+import java.sql.Date;
+
 public class User extends IdentifiedObject {
+    private Date created;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String password;
 
-    public User(int id, String firstName, String lastName, String email, String phone, String password) {
+    public User(int id, Date created, String firstName, String lastName, String email, String phone, String password) {
         super(id);
+        this.created = created;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -18,12 +22,21 @@ public class User extends IdentifiedObject {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String email, String phone, String password) {
+    public User(Date created, String firstName, String lastName, String email, String password, String phone) {
+        this.created = created;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public String getFirstName() {
@@ -66,14 +79,11 @@ public class User extends IdentifiedObject {
         this.password = password;
     }
 
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "id=" + getId() +
+                ", created='" + getCreated() + '\'' +
                 ", firstName='" + getFirstName() + '\'' +
                 ", lastName='" + getLastName() + '\'' +
                 ", email='" + getEmail() + '\'' +

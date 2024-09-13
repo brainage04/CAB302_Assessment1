@@ -1,49 +1,50 @@
 package com.example.cab222a.dao.user;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.model.user.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqliteUserDAO extends IObjectDAO<User> {
+public class UserDAO extends AbstractObjectDAO<User> {
     @Override
     protected String tableName() {
         return "users";
     }
 
     @Override
-    protected String createTableQuery() {
-        return "CREATE TABLE IF NOT EXISTS " + tableName() + " ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "firstName VARCHAR NOT NULL,"
-                + "lastName VARCHAR NOT NULL,"
-                + "email VARCHAR NOT NULL UNIQUE,"
-                + "phone VARCHAR NOT NULL,"
-                + "password VARCHAR NOT NULL"
-                + ")";
+    protected String createTableVariables() {
+        return "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "created DATETIME NOT NULL, "
+                + "firstName VARCHAR NOT NULL, "
+                + "lastName VARCHAR NOT NULL, "
+                + "email VARCHAR NOT NULL UNIQUE, "
+                + "phone VARCHAR NOT NULL, "
+                + "password VARCHAR NOT NULL";
     }
 
     protected PreparedStatement addItemStatement(User item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (firstName, lastName, email, phone, password) VALUES (?, ?, ?, ?, ?)");
-        statement.setString(1, item.getFirstName());
-        statement.setString(2, item.getLastName());
-        statement.setString(3, item.getEmail());
-        statement.setString(4, item.getPhone());
-        statement.setString(5, item.getPassword());
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (created, firstName, lastName, email, phone, password) VALUES (?, ?, ?, ?, ?, ?)");
+        statement.setDate(1, item.getCreated());
+        statement.setString(2, item.getFirstName());
+        statement.setString(3, item.getLastName());
+        statement.setString(4, item.getEmail());
+        statement.setString(5, item.getPhone());
+        statement.setString(6, item.getPassword());
         return statement;
     }
 
     protected PreparedStatement updateItemStatement(User item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?");
-        statement.setString(1, item.getFirstName());
-        statement.setString(2, item.getLastName());
-        statement.setString(3, item.getEmail());
-        statement.setString(4, item.getPhone());
-        statement.setString(5, item.getPassword());
-        statement.setInt(6, item.getId());
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET created = ?, firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?");
+        statement.setDate(1, item.getCreated());
+        statement.setString(2, item.getFirstName());
+        statement.setString(3, item.getLastName());
+        statement.setString(4, item.getEmail());
+        statement.setString(5, item.getPhone());
+        statement.setString(6, item.getPassword());
+        statement.setInt(7, item.getId());
         return statement;
     }
 
@@ -58,13 +59,14 @@ public class SqliteUserDAO extends IObjectDAO<User> {
             ResultSet set = getItemStatement(id).executeQuery();
 
             if (set.next()) {
+                Date created = set.getDate("created");
                 String firstName = set.getString("firstName");
                 String lastName = set.getString("lastName");
                 String email = set.getString("email");
                 String phone = set.getString("phone");
                 String password = set.getString("password");
 
-                return new User(id, firstName, lastName, email, phone, password);
+                return new User(id, created, firstName, lastName, email, phone, password);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,11 +84,12 @@ public class SqliteUserDAO extends IObjectDAO<User> {
 
             if (set.next()) {
                 int id = set.getInt("id");
+                Date created = set.getDate("created");
                 String firstName = set.getString("firstName");
                 String lastName = set.getString("lastName");
                 String phone = set.getString("phone");
 
-                return new User(id, firstName, lastName, email, phone, password);
+                return new User(id, created, firstName, lastName, email, phone, password);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,13 +108,14 @@ public class SqliteUserDAO extends IObjectDAO<User> {
 
             while (set.next()) {
                 int id = set.getInt("id");
+                Date created = set.getDate("created");
                 String firstName = set.getString("firstName");
                 String lastName = set.getString("lastName");
                 String email = set.getString("email");
                 String phone = set.getString("phone");
                 String password = set.getString("password");
                 users.add(
-                        new User(id, firstName, lastName, email, phone, password)
+                        new User(id, created, firstName, lastName, email, phone, password)
                 );
             }
         } catch (SQLException e) {

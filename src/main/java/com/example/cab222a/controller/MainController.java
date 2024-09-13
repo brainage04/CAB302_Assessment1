@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -101,5 +102,12 @@ public class MainController {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
         stage.setScene(scene);
+    }
+
+    public static TextField customTextField(String id) {
+        TextField textField = new TextField();
+        textField.setId(id);
+        textField.setMaxWidth(Double.POSITIVE_INFINITY);
+        return textField;
     }
 }

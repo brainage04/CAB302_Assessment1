@@ -2,17 +2,16 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
-import com.example.cab222a.dao.core.IObjectDAO;
-import com.example.cab222a.dao.resist_train.SqliteResistTrainSetDAO;
+import com.example.cab222a.dao.core.AbstractObjectDAO;
+import com.example.cab222a.dao.resist_train.ResistTrainSetDAO;
 import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 
 public class ResistTrainSetController extends SqliteControllerFunctions<ResistTrainSet> {
     @Override
-    public IObjectDAO<ResistTrainSet> initItemDAO() {
-        return new SqliteResistTrainSetDAO();
+    public AbstractObjectDAO<ResistTrainSet> initItemDAO() {
+        return new ResistTrainSetDAO();
     }
     @Override
     public String initNextScene() {
@@ -24,20 +23,22 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
     }
     @Override
     public ResistTrainSet generateDefaultItem() {
-        return new ResistTrainSet("New Set", 20, 10, 60, SqliteConnection.getCurrentResistTrainExercise().getId());
+        return new ResistTrainSet("New Set", SqliteConnection.getCurrentResistTrainExercise().getId(), 20, 10, 60, 2);
     }
 
     @FXML private TextField weightTextField;
-    @FXML private TextField repetitionsTextField;
-    @FXML private TextField restSecondsTextField;
+    @FXML private TextField repsTextField;
+    @FXML private TextField restTextField;
+    @FXML private TextField repsInReserveTextField;
 
     @Override
     protected void selectItem(ResistTrainSet item) {
         super.selectItem(item);
 
         weightTextField.setText("" + item.getWeight());
-        repetitionsTextField.setText("" + item.getRepetitions());
-        restSecondsTextField.setText("" + item.getRestSeconds());
+        repsTextField.setText("" + item.getReps());
+        restTextField.setText("" + item.getRest());
+        repsInReserveTextField.setText("" + item.getRepsInReserve());
     }
 
     @Override
@@ -47,8 +48,9 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
         if (selectedItem != null) {
             selectedItem.setName(getNameTextField().getText());
             selectedItem.setWeight(Integer.parseInt(weightTextField.getText()));
-            selectedItem.setRepetitions(Integer.parseInt(repetitionsTextField.getText()));
-            selectedItem.setRestSeconds(Integer.parseInt(restSecondsTextField.getText()));
+            selectedItem.setReps(Integer.parseInt(repsTextField.getText()));
+            selectedItem.setRest(Integer.parseInt(restTextField.getText()));
+            selectedItem.setRepsInReserve(Integer.parseInt(repsInReserveTextField.getText()));
             getItemDAO().updateItem(selectedItem);
             syncItems();
         }
@@ -61,62 +63,46 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
         // <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
 
         Label itemLabel = new Label("Set Name:");
-        GridPane.setColumnIndex(itemLabel, 0);
-        GridPane.setRowIndex(itemLabel, 0);
+        setNameTextField(MainController.customTextField("nameTextField"));
 
-        setNameTextField(new TextField());
-        getNameTextField().setId("nameTextField");
-        GridPane.setColumnIndex(getNameTextField(), 1);
-        GridPane.setRowIndex(getNameTextField(), 0);
-        getNameTextField().setMaxWidth(Double.POSITIVE_INFINITY);
+        getGridPaneContainer().add(itemLabel, 0, 0);
+        getGridPaneContainer().add(getNameTextField(), 1, 0);
 
         // <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         // <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
 
         Label weightLabel = new Label("Weight:");
-        GridPane.setColumnIndex(itemLabel, 0);
-        GridPane.setRowIndex(itemLabel, 1);
+        weightTextField = MainController.customTextField("weightTextField");
 
-        weightTextField = new TextField();
-        weightTextField.setId("weightTextField");
-        GridPane.setColumnIndex(weightTextField, 1);
-        GridPane.setRowIndex(weightTextField, 1);
-        weightTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+        getGridPaneContainer().add(weightLabel, 0, 1);
+        getGridPaneContainer().add(weightTextField, 1, 1);
 
-        // <Label text="Repetitions:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        // <Label text="Reps:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         // <TextField fx:id="repetitionsTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
 
-        Label repetitionsLabel = new Label("Repetitions:");
-        GridPane.setColumnIndex(itemLabel, 0);
-        GridPane.setRowIndex(itemLabel, 2);
+        Label repetitionsLabel = new Label("Reps:");
+        repsTextField = MainController.customTextField("repetitionsTextField");
 
-        repetitionsTextField = new TextField();
-        repetitionsTextField.setId("repetitionsTextField");
-        GridPane.setColumnIndex(repetitionsTextField, 1);
-        GridPane.setRowIndex(repetitionsTextField, 2);
-        repetitionsTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+        getGridPaneContainer().add(repetitionsLabel, 0, 2);
+        getGridPaneContainer().add(repsTextField, 1, 2);
 
-        // <Label text="Rest Seconds:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        // <Label text="Rest (seconds):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         // <TextField fx:id="restSecondsTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity"/>
 
-        Label restSecondsLabel = new Label("Rest Seconds:");
-        GridPane.setColumnIndex(itemLabel, 0);
-        GridPane.setRowIndex(itemLabel, 3);
+        Label restSecondsLabel = new Label("Rest (seconds):");
+        restTextField = MainController.customTextField("restSecondsTextField");
 
-        restSecondsTextField = new TextField();
-        restSecondsTextField.setId("restSecondsTextField");
-        GridPane.setColumnIndex(restSecondsTextField, 1);
-        GridPane.setRowIndex(restSecondsTextField, 3);
-        restSecondsTextField.setMaxWidth(Double.POSITIVE_INFINITY);
+        getGridPaneContainer().add(restSecondsLabel, 0, 3);
+        getGridPaneContainer().add(restTextField, 1, 3);
 
-        getGridPaneContainer().getChildren().add(itemLabel);
-        getGridPaneContainer().getChildren().add(getNameTextField());
-        getGridPaneContainer().getChildren().add(weightLabel);
-        getGridPaneContainer().getChildren().add(weightTextField);
-        getGridPaneContainer().getChildren().add(repetitionsLabel);
-        getGridPaneContainer().getChildren().add(repetitionsTextField);
-        getGridPaneContainer().getChildren().add(restSecondsLabel);
-        getGridPaneContainer().getChildren().add(restSecondsTextField);
+        // <Label text="Reps in Reserve:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        // <TextField fx:id="repsInReserveTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" maxWidth="Infinity"/>
+
+        Label repsInReserveSecondsLabel = new Label("Reps in Reserve:");
+        repsInReserveTextField = MainController.customTextField("repsInReserveTextField");
+
+        getGridPaneContainer().add(repsInReserveSecondsLabel, 0, 4);
+        getGridPaneContainer().add(repsInReserveTextField, 1, 4);
 
         // Set relevant labels
         getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentResistTrainSession().getName() + " - " + SqliteConnection.getCurrentResistTrainExercise().getName());

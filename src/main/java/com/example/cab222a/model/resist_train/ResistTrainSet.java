@@ -3,24 +3,36 @@ package com.example.cab222a.model.resist_train;
 import com.example.cab222a.model.core.NamedObject;
 
 public class ResistTrainSet extends NamedObject {
-    private int weight;
-    private int repetitions;
-    private int restSeconds;
     private int exerciseId;
+    private int weight;
+    private int reps;
+    private int rest;
+    private int repsInReserve;
 
-    public ResistTrainSet(int id, String name, int weight, int repetitions, int restSeconds, int exerciseId) {
+    public ResistTrainSet(int id, String name, int exerciseId, int weight, int reps, int rest, int repsInReserve) {
         super(id, name);
-        this.weight = weight;
-        this.repetitions = repetitions;
-        this.restSeconds = restSeconds;
         this.exerciseId = exerciseId;
+        this.weight = weight;
+        this.reps = reps;
+        this.rest = rest;
+        this.repsInReserve = repsInReserve;
     }
 
-    public ResistTrainSet(String name, int weight, int repetitions, int restSeconds, int exerciseId) {
+    public ResistTrainSet(String name, int exerciseId, int weight, int reps, int rest, int repsInReserve) {
         super(name);
+        this.exerciseId = exerciseId;
         this.weight = weight;
-        this.repetitions = repetitions;
-        this.restSeconds = restSeconds;
+        this.reps = reps;
+        this.rest = rest;
+        this.repsInReserve = repsInReserve;
+
+    }
+
+    public int getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(int exerciseId) {
         this.exerciseId = exerciseId;
     }
 
@@ -32,28 +44,28 @@ public class ResistTrainSet extends NamedObject {
         this.weight = weight;
     }
 
-    public int getRepetitions() {
-        return repetitions;
+    public int getReps() {
+        return reps;
     }
 
-    public void setRepetitions(int repetitions) {
-        this.repetitions = repetitions;
+    public void setReps(int reps) {
+        this.reps = reps;
     }
 
-    public int getRestSeconds() {
-        return restSeconds;
+    public int getRest() {
+        return rest;
     }
 
-    public void setRestSeconds(int restSeconds) {
-        this.restSeconds = restSeconds;
+    public void setRest(int rest) {
+        this.rest = rest;
     }
 
-    public int getExerciseId() {
-        return exerciseId;
+    public int getRepsInReserve() {
+        return repsInReserve;
     }
 
-    public void setExerciseId(int exerciseId) {
-        this.exerciseId = exerciseId;
+    public void setRepsInReserve(int repsInReserve) {
+        this.repsInReserve = repsInReserve;
     }
 
     @Override
@@ -61,10 +73,11 @@ public class ResistTrainSet extends NamedObject {
         return "ResistTrainSet{" +
                 "id=" + getId() +
                 ", name=" + getName() +
-                ", weight=" + getWeight() +
-                ", repetitions=" + getRepetitions() +
-                ", restSeconds=" + getRestSeconds() +
                 ", exerciseId=" + getExerciseId() +
+                ", weight=" + getWeight() +
+                ", reps=" + getReps() +
+                ", rest=" + getRest() +
+                ", repsInReserve=" + getRepsInReserve() +
                 '}';
     }
 }
