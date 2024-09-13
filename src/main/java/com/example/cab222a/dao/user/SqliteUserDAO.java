@@ -1,7 +1,8 @@
-package com.example.cab222a.model.user;
+package com.example.cab222a.dao.user;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.core.IObjectDAO;
+import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.model.user.User;
 
 import java.sql.*;
 import java.util.ArrayList;

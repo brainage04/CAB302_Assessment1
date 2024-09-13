@@ -2,7 +2,8 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
-import com.example.cab222a.model.core.IObjectDAO;
+import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.resist_train.SqliteResistTrainSetDAO;
 import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

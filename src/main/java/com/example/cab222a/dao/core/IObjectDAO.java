@@ -1,6 +1,7 @@
-package com.example.cab222a.model.core;
+package com.example.cab222a.dao.core;
 
 import com.example.cab222a.common.SqliteConnection;
+import com.example.cab222a.model.core.IdentifiedObject;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +13,10 @@ import java.util.List;
  * CRUD operations for generic classes within the database.
  */
 public abstract class IObjectDAO<T extends IdentifiedObject> {
+    public IObjectDAO() {
+        createTable();
+    }
+
     protected abstract String tableName();
     protected abstract String createTableQuery();
     protected abstract PreparedStatement addItemStatement(T item) throws SQLException;

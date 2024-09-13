@@ -3,7 +3,7 @@ package com.example.cab222a.controller.core;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.MainController;
 import com.example.cab222a.model.core.NamedObject;
-import com.example.cab222a.model.core.IObjectDAO;
+import com.example.cab222a.dao.core.IObjectDAO;
 import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import javafx.fxml.FXML;

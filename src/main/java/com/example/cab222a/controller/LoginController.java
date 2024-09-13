@@ -1,7 +1,7 @@
 package com.example.cab222a.controller;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.user.SqliteUserDAO;
+import com.example.cab222a.dao.user.SqliteUserDAO;
 import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

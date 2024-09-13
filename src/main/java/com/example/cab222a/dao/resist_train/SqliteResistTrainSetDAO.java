@@ -1,7 +1,8 @@
-package com.example.cab222a.model.resist_train;
+package com.example.cab222a.dao.resist_train;
 
 import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.model.core.IObjectDAO;
+import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.model.resist_train.ResistTrainSet;
 
 import java.sql.*;
 import java.util.ArrayList;
