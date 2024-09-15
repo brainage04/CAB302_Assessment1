@@ -31,17 +31,19 @@ public class UserDAOTest {
     }
 
     @Test
-    void createReadUser() {
+    void createUser() {
         User actual = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
-        userDAO.addItem(actual);
+        int affectedRows = userDAO.addItem(actual);
 
-        User expected = userDAO.getItem(actual.getEmail(), actual.getPassword());
+        assertEquals(affectedRows, 1);
+    }
 
-        // actual user's ID is null until retrieved from the database
-        actual.setId(expected.getId());
+    @Test
+    void readUser() {
+        User actual = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
+        User expected = userDAO.getItem("test@example.com", "testpassword");
 
         // must check each variable individually because Objects are weird
-        assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getCreated(), expected.getCreated());
         assertEquals(actual.getFirstName(), expected.getFirstName());
         assertEquals(actual.getLastName(), expected.getLastName());
