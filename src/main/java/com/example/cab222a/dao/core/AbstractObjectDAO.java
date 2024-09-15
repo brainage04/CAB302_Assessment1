@@ -14,7 +14,6 @@ import java.util.List;
  */
 public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     public AbstractObjectDAO() {
-        System.out.println("Creating DAO for " + tableName());
         createTable();
     }
 
@@ -35,8 +34,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
     public void createTable() {
-        try {
-            Statement statement = SqliteConnection.getInstance().createStatement();
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,13 +90,12 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     }
 
     /**
-     * Adds a new item to the database and returns it.
-     * Useful for getting the auto-incremented ID of an item.
+     * Adds a new item to the database and returns the ID.
      *
      * @param item The item to add.
      * @return The number of rows affected by the statement.
      */
-    public abstract T addAndGetItem(T item);
+    public abstract int addAndGetId(T item);
 
     /**
      * Retrieves an item from the database.
