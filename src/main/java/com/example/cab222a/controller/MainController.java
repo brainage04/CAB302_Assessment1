@@ -50,8 +50,8 @@ public class MainController {
     }
 
     @FXML
-    public void onCaloricIntakeButtonClick() throws IOException {
-        changeScene(resistTrainButton, "caloric-intake-view.fxml");
+    public void onExerciseInformationButtonClick () throws IOException {
+        changeScene(resistTrainButton, "exercise-information-view.fxml");
     }
 
     @FXML
