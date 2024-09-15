@@ -2,80 +2,62 @@ package com.example.cab222a.dao.user;
 
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.user.User;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserDAOTest {
-    static UserDAO userDAO;
+    static UserDAO dao;
+    static User defaultItem;
+    static User updatedItem;
 
     @BeforeAll
     static void setUp() {
-        userDAO = new UserDAO();
+        dao = new UserDAO();
+        defaultItem = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
+        updatedItem = new User(new Date(System.currentTimeMillis() - 128), "Test1", "User2", "test3@example.com", "testpassword4", "0456789012");
 
         // drop table
-        try {
-            Statement statement = SqliteConnection.getInstance().createStatement();
-            statement.execute("DROP TABLE " + userDAO.tableName());
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+            statement.execute("DROP TABLE " + dao.tableName());
+            dao.createTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Test
-    void createTable() {
-        userDAO.createTable();
-    }
+    @Test @Order(1) void createReadUser() {
+        User actual = defaultItem;
+        int actualId = dao.addAndGetId(actual);
 
-    @Test
-    void createUser() {
-        User actual = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
-        int affectedRows = userDAO.addItem(actual);
+        assertNotEquals(actualId, 0);
 
-        assertEquals(affectedRows, 1);
-    }
+        User expected = dao.getItem(actualId);
 
-    @Test
-    void readUser() {
-        User actual = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
-        User expected = userDAO.getItem("test@example.com", "testpassword");
-
-        // must check each variable individually because Objects are weird
         assertEquals(actual.getCreated(), expected.getCreated());
         assertEquals(actual.getFirstName(), expected.getFirstName());
         assertEquals(actual.getLastName(), expected.getLastName());
         assertEquals(actual.getEmail(), expected.getEmail());
         assertEquals(actual.getPhone(), expected.getPhone());
         assertEquals(actual.getPassword(), expected.getPassword());
+
+        // this will be useful in future tests
+        defaultItem.setId(expected.getId());
     }
 
-    @Test
-    void updateUser() {
-        User actual = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
-        userDAO.addItem(actual);
+    @Test @Order(2) void updateUser() {
+        User actual = defaultItem;
+        User expected = updatedItem;
+        expected.setId(actual.getId());
+        int affectedRows = dao.updateItem(expected);
 
-        User expected = userDAO.getItem(actual.getEmail(), actual.getPassword());
+        assertEquals(affectedRows, 1);
 
-        // actual user's ID is null until retrieved from the database
-        actual.setId(expected.getId());
+        actual = dao.getItem(actual.getId());
 
-        // make changes to all fields except ID
-        actual.setCreated(new Date(System.currentTimeMillis()));
-        actual.setFirstName("Test1");
-        actual.setLastName("User2");
-        actual.setEmail("test1@example.com");
-        actual.setPhone("0434567890");
-        actual.setPassword("testpassword4");
-
-        userDAO.updateItem(actual);
-
-        // update expected user to contain updated values
-        expected = userDAO.getItem(actual.getId());
-
-        // must check each variable individually because Objects are weird
         assertEquals(actual.getId(), expected.getId());
         assertEquals(actual.getCreated(), expected.getCreated());
         assertEquals(actual.getFirstName(), expected.getFirstName());
@@ -85,14 +67,14 @@ public class UserDAOTest {
         assertEquals(actual.getPassword(), expected.getPassword());
     }
 
-    @Test
-    void deleteUser() {
-        User userToDelete = userDAO.getItem("test1@example.com", "testpassword4");
+    @Test @Order(3) void deleteUser() {
+        User userToDelete = dao.getItem(defaultItem.getId());
+        int affectedRows = dao.deleteItem(userToDelete.getId());
 
-        userDAO.deleteItem(userToDelete.getId());
+        assertEquals(affectedRows, 1);
 
-        User deletedUser = userDAO.getItem("test1@example.com", "testpassword4");
+        userToDelete = dao.getItem(defaultItem.getId());
 
-        assertNull(deletedUser);
+        assertNull(userToDelete);
     }
 }
