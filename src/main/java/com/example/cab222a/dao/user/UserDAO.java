@@ -54,6 +54,28 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     @Override
+    public User addAndGetItem(User item) {
+        try {
+            ResultSet set = addItemStatement(item).executeQuery();
+            if (set.next()) {
+                int id = set.getInt("id");
+                Date created = set.getDate("created");
+                String firstName = set.getString("firstName");
+                String lastName = set.getString("lastName");
+                String email = set.getString("email");
+                String phone = set.getString("phone");
+                String password = set.getString("password");
+
+                return new User(id, created, firstName, lastName, email, phone, password);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
     public User getItem(int id) {
         try {
             ResultSet set = getItemStatement(id).executeQuery();

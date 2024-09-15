@@ -92,6 +92,15 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     }
 
     /**
+     * Adds a new item to the database and returns it.
+     * Useful for getting the auto-incremented ID of an item.
+     *
+     * @param item The item to add.
+     * @return The number of rows affected by the statement.
+     */
+    public abstract T addAndGetItem(T item);
+
+    /**
      * Retrieves an item from the database.
      *
      * @param id The id of the item to retrieve.

@@ -48,6 +48,26 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
     }
 
     @Override
+    public ResistTrainSession addAndGetItem(ResistTrainSession item) {
+        try {
+            ResultSet set = addItemStatement(item).executeQuery();
+
+            if (set.next()) {
+                int id = set.getInt("id");
+                String name = set.getString("name");
+                int userId = set.getInt("userId");
+                Date created = set.getDate("created");
+
+                return new ResistTrainSession(id, name, userId, created);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
     public ResistTrainSession getItem(int id) {
         try {
             ResultSet set = getItemStatement(id).executeQuery();

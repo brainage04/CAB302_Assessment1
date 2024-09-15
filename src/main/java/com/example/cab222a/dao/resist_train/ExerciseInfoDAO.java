@@ -56,6 +56,27 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     }
 
     @Override
+    public ExerciseInfo addAndGetItem(ExerciseInfo item) {
+        try {
+            ResultSet set = addItemStatement(item).executeQuery();
+
+            if (set.next()) {
+                int id = set.getInt("id");
+                String name = set.getString("name");
+                String primaryMuscleGroups = set.getString("primaryMuscleGroups");
+                String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
+                String description = set.getString("description");
+
+                return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
     public ExerciseInfo getItem(int id) {
         try {
             ResultSet set = getItemStatement(id).executeQuery();
