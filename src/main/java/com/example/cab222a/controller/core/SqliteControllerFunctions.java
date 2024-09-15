@@ -4,6 +4,7 @@ import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.MainController;
 import com.example.cab222a.model.core.NamedObject;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
+import com.example.cab222a.model.resist_train.ExerciseInfo;
 import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import javafx.fxml.FXML;
@@ -203,6 +204,10 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         } else if (selectedItem.getClass().equals(ResistTrainExercise.class)) {
             System.out.println("Storing current resistance training exercise.");
             SqliteConnection.setCurrentResistTrainExercise((ResistTrainExercise) selectedItem);
+        }
+        else if (selectedItem.getClass().equals(ExerciseInfo.class)){
+            System.out.println("Storing current exercise info");
+            SqliteConnection.setCurrentExerciseInfo((ExerciseInfo) selectedItem);
         }
 
         MainController.changeScene(editButton, nextScene);
