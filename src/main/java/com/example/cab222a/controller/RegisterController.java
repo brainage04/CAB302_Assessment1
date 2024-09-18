@@ -62,21 +62,13 @@ public class RegisterController {
             return;
         }
 
-        User user = new User(new Date(System.currentTimeMillis()), firstName, lastName, email, phone, password);
+        User user = new User(new Date(System.currentTimeMillis()), firstName, lastName, email, password, phone);
+        int userId = userDAO.addAndGetId(user);
+        user.setId(userId);
 
-        userDAO.addItem(user);
+        SqliteConnection.setCurrentUser(user);
 
-        // todo: change this to use ResultSet#generatedKeys
-        // we need to get the user's ID/created timestamp from the database, otherwise it will be read as 0 when it is not actually 0
-        user = userDAO.getItem(email, password);
-
-        if (user != null) {
-            SqliteConnection.setCurrentUser(user);
-
-            MainController.changeScene(registerButton, "main-view.fxml");
-        } else {
-            errorMessageLabel.setText("An error has occured during registration. Please try again.");
-        }
+        MainController.changeScene(registerButton, "main-view.fxml");
     }
 
     @FXML
