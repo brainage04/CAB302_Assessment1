@@ -41,9 +41,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     private TextField searchTextField;
 
     @FXML private VBox itemContainer;
-    @Override
-    public VBox getItemContainer() { return itemContainer;}
-
 
     @FXML
     public Button moreDetailsButton;
@@ -92,7 +89,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML
     public void initialize(){
+        // Initialise exerciseInfoDAO to access methods
         exerciseInfoDAO = new ExerciseInfoDAO();
+
+        // Set relevant labels
         Label itemLabel = new Label("Exercise Name:");
         setNameTextField(MainController.customTextField("nameTextField"));
 
@@ -116,9 +116,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         getGridPaneContainer().add(descriptionLabel, 0, 3);
         getGridPaneContainer().add(descriptionTextField, 1, 3);
-        // Set relevant labels
+
         getEditButton().setText("Edit Exercise");
         // getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentExerciseInfo().getName());
+
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> syncItems());
 
         super.initialize();

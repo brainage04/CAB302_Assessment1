@@ -7,6 +7,7 @@ import com.example.cab222a.model.resist_train.ExerciseInfo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,4 +124,56 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 + " " + exerciseInfo.getSecondaryMuscleGroups();
         return searchString.toLowerCase().contains(query);
     }
+
+    @Override
+    public void createTable() {
+        try (Statement statement = SqliteConnection.getInstance().createStatement()){
+            statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
+
+            if(isTableEmpty()) {
+                addDefaultExercises();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isTableEmpty() throws SQLException {
+        String query = "SELECT COUNT (*) AS count FROM " + tableName();
+        try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)){
+            // Count returns the number of rows in a table form
+            // If the value in the first/only column is a 0 then return true
+            // else return false
+            if(result.getInt(1) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addDefaultExercises() throws SQLException {
+        addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
+        addItem(new ExerciseInfo(-1, "Deadlift", "Back", "Hamstrings", "Deadlift is a back fundamental."));
+        addItem(new ExerciseInfo(-1, "Squat", "Legs", "Glutes", "Squat is a lower body fundamental."));
+    }
+
+//    @Override
+//    public void createTable() {
+//        super.createTable();
+//        addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
+//    }
+
+//    @Override
+//    public void createTable() {
+//        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+//            statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
+//            addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
+//            addItem(new ExerciseInfo(-1, "Deadlift", "Back", "Hamstrings", "Deadlift is a back fundamental."));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
 }
