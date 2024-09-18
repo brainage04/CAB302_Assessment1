@@ -107,4 +107,20 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
         return items;
     }
+
+    public List<ExerciseInfo> searchExerciseInfo(String query) {
+        return getAllItems()
+                .stream()
+                .filter(exerciseInfo -> isExerciseInfoMatched(exerciseInfo, query))
+                .toList();
+    }
+
+    private boolean isExerciseInfoMatched ( ExerciseInfo exerciseInfo, String query){
+        if (query == null || query.isEmpty()) return true;
+        query = query.toLowerCase();
+        String searchString = exerciseInfo.getName()
+                + " " + exerciseInfo.getPrimaryMuscleGroups()
+                + " " + exerciseInfo.getSecondaryMuscleGroups();
+        return searchString.toLowerCase().contains(query);
+    }
 }
