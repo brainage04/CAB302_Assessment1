@@ -8,8 +8,11 @@ import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.example.cab222a.controller.MainController.changeScene;
 
@@ -30,12 +33,26 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     @FXML private TextField descriptionTextField;
 
     @FXML
+    private ListView<ExerciseInfo> itemListView;
+
+    private ExerciseInfoDAO exerciseInfoDAO;
+
+    @FXML
+    private TextField searchTextField;
+
+    @FXML private VBox itemContainer;
+    @Override
+    public VBox getItemContainer() { return itemContainer;}
+
+
+    @FXML
     public Button moreDetailsButton;
 
     @FXML
     public void onMoreDetails () throws IOException {
         changeScene(moreDetailsButton, "exercise-info-details-view.fxml");
     }
+
 
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo){
@@ -60,9 +77,22 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    @Override
+    protected void syncItems() {
+        itemListView.getItems().clear();
+        String query = searchTextField.getText();
+        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(query);
+        boolean hasExerciseInfo = !exerciseInfo.isEmpty();
+        if (hasExerciseInfo) {
+            itemListView.getItems().addAll(exerciseInfo);
+        }
+        itemContainer.setVisible(hasExerciseInfo);
+    }
+
 
     @FXML
     public void initialize(){
+        exerciseInfoDAO = new ExerciseInfoDAO();
         Label itemLabel = new Label("Exercise Name:");
         setNameTextField(MainController.customTextField("nameTextField"));
 
@@ -89,6 +119,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         // Set relevant labels
         getEditButton().setText("Edit Exercise");
         // getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentExerciseInfo().getName());
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> syncItems());
 
         super.initialize();
     }
