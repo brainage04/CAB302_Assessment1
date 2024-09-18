@@ -22,71 +22,57 @@ public class UserTest {
         );
     }
 
-    @Test void getId() {
+    @Test void testId() {
         assertEquals(user.getId(), -1);
-    }
 
-    @Test void getCreated() {
-        assertEquals(user.getCreated(), new Date(1_000_000_000));
-    }
-
-    @Test void getFirstName() {
-        assertEquals(user.getFirstName(), "Test");
-    }
-
-    @Test void getLastName() {
-        assertEquals(user.getLastName(), "User");
-    }
-
-    @Test void getEmail() {
-        assertEquals(user.getEmail(), "test@example.com");
-    }
-
-    @Test void getPhone() {
-        assertEquals(user.getPhone(), "0450450450");
-    }
-
-    @Test void getPassword() {
-        assertEquals(user.getPassword(), "test");
-    }
-
-    @Test void setId() {
         int testId = -2;
         user.setId(testId);
         assertEquals(testId, user.getId());
     }
 
-    @Test void setCreated() {
+    @Test void testCreated() {
+        assertEquals(user.getCreated(), new Date(1_000_000_000));
+
         Date testDate = new Date(1_000_000_000 - 128);
         user.setCreated(testDate);
         assertEquals(testDate, user.getCreated());
     }
 
-    @Test void setFirstName() {
+    @Test void testFirstName() {
+        assertEquals(user.getFirstName(), "Test");
+
         String testFirstName = "Test1";
         user.setFirstName(testFirstName);
         assertEquals(testFirstName, user.getFirstName());
     }
 
-    @Test void setLastName() {
+    @Test void testLastName() {
+        assertEquals(user.getLastName(), "User");
+
         String testLastName = "User1";
         user.setLastName(testLastName);
         assertEquals(testLastName, user.getLastName());
     }
 
-    @Test void setEmail() {
+    @Test void testEmail() {
+        assertEquals(user.getEmail(), "test@example.com");
+
         String testEmail = "test1@example.com";
         user.setEmail(testEmail);
         assertEquals(testEmail, user.getEmail());
     }
 
-    @Test void setPhone() {
+    @Test void testPhone() {
+        assertEquals(user.getPhone(), "0450450450");
+
         String testPhone = "0450450451";
         user.setPhone(testPhone);
         assertEquals(testPhone, user.getPhone());
     }
 
-    @Test void setPassword() {
+    @Test void testPassword() {
+        assertEquals(user.getPassword(), "test");
+
         String testPassword = "test1";
         user.setPassword(testPassword);
         assertEquals(testPassword, user.getPassword());
