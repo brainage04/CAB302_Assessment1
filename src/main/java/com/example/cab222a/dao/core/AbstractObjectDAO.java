@@ -14,7 +14,6 @@ import java.util.List;
  */
 public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     public AbstractObjectDAO() {
-        System.out.println("Creating DAO for " + tableName());
         createTable();
     }
 
@@ -35,8 +34,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
     public void createTable() {
-        try {
-            Statement statement = SqliteConnection.getInstance().createStatement();
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,40 +45,57 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
      * Adds a new item to the database.
      *
      * @param item The item to add.
+     * @return The number of rows affected by the statement.
      */
-    public void addItem(T item) {
+    public int addItem(T item) {
         try {
-            addItemStatement(item).executeUpdate();
+            return addItemStatement(item).executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     /**
      * Updates an existing item in the database.
      *
      * @param item The item to add.
+     * @return The number of rows affected by the statement.
      */
-    public void updateItem(T item) {
+    public int updateItem(T item) {
         try {
-            updateItemStatement(item).executeUpdate();
+            return updateItemStatement(item).executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     /**
      * Deletes an item from the database.
      *
      * @param id The ID of the item to add.
+     * @return The number of rows affected by the statement.
      */
-    public void deleteItem(int id) {
+    public int deleteItem(int id) {
         try {
-            deleteItemStatement(id).executeUpdate();
+            return deleteItemStatement(id).executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
+
+    /**
+     * Adds a new item to the database and returns the ID.
+     *
+     * @param item The item to add.
+     * @return The number of rows affected by the statement.
+     */
+    public abstract int addAndGetId(T item);
 
     /**
      * Retrieves an item from the database.

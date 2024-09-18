@@ -26,7 +26,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     protected PreparedStatement addItemStatement(User item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (created, firstName, lastName, email, phone, password) VALUES (?, ?, ?, ?, ?, ?)");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (created, firstName, lastName, email, phone, password) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setDate(1, item.getCreated());
         statement.setString(2, item.getFirstName());
         statement.setString(3, item.getLastName());
@@ -54,10 +54,27 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     @Override
-    public User getItem(int id) {
-        try {
-            ResultSet set = getItemStatement(id).executeQuery();
+    public int addAndGetId(User item) {
+        try (PreparedStatement statement = addItemStatement(item)) {
+            int affectedRows = statement.executeUpdate();
 
+            if (affectedRows > 0) {
+                ResultSet set = statement.getGeneratedKeys();
+
+                if (set.next()) {
+                    return set.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public User getItem(int id) {
+        try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {
                 Date created = set.getDate("created");
                 String firstName = set.getString("firstName");
@@ -76,8 +93,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     public User getItem(String email, String password) {
-        try {
-            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE email = ? AND password = ?");
+        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE email = ? AND password = ?")) {
             statement.setString(1, email);
             statement.setString(2, password);
             ResultSet set = statement.executeQuery();
@@ -101,8 +117,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
     public List<User> getAllItems() {
         List<User> users = new ArrayList<>();
 
-        try {
-            Statement statement = SqliteConnection.getInstance().createStatement();
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             String query = "SELECT * FROM " + tableName();
             ResultSet set = statement.executeQuery(query);
 

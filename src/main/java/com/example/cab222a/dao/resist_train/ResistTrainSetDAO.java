@@ -58,10 +58,21 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
     }
 
     @Override
-    public ResistTrainSet getItem(int id) {
-        try {
-            ResultSet set = getItemStatement(id).executeQuery();
+    public int addAndGetId(ResistTrainSet item) {
+        try (ResultSet set = addItemStatement(item).executeQuery()) {
+            if (set.next()) {
+                return set.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        return 0;
+    }
+
+    @Override
+    public ResistTrainSet getItem(int id) {
+        try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {
                 String name = set.getString("name");
                 int exerciseId = set.getInt("exerciseId");
@@ -83,9 +94,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
     public List<ResistTrainSet> getAllItems() {
         List<ResistTrainSet> items = new ArrayList<>();
 
-        try {
-            ResultSet set = getAllItemsStatement().executeQuery();
-
+        try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
                 int id = set.getInt("id");
                 String name = set.getString("name");

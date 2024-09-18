@@ -51,15 +51,25 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName());
-        return statement;
+        return SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName());
+    }
+
+    @Override
+    public int addAndGetId(ExerciseInfo item) {
+        try (ResultSet set = addItemStatement(item).executeQuery()) {
+            if (set.next()) {
+                return set.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     @Override
     public ExerciseInfo getItem(int id) {
-        try {
-            ResultSet set = getItemStatement(id).executeQuery();
-
+        try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {
                 String name = set.getString("name");
                 String primaryMuscleGroups = set.getString("primaryMuscleGroups");
@@ -79,9 +89,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     public List<ExerciseInfo> getAllItems() {
         List<ExerciseInfo> items = new ArrayList<>();
 
-        try {
-            ResultSet set = getAllItemsStatement().executeQuery();
-
+        try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
                 int id = set.getInt("id");
                 String name = set.getString("name");
