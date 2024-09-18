@@ -33,12 +33,25 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     }
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
+    public void dropTable() {
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+            statement.execute("DROP TABLE " + tableName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createTable() {
         try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void resetTable() {
+        dropTable();
+        createTable();
     }
 
     /**
