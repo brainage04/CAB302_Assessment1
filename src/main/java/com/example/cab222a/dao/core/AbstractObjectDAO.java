@@ -4,6 +4,7 @@ import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.core.IdentifiedObject;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -71,6 +72,30 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     }
 
     /**
+     * Adds a new item to the database and returns the ID.
+     *
+     * @param item The item to add.
+     * @return The number of rows affected by the statement.
+     */
+    public int addAndGetId(T item) {
+        try (PreparedStatement statement = addItemStatement(item)) {
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet set = statement.getGeneratedKeys();
+
+                if (set.next()) {
+                    return set.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
      * Updates an existing item in the database.
      *
      * @param item The item to add.
@@ -101,14 +126,6 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
 
         return 0;
     }
-
-    /**
-     * Adds a new item to the database and returns the ID.
-     *
-     * @param item The item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public abstract int addAndGetId(T item);
 
     /**
      * Retrieves an item from the database.
