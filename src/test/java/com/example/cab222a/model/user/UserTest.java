@@ -25,56 +25,56 @@ public class UserTest {
     @Test void testId() {
         assertEquals(testItem.getId(), -1);
 
-        int testId = -2;
-        testItem.setId(testId);
-        assertEquals(testId, testItem.getId());
+        int test = -2;
+        testItem.setId(test);
+        assertEquals(test, testItem.getId());
     }
 
     @Test void testCreated() {
         assertEquals(testItem.getCreated(), new Date(1_000_000_000));
 
-        Date testDate = new Date(1_000_000_000 - 128);
-        testItem.setCreated(testDate);
-        assertEquals(testDate, testItem.getCreated());
+        Date test = new Date(1_000_000_000 - 128);
+        testItem.setCreated(test);
+        assertEquals(test, testItem.getCreated());
     }
 
     @Test void testFirstName() {
         assertEquals(testItem.getFirstName(), "Test");
 
-        String testFirstName = "Test1";
-        testItem.setFirstName(testFirstName);
-        assertEquals(testFirstName, testItem.getFirstName());
+        String test = "Test1";
+        testItem.setFirstName(test);
+        assertEquals(test, testItem.getFirstName());
     }
 
     @Test void testLastName() {
         assertEquals(testItem.getLastName(), "User");
 
-        String testLastName = "User1";
-        testItem.setLastName(testLastName);
-        assertEquals(testLastName, testItem.getLastName());
+        String test = "User1";
+        testItem.setLastName(test);
+        assertEquals(test, testItem.getLastName());
     }
 
     @Test void testEmail() {
         assertEquals(testItem.getEmail(), "test@example.com");
 
-        String testEmail = "test1@example.com";
-        testItem.setEmail(testEmail);
-        assertEquals(testEmail, testItem.getEmail());
+        String test = "test1@example.com";
+        testItem.setEmail(test);
+        assertEquals(test, testItem.getEmail());
     }
 
     @Test void testPhone() {
         assertEquals(testItem.getPhone(), "0450450450");
 
-        String testPhone = "0450450451";
-        testItem.setPhone(testPhone);
-        assertEquals(testPhone, testItem.getPhone());
+        String test = "0450450451";
+        testItem.setPhone(test);
+        assertEquals(test, testItem.getPhone());
     }
 
     @Test void testPassword() {
         assertEquals(testItem.getPassword(), "test");
 
-        String testPassword = "test1";
-        testItem.setPassword(testPassword);
-        assertEquals(testPassword, testItem.getPassword());
+        String test = "test1";
+        testItem.setPassword(test);
+        assertEquals(test, testItem.getPassword());
     }
 }
