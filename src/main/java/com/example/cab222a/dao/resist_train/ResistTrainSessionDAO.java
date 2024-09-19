@@ -25,7 +25,7 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
 
     @Override
     protected PreparedStatement addItemStatement(ResistTrainSession item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, userId, created) VALUES (?, ?, ?)");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, userId, created) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, item.getName());
         statement.setInt(2, SqliteConnection.getCurrentUser().getId());
         statement.setDate(3, item.getCreated());
@@ -45,19 +45,6 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userId = ?");
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
         return statement;
-    }
-
-    @Override
-    public int addAndGetId(ResistTrainSession item) {
-        try (ResultSet set = addItemStatement(item).executeQuery()) {
-            if (set.next()) {
-                return set.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
     @Override

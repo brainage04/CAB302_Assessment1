@@ -33,7 +33,7 @@ public class UserDAOTest {
         User actual = defaultItem;
         int actualId = dao.addAndGetId(actual);
 
-        assertNotEquals(actualId, 0);
+        assertTrue(actualId > 0);
 
         User expected = dao.getItem(actualId);
 
@@ -68,13 +68,13 @@ public class UserDAOTest {
     }
 
     @Test @Order(3) void deleteUser() {
-        User userToDelete = dao.getItem(defaultItem.getId());
-        int affectedRows = dao.deleteItem(userToDelete.getId());
+        User delete = dao.getItem(defaultItem.getId());
+        int affectedRows = dao.deleteItem(delete.getId());
 
         assertEquals(affectedRows, 1);
 
-        userToDelete = dao.getItem(defaultItem.getId());
+        delete = dao.getItem(defaultItem.getId());
 
-        assertNull(userToDelete);
+        assertNull(delete);
     }
 }

@@ -30,7 +30,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     @Override
     protected PreparedStatement addItemStatement(ExerciseInfo item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
         statement.setString(2, item.getName());
         statement.setString(3, item.getPrimaryMuscleGroups());
@@ -80,19 +80,6 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
         return SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName());
-    }
-
-    @Override
-    public int addAndGetId(ExerciseInfo item) {
-        try (ResultSet set = addItemStatement(item).executeQuery()) {
-            if (set.next()) {
-                return set.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
     @Override

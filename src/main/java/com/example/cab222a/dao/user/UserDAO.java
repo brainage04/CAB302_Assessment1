@@ -54,25 +54,6 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     @Override
-    public int addAndGetId(User item) {
-        try (PreparedStatement statement = addItemStatement(item)) {
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows > 0) {
-                ResultSet set = statement.getGeneratedKeys();
-
-                if (set.next()) {
-                    return set.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    @Override
     public User getItem(int id) {
         try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {

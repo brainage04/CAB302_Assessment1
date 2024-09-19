@@ -4,6 +4,7 @@ import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.model.core.IdentifiedObject;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -33,12 +34,25 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     }
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
+    public void dropTable() {
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+            statement.execute("DROP TABLE " + tableName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createTable() {
         try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void resetTable() {
+        dropTable();
+        createTable();
     }
 
     /**
@@ -50,6 +64,30 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
     public int addItem(T item) {
         try {
             return addItemStatement(item).executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Adds a new item to the database and returns the ID.
+     *
+     * @param item The item to add.
+     * @return The number of rows affected by the statement.
+     */
+    public int addAndGetId(T item) {
+        try (PreparedStatement statement = addItemStatement(item)) {
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet set = statement.getGeneratedKeys();
+
+                if (set.next()) {
+                    return set.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,14 +126,6 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
 
         return 0;
     }
-
-    /**
-     * Adds a new item to the database and returns the ID.
-     *
-     * @param item The item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public abstract int addAndGetId(T item);
 
     /**
      * Retrieves an item from the database.
