@@ -35,14 +35,14 @@
                     </columnConstraints>
                 </GridPane>
                 <HBox maxWidth="Infinity" alignment="CENTER">
-                    <Button text="More Details" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMoreDetails" fx:id="moreDetailsButton"/>
+                    <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
                     <Button text="Cancel" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCancel"/>
                     <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
                 </HBox>
             </VBox>
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
-                    <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
+                    <Button text="More Details" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMoreDetails" fx:id="moreDetailsButton"/>
                     <Button text="Edit Item" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditButtonClick" fx:id="editButton"/>
                     <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
                 </HBox>
