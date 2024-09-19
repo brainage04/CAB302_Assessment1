@@ -39,6 +39,33 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return statement;
     }
 
+    // Does not used the current users' ID for when the table is initially created.
+    protected PreparedStatement addDefaultItemStatement(ExerciseInfo item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)");
+        statement.setInt(1, item.getUserId());
+        statement.setString(2, item.getName());
+        statement.setString(3, item.getPrimaryMuscleGroups());
+        statement.setString(4, item.getSecondaryMuscleGroups());
+        statement.setString(5, item.getDescription());
+        return statement;
+    }
+
+    /**
+     * Adds a new item to the database.
+     *
+     * @param item The item to add.
+     * @return The number of rows affected by the statement.
+     */
+    public int addDefaultItem(ExerciseInfo item) {
+        try {
+            return addDefaultItemStatement(item).executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
     @Override
     protected PreparedStatement updateItemStatement(ExerciseInfo item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, primaryMuscleGroups = ?, secondaryMuscleGroups = ?, description = ? WHERE id = ?");
@@ -152,9 +179,10 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     }
 
     private void addDefaultExercises() throws SQLException {
-        addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
-        addItem(new ExerciseInfo(-1, "Deadlift", "Back", "Hamstrings", "Deadlift is a back fundamental."));
-        addItem(new ExerciseInfo(-1, "Squat", "Legs", "Glutes", "Squat is a lower body fundamental."));
+        addDefaultItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Deadlift", "Back", "Hamstrings", "Deadlift is a back fundamental.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Squat", "Legs", "Glutes", "Squat is a lower body fundamental.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Calf Raisers", "Calf", "", "Build them calves", -1));
     }
 
 //    @Override
