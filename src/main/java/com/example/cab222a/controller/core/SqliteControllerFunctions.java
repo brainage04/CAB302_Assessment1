@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class SqliteControllerFunctions<T extends NamedObject> {
     @FXML ListView<T> itemListView;
-    private final AbstractObjectDAO<T> itemDAO;
+    protected final AbstractObjectDAO<T> itemDAO;
 
     @FXML private TextField nameTextField;
 
