@@ -21,7 +21,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     protected String createTableVariables() {
         return "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "userId INTEGER NOT NULL, "
-                + "name VARCHAR NOT NULL, "
+                + "name VARCHAR UNIQUE NOT NULL, "
                 + "primaryMuscleGroups VARCHAR NOT NULL, "
                 + "secondaryMuscleGroups VARCHAR NOT NULL, "
                 + "description VARCHAR NOT NULL, "
@@ -87,6 +87,29 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {
                 String name = set.getString("name");
+                String primaryMuscleGroups = set.getString("primaryMuscleGroups");
+                String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
+                String description = set.getString("description");
+
+                return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected PreparedStatement getItemStatement(String name) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE name = ?");
+        statement.setString(1, name);
+        return statement;
+    }
+
+    public ExerciseInfo getItem(String name) {
+        try (ResultSet set = getItemStatement(name).executeQuery()) {
+            if (set.next()) {
+                int id = set.getInt("id");
                 String primaryMuscleGroups = set.getString("primaryMuscleGroups");
                 String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
                 String description = set.getString("description");
