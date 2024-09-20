@@ -34,9 +34,10 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
 
     @Override
     protected PreparedStatement updateItemStatement(ResistTrainSession item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ? WHERE id = ?");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, created = ? WHERE id = ?");
         statement.setString(1, item.getName());
-        statement.setInt(2, item.getId());
+        statement.setDate(2, item.getCreated());
+        statement.setInt(3, item.getId());
         return statement;
     }
 
