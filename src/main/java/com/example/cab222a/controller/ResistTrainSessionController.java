@@ -8,6 +8,7 @@ import com.example.cab222a.dao.resist_train.ResistTrainSessionDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.sql.Date;
 
 public class ResistTrainSessionController extends SqliteControllerFunctions<ResistTrainSession> {
@@ -26,6 +27,20 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
     @Override
     public ResistTrainSession generateDefaultItem() {
         return new ResistTrainSession("New Session", SqliteConnection.getCurrentUser().getId(), new Date(System.currentTimeMillis()));
+    }
+
+    @Override
+    @FXML
+    public void onEditButtonClick() throws IOException {
+        ResistTrainSession selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+
+        SqliteConnection.setCurrentResistTrainSession(selectedItem);
+        System.out.println("Resist train SESSION stored in memory:\n" + selectedItem);
+
+        MainController.changeScene(editButton, nextScene);
     }
 
     @FXML

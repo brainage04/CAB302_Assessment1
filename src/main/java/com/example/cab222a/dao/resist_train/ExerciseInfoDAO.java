@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     @Override
-    protected String tableName() {
+    public String tableName() {
         return "exerciseInfo";
     }
 

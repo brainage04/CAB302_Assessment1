@@ -1,11 +1,8 @@
 package com.example.cab222a.controller.core;
 
-import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.MainController;
 import com.example.cab222a.model.core.NamedObject;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
-import com.example.cab222a.model.resist_train.ResistTrainExercise;
-import com.example.cab222a.model.resist_train.ResistTrainSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -16,17 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 public abstract class SqliteControllerFunctions<T extends NamedObject> {
-    @FXML ListView<T> itemListView;
+    @FXML protected ListView<T> itemListView;
     private final AbstractObjectDAO<T> itemDAO;
 
     @FXML private TextField nameTextField;
 
     @FXML private Label detailsLabel;
 
-    @FXML private Button editButton;
+    @FXML protected Button editButton;
     @FXML private Button goBackButton;
 
-    private final String nextScene;
+    protected final String nextScene;
     private final String previousScene;
 
     @FXML private VBox itemContainer;
@@ -182,7 +179,9 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         // Default values for a new item
         T newItem = generateDefaultItem();
         // Add the new item to the database
-        itemDAO.addItem(newItem);
+        int newId = itemDAO.addItem(newItem);
+        newItem.setId(newId);
+        System.out.println("Item added to table " + itemDAO.tableName() + " with ID " + newId);
         syncItems();
         // Select the new item in the list view
         // and focus the first text field
@@ -195,14 +194,6 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             return;
-        }
-
-        if (selectedItem.getClass().equals(ResistTrainSession.class)) {
-            System.out.println("Storing current resistance training session.");
-            SqliteConnection.setCurrentResistTrainSession((ResistTrainSession) selectedItem);
-        } else if (selectedItem.getClass().equals(ResistTrainExercise.class)) {
-            System.out.println("Storing current resistance training exercise.");
-            SqliteConnection.setCurrentResistTrainExercise((ResistTrainExercise) selectedItem);
         }
 
         MainController.changeScene(editButton, nextScene);

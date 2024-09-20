@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 
 /**
- * Generic interface for a Data Access Object that handles the
+ * Abstract class for a Data Access Object that handles the
  * CRUD operations for generic classes within the database.
  */
 public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements IObjectDAO<T> {
@@ -18,7 +18,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         createTable();
     }
 
-    protected abstract String tableName();
+    public abstract String tableName();
     protected abstract String createTableVariables();
     protected abstract PreparedStatement addItemStatement(T item) throws SQLException;
     protected abstract PreparedStatement updateItemStatement(T item) throws SQLException;
@@ -35,6 +35,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
     public int addItem(T item) {
+        System.out.println("Adding item to table " + tableName() + ": \n" + item.toString());
         try (PreparedStatement statement = addItemStatement(item)) {
             int affectedRows = statement.executeUpdate();
 
@@ -42,7 +43,9 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
                 ResultSet set = statement.getGeneratedKeys();
 
                 if (set.next()) {
-                    return set.getInt(1);
+                    int id = set.getInt(1);
+                    System.out.println("Item added. New item ID: " + id);
+                    return id;
                 }
             }
         } catch (SQLException e) {

@@ -8,6 +8,8 @@ import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.io.IOException;
+
 public class ResistTrainExerciseController extends SqliteControllerFunctions<ResistTrainExercise> {
     @Override
     public AbstractObjectDAO<ResistTrainExercise> initItemDAO() {
@@ -24,6 +26,20 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
     @Override
     public ResistTrainExercise generateDefaultItem() {
         return new ResistTrainExercise("New Exercise", SqliteConnection.getCurrentResistTrainSession().getId(), -1);
+    }
+
+    @Override
+    @FXML
+    public void onEditButtonClick() throws IOException {
+        ResistTrainExercise selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+
+        SqliteConnection.setCurrentResistTrainExercise(selectedItem);
+        System.out.println("Resist train EXERCISE stored in memory:\n" + selectedItem);
+
+        MainController.changeScene(editButton, nextScene);
     }
 
     @FXML

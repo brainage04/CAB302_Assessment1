@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercise> {
     @Override
-    protected String tableName() {
+    public String tableName() {
         return "resistTrainExercises";
     }
 

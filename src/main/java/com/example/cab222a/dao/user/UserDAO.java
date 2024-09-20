@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDAO extends AbstractObjectDAO<User> {
     @Override
-    protected String tableName() {
+    public String tableName() {
         return "users";
     }
 
