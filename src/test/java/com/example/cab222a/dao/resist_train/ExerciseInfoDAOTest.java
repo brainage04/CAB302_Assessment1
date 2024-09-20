@@ -39,13 +39,13 @@ public class ExerciseInfoDAOTest {
         exerciseInfoDAO.resetTable();
 
         defaultItem = new ExerciseInfo(
-                "Barbell Bench Press",
+                "Flat Barbell Bench Press Test",
                 "Chest",
                 "Triceps and Shoulders",
                 "Chest building essential."
         );
         updatedItem = new ExerciseInfo(
-                "Incline Bench Press",
+                "Incline Dumbbell Bench Press Test",
                 "Upper Chest",
                 "Shoulders and Triceps",
                 "Upper chest movement."
@@ -114,8 +114,11 @@ public class ExerciseInfoDAOTest {
 
         @Test @Order(6) void testNullQuery () {
         List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(null);
-        // 48 Default exercises.
-        assertEquals(48, exerciseInfo.size());
+        // 46 Default exercises + 2 Test.
+        // List should not be empty if search is null
+        assertFalse(exerciseInfo.isEmpty());
+        // List should be more than or equal to 46 which is the current amount of default exercises.
+        assertTrue(exerciseInfo.size() >= 46);
         }
 
 

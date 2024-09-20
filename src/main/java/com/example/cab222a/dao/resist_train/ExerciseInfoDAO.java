@@ -235,7 +235,6 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         addDefaultItem(new ExerciseInfo(-1, "Ab Wheel Rollout", "Core", "Abs, Lower Back", "Ab wheel rollouts engage the entire core, emphasizing the abs.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Cable Crunch", "Abs", "", "Cable crunches focus on building upper abdominal strength.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Farmer's Walk", "Forearms", "Core, Shoulders", "Farmer's walks improve grip strength and core stability.", -1));
-
     }
 
 //    @Override
