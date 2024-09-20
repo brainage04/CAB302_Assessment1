@@ -1,74 +1,25 @@
 package com.example.cab222a.dao.resist_train;
 
-import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.user.UserDAO;
-import com.example.cab222a.model.resist_train.ResistTrainExercise;
-import com.example.cab222a.model.resist_train.ResistTrainSession;
+import com.example.cab222a.dao.util.DAOTestUtils;
 import com.example.cab222a.model.resist_train.ResistTrainSet;
-import com.example.cab222a.model.user.User;
 import org.junit.jupiter.api.*;
-
-import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ResistTrainSetDAOTest {
-    static UserDAO userDAO;
-    static ResistTrainSessionDAO sessionDAO;
-    static ResistTrainExerciseDAO exerciseDAO;
     static ResistTrainSetDAO dao;
     static ResistTrainSet defaultItem;
     static ResistTrainSet updatedItem;
 
     @BeforeAll
     static void setUp() {
-        // set up users
-        userDAO = new UserDAO();
-        userDAO.resetTable();
+        // set up test items for each table in relational "chain" if you will
+        // (user -> session -> exercise -> set)
+        int userId = DAOTestUtils.setUpUser();
+        int sessionId = DAOTestUtils.setUpSession(userId);
+        int exerciseId = DAOTestUtils.setUpExercise(sessionId);
 
-        // add and set test user
-        User testUser = new User(
-                new Date(System.currentTimeMillis()),
-                "Test",
-                "User",
-                "test@example.com",
-                "password",
-                "0450450450"
-        );
-        int userId = userDAO.addAndGetId(testUser);
-        testUser.setId(userId);
-        SqliteConnection.setCurrentUser(testUser);
-
-        // set up resist train sessions
-        sessionDAO = new ResistTrainSessionDAO();
-        sessionDAO.resetTable();
-
-        // add and set test session
-        ResistTrainSession testSession = new ResistTrainSession(
-                "Test Session",
-                userId,
-                new Date(System.currentTimeMillis())
-        );
-        int sessionId = sessionDAO.addAndGetId(testSession);
-        testSession.setId(sessionId);
-        SqliteConnection.setCurrentResistTrainSession(testSession);
-
-        // set up resist train exercises
-        exerciseDAO = new ResistTrainExerciseDAO();
-        exerciseDAO.resetTable();
-
-        // add test exercise
-        ResistTrainExercise testExercise = new ResistTrainExercise(
-                "Test Session",
-                sessionId,
-                -1
-        );
-        int exerciseId = exerciseDAO.addAndGetId(testExercise);
-        testExercise.setId(exerciseId);
-        SqliteConnection.setCurrentResistTrainExercise(testExercise);
-
-        // set up DAOs
         dao = new ResistTrainSetDAO();
         dao.resetTable();
 
