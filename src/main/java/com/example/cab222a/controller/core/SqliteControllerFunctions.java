@@ -134,8 +134,17 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
             itemListView.getItems().addAll(items);
 
             // If the current item is still in the list, re-select it
-            // Otherwise, select the first item in the list
-            T nextItem = items.contains(currentItem) ? currentItem : items.getFirst();
+            // Otherwise, select the last item in the list
+            T nextItem = items.getLast();
+            if (currentItem != null) {
+                for (T item : items) {
+                    if (item.getId() == currentItem.getId()) {
+                        nextItem = currentItem;
+                        break;
+                    }
+                }
+            }
+            System.out.println("Next item: " + nextItem);
             selectItem(nextItem);
         }
         // Show / hide based on whether there are items
@@ -209,10 +218,10 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         itemListView.setCellFactory(this::renderCell);
         syncItems();
         // Select the first item and display its information
-        itemListView.getSelectionModel().selectFirst();
-        T firstItem = itemListView.getSelectionModel().getSelectedItem();
-        if (firstItem != null) {
-            selectItem(firstItem);
+        itemListView.getSelectionModel().selectLast();
+        T lastItem = itemListView.getSelectionModel().getSelectedItem();
+        if (lastItem != null) {
+            selectItem(lastItem);
         }
     }
 }
