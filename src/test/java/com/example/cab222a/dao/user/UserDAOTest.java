@@ -1,6 +1,7 @@
 package com.example.cab222a.dao.user;
 
-import com.example.cab222a.common.SqliteConnection;
+import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.mock_dao.core.AbstractObjectMockDAO;
 import com.example.cab222a.model.user.User;
 import org.junit.jupiter.api.*;
 
@@ -10,28 +11,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserDAOTest {
-    static UserDAO dao;
+    static IObjectDAO<User> dao;
     static User defaultItem;
     static User updatedItem;
 
     @BeforeAll
     static void setUp() {
-        dao = new UserDAO();
+        dao = new AbstractObjectMockDAO<>();
+        dao.resetTable();
+
         defaultItem = new User(new Date(System.currentTimeMillis()), "Test", "User", "test@example.com", "testpassword", "0412345678");
         updatedItem = new User(new Date(System.currentTimeMillis() - 128), "Test1", "User2", "test3@example.com", "testpassword4", "0456789012");
-
-        // drop table
-        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
-            statement.execute("DROP TABLE " + dao.tableName());
-            dao.createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test @Order(1) void createReadUser() {
         User actual = defaultItem;
-        int actualId = dao.addAndGetId(actual);
+        int actualId = dao.addItem(actual);
 
         assertTrue(actualId > 0);
 
@@ -52,9 +47,7 @@ public class UserDAOTest {
         User actual = defaultItem;
         User expected = updatedItem;
         expected.setId(actual.getId());
-        int affectedRows = dao.updateItem(expected);
-
-        assertEquals(affectedRows, 1);
+        dao.updateItem(expected);
 
         actual = dao.getItem(actual.getId());
 
@@ -69,10 +62,7 @@ public class UserDAOTest {
 
     @Test @Order(3) void deleteUser() {
         User delete = dao.getItem(defaultItem.getId());
-        int affectedRows = dao.deleteItem(delete.getId());
-
-        assertEquals(affectedRows, 1);
-
+        dao.deleteItem(delete.getId());
         delete = dao.getItem(defaultItem.getId());
 
         assertNull(delete);

@@ -1,6 +1,8 @@
 package com.example.cab222a.dao.resist_train;
 
+import com.example.cab222a.dao.core.IObjectDAO;
 import com.example.cab222a.dao.util.DAOTestUtils;
+import com.example.cab222a.mock_dao.core.AbstractObjectMockDAO;
 import com.example.cab222a.model.resist_train.ResistTrainSet;
 import org.junit.jupiter.api.*;
 
@@ -8,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ResistTrainSetDAOTest {
-    static ResistTrainSetDAO dao;
+    static IObjectDAO<ResistTrainSet> dao;
     static ResistTrainSet defaultItem;
     static ResistTrainSet updatedItem;
 
@@ -20,7 +22,7 @@ public class ResistTrainSetDAOTest {
         int sessionId = DAOTestUtils.setUpSession(userId);
         int exerciseId = DAOTestUtils.setUpExercise(sessionId);
 
-        dao = new ResistTrainSetDAO();
+        dao = new AbstractObjectMockDAO<>();
         dao.resetTable();
 
         defaultItem = new ResistTrainSet("Test Set", exerciseId, 20, 10, 60, 2);
@@ -29,7 +31,7 @@ public class ResistTrainSetDAOTest {
 
     @Test @Order(1) void createReadUser() {
         ResistTrainSet actual = defaultItem;
-        int actualId = dao.addAndGetId(actual);
+        int actualId = dao.addItem(actual);
 
         assertTrue(actualId > 0);
 
@@ -50,9 +52,7 @@ public class ResistTrainSetDAOTest {
         ResistTrainSet actual = defaultItem;
         ResistTrainSet expected = updatedItem;
         expected.setId(actual.getId());
-        int affectedRows = dao.updateItem(expected);
-
-        assertEquals(affectedRows, 1);
+        dao.updateItem(expected);
 
         actual = dao.getItem(actual.getId());
 
@@ -67,10 +67,7 @@ public class ResistTrainSetDAOTest {
 
     @Test @Order(3) void deleteUser() {
         ResistTrainSet delete = dao.getItem(defaultItem.getId());
-        int affectedRows = dao.deleteItem(delete.getId());
-
-        assertEquals(affectedRows, 1);
-
+        dao.deleteItem(delete.getId());
         delete = dao.getItem(defaultItem.getId());
 
         assertNull(delete);

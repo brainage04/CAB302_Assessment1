@@ -13,7 +13,7 @@ import java.util.List;
  * Generic interface for a Data Access Object that handles the
  * CRUD operations for generic classes within the database.
  */
-public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
+public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements IObjectDAO<T> {
     public AbstractObjectDAO() {
         createTable();
     }
@@ -33,6 +33,44 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
         return statement;
     }
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
+
+    public int addItem(T item) {
+        try (PreparedStatement statement = addItemStatement(item)) {
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet set = statement.getGeneratedKeys();
+
+                if (set.next()) {
+                    return set.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public abstract T getItem(int id);
+
+    public abstract List<T> getAllItems();
+
+    public void updateItem(T item) {
+        try {
+            updateItemStatement(item).executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteItem(int id) {
+        try {
+            deleteItemStatement(id).executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void dropTable() {
         try (Statement statement = SqliteConnection.getInstance().createStatement()) {
@@ -54,91 +92,4 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> {
         dropTable();
         createTable();
     }
-
-    /**
-     * Adds a new item to the database.
-     *
-     * @param item The item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public int addItem(T item) {
-        try {
-            return addItemStatement(item).executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * Adds a new item to the database and returns the ID.
-     *
-     * @param item The item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public int addAndGetId(T item) {
-        try (PreparedStatement statement = addItemStatement(item)) {
-            int affectedRows = statement.executeUpdate();
-
-            if (affectedRows > 0) {
-                ResultSet set = statement.getGeneratedKeys();
-
-                if (set.next()) {
-                    return set.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * Updates an existing item in the database.
-     *
-     * @param item The item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public int updateItem(T item) {
-        try {
-            return updateItemStatement(item).executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * Deletes an item from the database.
-     *
-     * @param id The ID of the item to add.
-     * @return The number of rows affected by the statement.
-     */
-    public int deleteItem(int id) {
-        try {
-            return deleteItemStatement(id).executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-    /**
-     * Retrieves an item from the database.
-     *
-     * @param id The id of the item to retrieve.
-     * @return The item with the given id, or null if not found.
-     */
-    public abstract T getItem(int id);
-
-    /**
-     * Retrieves all items from the database.
-     *
-     * @return A list of all items in the database.
-     */
-    public abstract List<T> getAllItems();
 }

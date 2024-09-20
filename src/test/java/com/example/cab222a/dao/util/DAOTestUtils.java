@@ -25,7 +25,7 @@ public class DAOTestUtils {
                 "password",
                 "0450450450"
         );
-        int userId = dao.addAndGetId(testUser);
+        int userId = dao.addItem(testUser);
         testUser.setId(userId);
         SqliteConnection.setCurrentUser(testUser);
 
@@ -43,7 +43,7 @@ public class DAOTestUtils {
                 userId,
                 new Date(System.currentTimeMillis())
         );
-        int sessionId = dao.addAndGetId(testSession);
+        int sessionId = dao.addItem(testSession);
         testSession.setId(sessionId);
         SqliteConnection.setCurrentResistTrainSession(testSession);
 
@@ -61,7 +61,7 @@ public class DAOTestUtils {
                 sessionId,
                 -1
         );
-        int exerciseId = dao.addAndGetId(testExercise);
+        int exerciseId = dao.addItem(testExercise);
         testExercise.setId(exerciseId);
         SqliteConnection.setCurrentResistTrainExercise(testExercise);
 

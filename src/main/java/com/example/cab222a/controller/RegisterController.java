@@ -63,7 +63,7 @@ public class RegisterController {
         }
 
         User user = new User(new Date(System.currentTimeMillis()), firstName, lastName, email, password, phone);
-        int userId = userDAO.addAndGetId(user);
+        int userId = userDAO.addItem(user);
         user.setId(userId);
 
         SqliteConnection.setCurrentUser(user);
