@@ -39,7 +39,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return statement;
     }
 
-    // Does not used the current users' ID for when the table is initially created.
+    // Does not use the current users' ID for when the table is initially created.
     protected PreparedStatement addDefaultItemStatement(ExerciseInfo item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)");
         statement.setInt(1, item.getUserId());
