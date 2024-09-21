@@ -74,6 +74,8 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    // Override due to implementing search
+    // Should update current list depending on user search query
     @Override
     protected void syncItems() {
         itemListView.getItems().clear();

@@ -146,13 +146,13 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return items;
     }
 
+    // User can search exercise info based on name or muscles
     public List<ExerciseInfo> searchExerciseInfo(String query) {
         return getAllItems()
                 .stream()
                 .filter(exerciseInfo -> isExerciseInfoMatched(exerciseInfo, query))
                 .toList();
     }
-
     private boolean isExerciseInfoMatched ( ExerciseInfo exerciseInfo, String query){
         if (query == null || query.isEmpty()) return true;
         query = query.toLowerCase();
@@ -162,6 +162,8 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return searchString.toLowerCase().contains(query);
     }
 
+    // Override create table to check if the table is empty
+    // If empty then add default exercises
     @Override
     public void createTable() {
         try (Statement statement = SqliteConnection.getInstance().createStatement()){
