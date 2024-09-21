@@ -255,7 +255,4 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 //            e.printStackTrace();
 //        }
 //    }
-
-
-
 }

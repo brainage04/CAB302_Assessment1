@@ -7,7 +7,6 @@ import com.example.cab222a.dao.resist_train.ExerciseInfoDAO;
 import com.example.cab222a.model.resist_train.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 
@@ -88,6 +87,19 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         itemContainer.setVisible(hasExerciseInfo);
     }
 
+    @Override
+    @FXML
+    public void onEditButtonClick() throws IOException {
+        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+
+        SqliteConnection.setCurrentExerciseInfo(selectedItem);
+        System.out.println("Exercise INFO stored in memory:\n" + selectedItem);
+
+        MainController.changeScene(editButton, nextScene);
+    }
 
     @FXML
     public void initialize(){
