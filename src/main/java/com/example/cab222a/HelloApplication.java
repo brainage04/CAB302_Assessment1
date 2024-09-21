@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
-    public static final String TITLE = "Senior Fitness Tracker";
+    public static final String TITLE = "DT Fitness Tracker";
     public static final int WIDTH = 640;
     public static final int HEIGHT = 360;
 
