@@ -3,6 +3,9 @@ package com.example.cab222a.controller.core;
 import com.example.cab222a.controller.MainController;
 import com.example.cab222a.model.core.NamedObject;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
+import com.example.cab222a.model.resist_train.ExerciseInfo;
+import com.example.cab222a.model.resist_train.ResistTrainExercise;
+import com.example.cab222a.model.resist_train.ResistTrainSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -13,8 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 public abstract class SqliteControllerFunctions<T extends NamedObject> {
-    @FXML protected ListView<T> itemListView;
-    private final AbstractObjectDAO<T> itemDAO;
+    @FXML ListView<T> itemListView;
+    protected final AbstractObjectDAO<T> itemDAO;
 
     @FXML private TextField nameTextField;
 
@@ -203,6 +206,11 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             return;
+        }
+
+        if (selectedItem.getClass().equals(ExerciseInfo.class)){
+            System.out.println("Storing current exercise info.");
+            SqliteConnection.setCurrentExerciseInfo((ExerciseInfo) selectedItem);
         }
 
         MainController.changeScene(editButton, nextScene);

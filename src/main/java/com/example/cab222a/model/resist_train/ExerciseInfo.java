@@ -22,6 +22,15 @@ public class ExerciseInfo extends NamedObject {
         this.description = description;
     }
 
+    // Constructor used to make default exercise info.
+    public ExerciseInfo(int id, String name, String primaryMuscleGroups, String secondaryMuscleGroups, String description, int userId) {
+        super(id, name);
+        this.primaryMuscleGroups = primaryMuscleGroups;
+        this.secondaryMuscleGroups = secondaryMuscleGroups;
+        this.description = description;
+        this.userId = userId;
+    }
+
     public int getUserId() {
         return userId;
     }

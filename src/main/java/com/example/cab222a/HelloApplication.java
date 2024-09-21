@@ -13,13 +13,25 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 360;
 
+    public boolean createDb() {
+        File file = new File("main.db");
+        if (!file.exists()) {
+            try {
+                return file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("DB already created.");
+        return false;
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         // create empty main.db file if it does not exist
-        File file = new File("main.db");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
+        boolean createDbSuccess = createDb();
+        System.out.println("DB created: " + createDbSuccess);
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);

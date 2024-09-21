@@ -3,6 +3,7 @@ package com.example.cab222a.common;
 import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import com.example.cab222a.model.user.User;
+import com.example.cab222a.model.resist_train.ExerciseInfo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +14,7 @@ public class SqliteConnection {
     private static User currentUser = null;
     private static ResistTrainSession currentResistTrainSession = null;
     private static ResistTrainExercise currentResistTrainExercise = null;
+    private static ExerciseInfo currentExerciseInfo = null;
 
     private SqliteConnection() {
         String url = "jdbc:sqlite:main.db";
@@ -56,5 +58,11 @@ public class SqliteConnection {
 
     public static void setCurrentResistTrainExercise(ResistTrainExercise currentResistTrainExercise) {
         SqliteConnection.currentResistTrainExercise = currentResistTrainExercise;
+    }
+
+    public static ExerciseInfo getCurrentExerciseInfo() { return currentExerciseInfo;}
+
+    public static void setCurrentExerciseInfo ( ExerciseInfo currentExerciseInfo){
+        SqliteConnection.currentExerciseInfo = currentExerciseInfo;
     }
 }

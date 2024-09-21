@@ -18,7 +18,7 @@ public class MainController {
     @FXML
     public Button cardioTrainButton;
     @FXML
-    public Button caloricIntakeButton;
+    public Button exerciseInfoButton;
     @FXML
     public Button heightButton;
     @FXML
@@ -50,8 +50,8 @@ public class MainController {
     }
 
     @FXML
-    public void onCaloricIntakeButtonClick() throws IOException {
-        changeScene(resistTrainButton, "caloric-intake-view.fxml");
+    public void onExerciseInformationButtonClick () throws IOException {
+        changeScene(exerciseInfoButton, "exercise-info-view.fxml");
     }
 
     @FXML

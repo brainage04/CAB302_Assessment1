@@ -17,7 +17,7 @@
     <HBox maxWidth="Infinity" alignment="TOP_CENTER">
         <Button text="Resistance Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onResistTrainButtonClick" fx:id="resistTrainButton"/>
         <Button text="Cardiovascular Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCardioTrainButtonClick" fx:id="cardioTrainButton"/>
-        <Button text="Caloric Intake" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCaloricIntakeButtonClick" fx:id="caloricIntakeButton"/>
+        <Button text="Exercise Information" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onExerciseInformationButtonClick" fx:id="exerciseInfoButton"/>
     </HBox>
     <HBox maxWidth="Infinity" alignment="TOP_CENTER">
         <Button text="Height" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onHeightButtonClick" fx:id="heightButton"/>
