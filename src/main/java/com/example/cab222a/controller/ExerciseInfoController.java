@@ -41,14 +41,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML private VBox itemContainer;
 
-    @FXML
-    public Button moreDetailsButton;
-
-    @FXML
-    public void onMoreDetails () throws IOException {
-        changeScene(moreDetailsButton, "exercise-info-details-view.fxml");
-    }
-
 
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo){
@@ -87,20 +79,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         itemContainer.setVisible(hasExerciseInfo);
     }
 
-    @Override
-    @FXML
-    public void onEditButtonClick() throws IOException {
-        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
-        if (selectedItem == null) {
-            return;
-        }
-
-        SqliteConnection.setCurrentExerciseInfo(selectedItem);
-        System.out.println("Exercise INFO stored in memory:\n" + selectedItem);
-
-        MainController.changeScene(editButton, nextScene);
-    }
-
     @FXML
     public void initialize(){
         // Initialise exerciseInfoDAO to access methods
@@ -131,11 +109,28 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         getGridPaneContainer().add(descriptionLabel, 0, 3);
         getGridPaneContainer().add(descriptionTextField, 1, 3);
 
-        getEditButton().setText("Edit Exercise");
+        // getEditButton().setText("Edit Exercise");
         // getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentExerciseInfo().getName());
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> syncItems());
 
         super.initialize();
     }
+
+    // If we ever need the edit button again.
+    // We do already have edit confirm
+
+//    @Override
+//    @FXML
+//    public void onEditButtonClick() throws IOException {
+//        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
+//        if (selectedItem == null) {
+//            return;
+//        }
+//
+//        SqliteConnection.setCurrentExerciseInfo(selectedItem);
+//        System.out.println("Exercise INFO stored in memory:\n" + selectedItem);
+//
+//        MainController.changeScene(editButton, nextScene);
+//    }
 }
