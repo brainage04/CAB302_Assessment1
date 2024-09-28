@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.example.cab222a.controller.MainController.changeScene;
@@ -72,9 +75,14 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         itemListView.getItems().clear();
         String query = searchTextField.getText();
         List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(query);
+        List<ExerciseInfo> mutableExerciseInfo = new ArrayList<>(exerciseInfo);
+
         boolean hasExerciseInfo = !exerciseInfo.isEmpty();
+
+        Collections.sort(mutableExerciseInfo, Comparator.comparing(ExerciseInfo::getName, String.CASE_INSENSITIVE_ORDER));
+
         if (hasExerciseInfo) {
-            itemListView.getItems().addAll(exerciseInfo);
+            itemListView.getItems().addAll(mutableExerciseInfo);
         }
         itemContainer.setVisible(hasExerciseInfo);
     }
