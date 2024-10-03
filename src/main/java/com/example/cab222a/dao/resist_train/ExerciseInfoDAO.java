@@ -21,7 +21,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     protected String createTableVariables() {
         return "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "userId INTEGER NOT NULL, "
-                + "name VARCHAR UNIQUE NOT NULL, "
+                + "name VARCHAR NOT NULL, "
                 + "primaryMuscleGroups VARCHAR NOT NULL, "
                 + "secondaryMuscleGroups VARCHAR NOT NULL, "
                 + "description VARCHAR NOT NULL, "
