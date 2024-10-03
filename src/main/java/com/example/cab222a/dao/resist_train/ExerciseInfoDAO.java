@@ -239,6 +239,26 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         addDefaultItem(new ExerciseInfo(-1, "Ab Wheel Rollout", "Core", "Abs, Lower Back", "Ab wheel rollouts engage the entire core, emphasizing the abs.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Cable Crunch", "Abs", "", "Cable crunches focus on building upper abdominal strength.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Farmer's Walk", "Forearms", "Core, Shoulders", "Farmer's walks improve grip strength and core stability.", -1));
+
+        addDefaultItem(new ExerciseInfo(-1, "Barbell 45° Hyperextension", "Lower Back", "Glutes, Hamstrings", "Hyperextensions strengthen the lower back, glutes, and hamstrings.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Hack Squat", "Legs", "Glutes", "Hack squat emphasizes the quads while reducing strain on the lower back.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Glute Ham Raise", "Hamstrings", "Glutes, Lower Back", "Glute ham raise is a challenging bodyweight exercise focused on hamstrings and glutes.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Smith Machine Reverse Lunge", "Legs", "Glutes", "Reverse lunges in the Smith machine help improve stability and target quads and glutes.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Dumbbell Walking Lunge", "Legs", "Glutes", "Walking lunges with dumbbells engage the quads, glutes, and hamstrings dynamically.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Cable Pull-Through", "Glutes", "Hamstrings", "Cable pull-throughs isolate the glutes and hamstrings in a hinge movement.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Glute Kickback", "Glutes", "", "Glute kickbacks isolate and target the glutes.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Deficit Deadlift", "Back", "Glutes, Hamstrings", "Deficit deadlifts increase range of motion, emphasizing hamstring and glute development.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Block Pull", "Back", "Glutes, Hamstrings", "Block pulls reduce the range of motion in deadlifts, focusing on the lockout.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Dumbbell Step-Up", "Legs", "Glutes", "Step-ups with dumbbells target the quads and glutes.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Eccentric Overloaded Leg Extension", "Quads", "", "Leg extensions focus on strengthening the quads with an emphasis on eccentric control.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Goblet Squat", "Legs", "Glutes", "Goblet squats are a beginner-friendly squat variation targeting quads and glutes.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Safety Bar Squat", "Legs", "Core", "Safety bar squats reduce shoulder strain while emphasizing quads.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Good Morning", "Lower Back", "Hamstrings", "Good mornings strengthen the lower back and hamstrings through a hip hinge movement.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Hip Thrust", "Glutes", "Hamstrings", "Hip thrusts are a key glute isolation exercise.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Glute Bridge", "Glutes", "Hamstrings", "Glute bridges activate the glutes and hamstrings in a hip thrust movement.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Knee-Banded Leg Press", "Legs", "Glutes", "Knee-banded leg press adds glute activation to the traditional leg press.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Leg Press Calf Press", "Calves", "", "Calf presses on the leg press machine target the entire calf muscle group.", -1));
+        addDefaultItem(new ExerciseInfo(-1, "Stiff Leg Deadlift", "Hamstrings", "Lower Back", "Stiff leg deadlifts increase hamstring engagement by reducing knee bend.", -1));
     }
 
 //    @Override
