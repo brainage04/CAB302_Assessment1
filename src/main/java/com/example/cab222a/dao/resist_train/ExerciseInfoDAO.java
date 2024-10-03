@@ -79,7 +79,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        return SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName());
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userId = ? OR userId = -1");
+        statement.setInt(1, SqliteConnection.getCurrentUser().getId());
+        return statement;
     }
 
     @Override
