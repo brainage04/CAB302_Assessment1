@@ -19,6 +19,9 @@ import java.util.List;
 import static com.example.cab222a.controller.MainController.changeScene;
 
 public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseInfo> {
+
+    public Button alternativeExerciseButton;
+
     @Override
     public AbstractObjectDAO<ExerciseInfo> initItemDAO(){ return new ExerciseInfoDAO(); }
     @Override
@@ -86,6 +89,31 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
         itemContainer.setVisible(hasExerciseInfo);
     }
+
+    @FXML
+    private void onAlternativeButtonClick() {
+        ExerciseInfo selectedExercise = itemListView.getSelectionModel().getSelectedItem();
+
+        if (selectedExercise != null) {
+            // Find alternatives using exercise's name
+            List<ExerciseInfo> alternativeExercises = exerciseInfoDAO.findAlternatives(selectedExercise.getName());
+
+            if (!alternativeExercises.isEmpty()) {
+                // Clear ListView and show alternative exercises
+                itemListView.getItems().clear();
+                itemListView.getItems().addAll(alternativeExercises);
+            } else {
+                // https://stackoverflow.com/questions/39149242/how-can-i-do-an-error-messages-in-javafx
+                // If no alternatives are found
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setTitle("No Alternatives Found");
+                errorAlert.setHeaderText("Alternatives not found");
+                errorAlert.setContentText("No alternative exercises found for " + selectedExercise.getName());
+                errorAlert.showAndWait();
+            }
+        }
+    }
+
 
     @FXML
     public void initialize(){

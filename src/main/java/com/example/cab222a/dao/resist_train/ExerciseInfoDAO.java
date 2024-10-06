@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
@@ -79,7 +80,8 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userId = ? OR userId = -1");
+        PreparedStatement statement = SqliteConnection.getInstance()
+                .prepareStatement("SELECT * FROM " + tableName() + " WHERE userId = ? OR userId = -1");
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
         return statement;
     }
@@ -260,6 +262,74 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         addDefaultItem(new ExerciseInfo(-1, "Leg Press Calf Press", "Calves", "", "Calf presses on the leg press machine target the entire calf muscle group.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Stiff Leg Deadlift", "Hamstrings", "Lower Back", "Stiff leg deadlifts increase hamstring engagement by reducing knee bend.", -1));
     }
+
+    public List<ExerciseInfo> findAlternatives(String exerciseName) {
+        // Find the exercise info for the specified exercise name
+        ExerciseInfo targetExercise = getAllItems()
+                .stream()
+                .filter(exerciseInfo -> exerciseInfo.getName().equalsIgnoreCase(exerciseName))
+                .findFirst()
+                .orElse(null);
+
+        // Find alternatives based on muscle
+        // There is only 1 Primary muscle for each exercise
+        assert targetExercise != null;
+        String targetPrimaryMuscles = targetExercise.getPrimaryMuscleGroups();
+
+        String secondaryMuscleGroups = targetExercise.getSecondaryMuscleGroups();
+
+        String[] targetSecondaryMuscles;
+        if (secondaryMuscleGroups != null && !secondaryMuscleGroups.isEmpty()){
+            targetSecondaryMuscles = secondaryMuscleGroups.split(",\\s*");
+        }
+        else {
+            targetSecondaryMuscles = new String[0]; // Length == 0, empty array
+        }
+
+        return getAllItems()
+                .stream()
+                .filter(exerciseInfo ->
+                        !exerciseInfo.getName().equalsIgnoreCase(exerciseName) && // Exclude target exercise
+                                isAlternativeMatched(exerciseInfo, targetPrimaryMuscles, targetSecondaryMuscles)
+                )
+                .toList();
+    }
+
+    // Not as strict as I like
+    // Bench Press is an alternative to Shoulder Press due to both using shoulders and triceps
+    // Enforce that the target primary muscle has to be in the list of both primary and secondary muscles
+    private boolean isAlternativeMatched(ExerciseInfo exerciseInfo, String targetPrimaryMuscles, String[] targetSecondaryMuscles) {
+        String exercisePrimaryMuscle = exerciseInfo.getPrimaryMuscleGroups();
+        String[] exerciseSecondaryMuscles = exerciseInfo.getSecondaryMuscleGroups().split(",\\s*");
+
+        int matchCount = 0;
+
+        // Check if primary muscle matches the target's primary muscle
+        if (exercisePrimaryMuscle.equalsIgnoreCase(targetPrimaryMuscles)) {
+            matchCount++;
+        }
+
+        // Check if primary muscle matches any of the target's secondary muscles
+        if (Arrays.asList(targetSecondaryMuscles).contains(exercisePrimaryMuscle)) {
+            matchCount++;
+        }
+
+        // Check how many secondary muscles match the target's primary or secondary muscles
+        matchCount += (int) Arrays.stream(exerciseSecondaryMuscles)
+                .filter(muscle -> muscle.equalsIgnoreCase(targetPrimaryMuscles) || Arrays.asList(targetSecondaryMuscles).contains(muscle))
+                .count();
+
+        // Case 1: Only primary muscle group (no secondary muscles)
+        if (targetSecondaryMuscles.length == 0) {
+            return matchCount >= 1;
+        }
+
+        // Case 2: One or more secondary muscles, require at least two matches
+        return matchCount >= 2;
+    }
+
+
+
 
 //    @Override
 //    public void createTable() {

@@ -42,6 +42,7 @@
             </VBox>
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
+                    <Button text="Alternatives" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onAlternativeButtonClick" fx:id="alternativeExerciseButton"/>
                     <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
                 </HBox>
             </VBox>
