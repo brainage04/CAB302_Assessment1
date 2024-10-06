@@ -28,7 +28,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     public String initPreviousScene() { return "main-view.fxml"; }
     @Override
     public ExerciseInfo generateDefaultItem() {
-        return new ExerciseInfo("New Exercise", "Primary Muscle", "Secondary Muscle", "Description of exercise.");
+        return new ExerciseInfo("New Exercise", "Primary Muscle", "", "Description of exercise.");
     }
 
     @FXML private TextField primaryMuscleTextField;
