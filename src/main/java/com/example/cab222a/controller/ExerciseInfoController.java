@@ -1,6 +1,5 @@
 package com.example.cab222a.controller;
 
-import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.dao.resist_train.ExerciseInfoDAO;
@@ -10,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,7 +33,8 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML private TextField primaryMuscleTextField;
     @FXML private TextField secondaryMuscleTextField;
-    @FXML private TextField descriptionTextField;
+    //@FXML private TextField descriptionTextField;
+    @FXML private TextArea descriptionTextArea;
 
     @FXML
     private ListView<ExerciseInfo> itemListView;
@@ -54,7 +53,8 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         primaryMuscleTextField.setText(exerciseInfo.getPrimaryMuscleGroups());
         secondaryMuscleTextField.setText(exerciseInfo.getSecondaryMuscleGroups());
-        descriptionTextField.setText(exerciseInfo.getDescription());
+        //descriptionTextField.setText(exerciseInfo.getDescription());
+        descriptionTextArea.setText(exerciseInfo.getDescription());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
             selectedItem.setName(getNameTextField().getText());
             selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
             selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
-            selectedItem.setDescription(descriptionTextField.getText());
+            selectedItem.setDescription(descriptionTextArea.getText());
             getItemDAO().updateItem(selectedItem);
             syncItems();
         }
@@ -114,6 +114,14 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    public static TextArea customTextArea(String id) {
+        TextArea textArea = new TextArea();
+        textArea.setId(id);
+        textArea.setMaxWidth(250);
+        textArea.prefHeight(50);
+        textArea.setWrapText(true);
+        return textArea;
+    }
 
     @FXML
     public void initialize(){
@@ -140,10 +148,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         getGridPaneContainer().add(secondaryMuscleTextField, 1, 2);
 
         Label descriptionLabel = new Label("Description:");
-        descriptionTextField = MainController.customTextField("descriptionTextField");
+        descriptionTextArea = customTextArea("descriptionTextArea");
 
         getGridPaneContainer().add(descriptionLabel, 0, 3);
-        getGridPaneContainer().add(descriptionTextField, 1, 3);
+        getGridPaneContainer().add(descriptionTextArea, 1, 3);
 
         // getEditButton().setText("Edit Exercise");
         // getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentExerciseInfo().getName());
