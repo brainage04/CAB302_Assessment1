@@ -4,10 +4,7 @@ import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
 import com.example.cab222a.model.resist_train.ExerciseInfo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -139,9 +136,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
                 String description = set.getString("description");
 
-                items.add(
-                    new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description)
-                );
+                items.add(new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,7 +152,8 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 .filter(exerciseInfo -> isExerciseInfoMatched(exerciseInfo, query))
                 .toList();
     }
-    private boolean isExerciseInfoMatched ( ExerciseInfo exerciseInfo, String query){
+
+    private boolean isExerciseInfoMatched(ExerciseInfo exerciseInfo, String query) {
         if (query == null || query.isEmpty()) return true;
         query = query.toLowerCase();
         String searchString = exerciseInfo.getName()
@@ -173,7 +169,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         try (Statement statement = SqliteConnection.getInstance().createStatement()){
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
 
-            if(isTableEmpty()) {
+            if (isTableEmpty()) {
                 addDefaultExercises();
             }
         } catch (SQLException e) {
@@ -183,11 +179,11 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     private boolean isTableEmpty() throws SQLException {
         String query = "SELECT COUNT (*) AS count FROM " + tableName();
-        try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)){
+        try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)) {
             // Count returns the number of rows in a table form
             // If the value in the first/only column is a 0 then return true
             // else return false
-            if(result.getInt(1) == 0) {
+            if (result.getInt(1) == 0) {
                 return true;
             }
         }
@@ -279,10 +275,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         String secondaryMuscleGroups = targetExercise.getSecondaryMuscleGroups();
 
         String[] targetSecondaryMuscles;
-        if (secondaryMuscleGroups != null && !secondaryMuscleGroups.isEmpty()){
+        if (secondaryMuscleGroups != null && !secondaryMuscleGroups.isEmpty()) {
             targetSecondaryMuscles = secondaryMuscleGroups.split(",\\s*");
-        }
-        else {
+        } else {
             targetSecondaryMuscles = new String[0]; // Length == 0, empty array
         }
 
@@ -290,17 +285,20 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 .stream()
                 .filter(exerciseInfo ->
                         !exerciseInfo.getName().equalsIgnoreCase(exerciseName) && // Exclude target exercise
-                                isAlternativeMatched(exerciseInfo, targetPrimaryMuscles, targetSecondaryMuscles)
-                )
+                                isAlternativeMatched(exerciseInfo, targetPrimaryMuscles, targetSecondaryMuscles))
                 .toList();
     }
 
-    // Not as strict as I like
-    // Bench Press is an alternative to Shoulder Press due to both using shoulders and triceps
-    // Enforce that the target primary muscle has to be in the list of both primary and secondary muscles
     private boolean isAlternativeMatched(ExerciseInfo exerciseInfo, String targetPrimaryMuscles, String[] targetSecondaryMuscles) {
         String exercisePrimaryMuscle = exerciseInfo.getPrimaryMuscleGroups();
         String[] exerciseSecondaryMuscles = exerciseInfo.getSecondaryMuscleGroups().split(",\\s*");
+
+        // Constraint where the Primary Muscle of the target Exercise is required
+        // In this case it is if the Primary Muscle is not in either the Primary Muscle or Secondary muscle return false.
+        if (!exercisePrimaryMuscle.equalsIgnoreCase(targetPrimaryMuscles) &&
+                Arrays.stream(exerciseSecondaryMuscles).noneMatch(muscle -> muscle.equalsIgnoreCase(targetPrimaryMuscles))) {
+            return false;
+        }
 
         int matchCount = 0;
 
@@ -327,24 +325,4 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         // Case 2: One or more secondary muscles, require at least two matches
         return matchCount >= 2;
     }
-
-
-
-
-//    @Override
-//    public void createTable() {
-//        super.createTable();
-//        addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
-//    }
-
-//    @Override
-//    public void createTable() {
-//        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
-//            statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
-//            addItem(new ExerciseInfo(-1, "Bench Press", "Chest", "Triceps", "Bench press is a chest fundamental."));
-//            addItem(new ExerciseInfo(-1, "Deadlift", "Back", "Hamstrings", "Deadlift is a back fundamental."));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

@@ -46,7 +46,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML private VBox itemContainer;
 
-
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo){
         super.selectItem(exerciseInfo);
@@ -152,9 +151,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         getGridPaneContainer().add(descriptionLabel, 0, 3);
         getGridPaneContainer().add(descriptionTextArea, 1, 3);
-
-        // getEditButton().setText("Edit Exercise");
-        // getDetailsLabel().setText("Currently editing: " + SqliteConnection.getCurrentExerciseInfo().getName());
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> syncItems());
 
