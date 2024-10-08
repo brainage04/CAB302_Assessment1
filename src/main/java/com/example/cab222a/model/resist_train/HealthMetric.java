@@ -24,6 +24,13 @@ public class HealthMetric extends NamedObject {
         this.date = date;
     }
 
+    public HealthMetric(int userID, String metricType, double measurement, Date date) {
+        super(metricType);
+        this.userID = userID;
+        this.measurement = measurement;
+        this.date = date;
+    }
+
     public int getUserID() {
         return userID;
     }
