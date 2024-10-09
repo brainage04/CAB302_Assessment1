@@ -9,12 +9,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * ExerciseInfoDAO class is used to handle CRUD operations related to the ExerciseInfo SQL table in the database.
+ * This class provides methods for adding, updating, retrieving, searching and finding alternative ExerciseInfo.
+ */
 public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
+    /**
+     * Returns name of the table in the database.
+     * @return Table name as a string
+     */
     @Override
     public String tableName() {
         return "exerciseInfo";
     }
 
+    /**
+     * Returns the SQL string for creating the ExerciseInfo table with its variables.
+     * @return SQL creation statement for table.
+     */
     @Override
     protected String createTableVariables() {
         return "id INTEGER PRIMARY KEY AUTOINCREMENT, "

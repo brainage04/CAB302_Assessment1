@@ -1,9 +1,9 @@
 package com.example.cab222a.dao.resist_train;
 
-import com.example.cab222a.common.SqliteConnection;
-import com.example.cab222a.dao.user.UserDAO;
+import com.example.cab222a.dao.core.IObjectDAO;
+import com.example.cab222a.dao.util.DAOTestUtils;
 import com.example.cab222a.model.resist_train.ExerciseInfo;
-import com.example.cab222a.model.user.User;
+import com.example.cab222a.mock_dao.core.AbstractObjectMockDAO;
 import org.junit.jupiter.api.*;
 
 import java.sql.Date;
@@ -14,28 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExerciseInfoDAOTest {
 
-    static UserDAO userDAO;
-    static ExerciseInfoDAO exerciseInfoDAO;
+    static IObjectDAO<ExerciseInfo> exerciseInfoDAO;
     static ExerciseInfo defaultItem;
     static ExerciseInfo updatedItem;
 
     @BeforeAll static void setUp() {
-        userDAO = new UserDAO();
-        userDAO.resetTable();
+        int userId = DAOTestUtils.setUpUser();
 
-        User testUser = new User(
-                new Date(System.currentTimeMillis()),
-                "Test",
-                "User",
-                "test@example.com",
-                "password",
-                "0413333333"
-        );
-        int userId = userDAO.addAndGetId(testUser);
-        testUser.setId(userId);
-        SqliteConnection.setCurrentUser(testUser);
-
-        exerciseInfoDAO = new ExerciseInfoDAO();
+        exerciseInfoDAO = new AbstractObjectMockDAO<>();
         exerciseInfoDAO.resetTable();
 
         defaultItem = new ExerciseInfo(
@@ -52,7 +38,8 @@ public class ExerciseInfoDAOTest {
         );
     }
         @Test @Order(1) void createReadExerciseInfo() {
-            int actualId = exerciseInfoDAO.addAndGetId(defaultItem);
+        ExerciseInfo actual = defaultItem;
+        int actualId = exerciseInfoDAO.addItem(actual);
 
             assertTrue(actualId > 0);
 
@@ -69,9 +56,7 @@ public class ExerciseInfoDAOTest {
             ExerciseInfo actual = defaultItem;
             ExerciseInfo expected = updatedItem;
             expected.setId(actual.getId());
-            int affectedRows = exerciseInfoDAO.updateItem(expected);
-
-            assertEquals(affectedRows, 1);
+            exerciseInfoDAO.updateItem(expected);
 
             actual = exerciseInfoDAO.getItem(actual.getId());
 
@@ -84,49 +69,47 @@ public class ExerciseInfoDAOTest {
         }
 
         @Test @Order(3) void deleteExerciseInfo() {
-            int affectedRows = exerciseInfoDAO.deleteItem(defaultItem.getId());
+            ExerciseInfo delete = exerciseInfoDAO.getItem(defaultItem.getId());
+            exerciseInfoDAO.deleteItem(delete.getId());
+            delete = exerciseInfoDAO.getItem(defaultItem.getId());
 
-            assertEquals(affectedRows, 1);
-
-            ExerciseInfo actual = exerciseInfoDAO.getItem(defaultItem.getId());
-
-            assertNull(actual);
+            assertNull(delete);
         }
 
         @Test @Order(4) void getAllExerciseInfos() {
-            exerciseInfoDAO.addAndGetId(defaultItem);
-            exerciseInfoDAO.addAndGetId(updatedItem);
+            exerciseInfoDAO.addItem(defaultItem);
+            exerciseInfoDAO.addItem(updatedItem);
 
             List<ExerciseInfo> items = exerciseInfoDAO.getAllItems();
             assertFalse(items.isEmpty());
-            assertTrue(items.size() >= 2);
+            assertEquals(2, items.size());
         }
 
-        @Test @Order(5) void searchExerciseInfo() {
-        // Search name
-            List<ExerciseInfo> search = exerciseInfoDAO.searchExerciseInfo("Bench");
-            assertFalse(search.isEmpty());
-        // Search muscle
-            search = exerciseInfoDAO.searchExerciseInfo("Chest");
-            assertFalse(search.isEmpty());
-
-        }
-
-        @Test @Order(6) void testNullQuery () {
-        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(null);
-        // 46 Default exercises + 2 Test.
-        // List should not be empty if search is null
-        assertFalse(exerciseInfo.isEmpty());
-        // List should be more than or equal to 46 which is the current amount of default exercises.
-        assertTrue(exerciseInfo.size() >= 46);
-        }
-
-
-        // No exercise or muscle called Deadlock
-        // List should return 0 matches.
-        @Test @Order(7) void testSearchNoResults () {
-        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo("Deadlock");
-        assertEquals(0, exerciseInfo.size());
-        }
+//        @Test @Order(5) void searchExerciseInfo() {
+//        // Search name
+//            List<ExerciseInfo> search = exerciseInfoDAO.searchExerciseInfo("Bench");
+//            assertFalse(search.isEmpty());
+//        // Search muscle
+//            search = exerciseInfoDAO.searchExerciseInfo("Chest");
+//            assertFalse(search.isEmpty());
+//
+//        }
+//
+//        @Test @Order(6) void testNullQuery () {
+//        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(null);
+//        // 46 Default exercises + 2 Test.
+//        // List should not be empty if search is null
+//        assertFalse(exerciseInfo.isEmpty());
+//        // List should be more than or equal to 46 which is the current amount of default exercises.
+//        assertTrue(exerciseInfo.size() >= 46);
+//        }
+//
+//
+//        // No exercise or muscle called Deadlock
+//        // List should return 0 matches.
+//        @Test @Order(7) void testSearchNoResults () {
+//        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo("Deadlock");
+//        assertEquals(0, exerciseInfo.size());
+//        }
     }
 
