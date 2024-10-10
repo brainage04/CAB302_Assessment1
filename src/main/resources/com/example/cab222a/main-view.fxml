@@ -27,5 +27,9 @@
         <Button text="Blood Pressure" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBloodPressureButtonClick" fx:id="bloodPressureButton"/>
         <Button text="Sleep" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onSleepButtonClick" fx:id="sleepButton"/>
     </HBox>
+
+    <!-- New Button for Workout Template -->
+    <Button text="Workout Template" maxWidth="Infinity" onAction="#onWorkoutTemplateButtonClick" fx:id="workoutTemplateButton"/>
+
     <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
 </VBox>
