@@ -32,6 +32,8 @@ public class MainController {
     @FXML
     public Button sleepButton;
     @FXML
+    public Button workoutTemplateButton; // New button for Workout Template
+    @FXML
     public Label welcomeBackLabel;
     @FXML
     public Label debugLabel;
@@ -85,9 +87,14 @@ public class MainController {
     }
 
     @FXML
+    public void onWorkoutTemplateButtonClick() throws IOException {
+        System.out.println("Workout Template Button Clicked!");  // Print statement for testing
+        changeScene(workoutTemplateButton, "workout-template-view.fxml");
+    }
+
+    @FXML
     public void onLogoutButtonClick() throws IOException {
         SqliteConnection.logOut();
-
         changeScene(logoutButton, "hello-view.fxml");
     }
 
