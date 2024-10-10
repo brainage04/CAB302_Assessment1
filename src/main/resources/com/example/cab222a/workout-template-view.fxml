@@ -2,27 +2,36 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.WorkoutTemplateController" spacing="15">
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.WorkoutTemplateController" spacing="15">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-    <Label text="Create Workout Template" style="-fx-font-size: 18px;"/>
 
-    <Label text="Workout Name:"/>
-    <TextField fx:id="workoutNameField" promptText="Enter workout name"/>
+    <!-- Left Side: Exercises in Workout -->
+    <VBox spacing="10" prefWidth="200">
+        <Label text="Exercises in Workout:" style="-fx-font-size: 14px;"/>
+        <ListView fx:id="exerciseListView" prefHeight="300" prefWidth="180"/>
+    </VBox>
 
-    <Label text="Notes:"/>
-    <TextField fx:id="notesField" promptText="Enter any specific notes"/>
+    <!-- Right Side: Workout Details -->
+    <VBox spacing="10">
+        <Label text="Create Workout Template" style="-fx-font-size: 18px;"/>
 
-    <Label text="Exercises in Workout:"/>
-    <ListView fx:id="exerciseListView"/>
+        <Label text="Workout Name:"/>
+        <TextField fx:id="workoutNameField" promptText="Enter workout name"/>
 
-    <Button text="Add Exercise" onAction="#handleAddExercise"/>
-    <Button text="Save Workout" onAction="#handleSaveWorkout"/>
+        <Label text="Select an Exercise:"/>
+        <ComboBox fx:id="exerciseChoiceBox" promptText="Choose an exercise"/>
 
-</VBox>
+        <Button text="Add Exercise" onAction="#handleAddExercise"/>
+        <Button text="Save Workout" onAction="#handleSaveWorkout"/>
+        <Button text="Back" onAction="#handleBackButtonClick"/>
+    </VBox>
+</HBox>
