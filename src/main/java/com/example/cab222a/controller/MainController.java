@@ -32,6 +32,8 @@ public class MainController {
     @FXML
     public Button sleepButton;
     @FXML
+    public Button metricButton;
+    @FXML
     public Label welcomeBackLabel;
     @FXML
     public Label debugLabel;
@@ -82,6 +84,10 @@ public class MainController {
     @FXML
     public void onSleepButtonClick() throws IOException {
         changeScene(resistTrainButton, "sleep-view.fxml");
+    }
+    @FXML
+    public void onMetricButtonClick() throws IOException {
+        changeScene(resistTrainButton, "metric-view.fxml");
     }
 
     @FXML
