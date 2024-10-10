@@ -25,6 +25,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Returns the SQL string for creating the ExerciseInfo table with its variables.
+     * This is then used for the create table method.
      * @return SQL creation statement for table.
      */
     @Override
@@ -38,6 +39,12 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 + "FOREIGN KEY (userId) REFERENCES users(id)";
     }
 
+    /**
+     * Prepares a SQL statement to add a new exercise for the current user.
+     * @param item ExerciseInfo object to be added
+     * @return A statement to be executed.
+     * @throws SQLException if an error occurs.
+     */
     @Override
     protected PreparedStatement addItemStatement(ExerciseInfo item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -49,7 +56,13 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return statement;
     }
 
-    // Does not use the current users' ID for when the table is initially created.
+    /**
+     * Prepares a SQL statement to add default exercises where userId will be -1.
+     * This method is used to initialise default exercises.
+     * @param item The ExerciseInfo object to be added as a default exercise.
+     * @return A statement ready for execution.
+     * @throws SQLException if an error occurs.
+     */
     protected PreparedStatement addDefaultItemStatement(ExerciseInfo item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)");
         statement.setInt(1, item.getUserId());
@@ -63,7 +76,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     /**
      * Adds a new item to the database.
      *
-     * @param item The item to add.
+     * @param item The ExerciseInfo item to add.
      * @return The number of rows affected by the statement.
      */
     public int addDefaultItem(ExerciseInfo item) {
@@ -113,12 +126,23 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return null;
     }
 
+    /**
+     * Prepares  a SQL statement to retrieve an exercise based on the provided exercise name.
+     * @param name The name of hte exercise to retireve from the database.
+     * @return A statement that contains the SQL query to find the exercise based on the name.
+     * @throws SQLException if an error occurs.
+     */
     protected PreparedStatement getItemStatement(String name) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE name = ?");
         statement.setString(1, name);
         return statement;
     }
 
+    /**
+     * Retrieves the ExerciseInfo object from the database base on the getItemStatement exercise.
+     * @param name The name of the exercise to retrieve
+     * @return An ExerciseInfo object containing its details if found or null.
+     */
     public ExerciseInfo getItem(String name) {
         try (ResultSet set = getItemStatement(name).executeQuery()) {
             if (set.next()) {
@@ -136,6 +160,10 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return null;
     }
 
+    /**
+     * Retrieves all ExerciseInfo items associated with the current user + the default exercises.
+     * @return A list of ExerciseInfo objects of the user.
+     */
     @Override
     public List<ExerciseInfo> getAllItems() {
         List<ExerciseInfo> items = new ArrayList<>();
@@ -157,7 +185,12 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return items;
     }
 
-    // User can search exercise info based on name or muscles
+    /**
+     * Searches for exercises that match the query string.
+     * Search looks for matches in the exercise name, primary muscle group or secondary muscle group.
+     * @param query The search query string
+     * @return A list of ExerciseInfo objects that match the query.
+     */
     public List<ExerciseInfo> searchExerciseInfo(String query) {
         return getAllItems()
                 .stream()
@@ -165,6 +198,12 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 .toList();
     }
 
+    /**
+     * Determines if an ExerciseInfo object matches the search query.
+     * @param exerciseInfo The ExerciseInfo object to check.
+     * @param query The search query string
+     * @return True if the ExerciseInfo objects matches the query, otherwise false.
+     */
     private boolean isExerciseInfoMatched(ExerciseInfo exerciseInfo, String query) {
         if (query == null || query.isEmpty()) return true;
         query = query.toLowerCase();
@@ -174,8 +213,10 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return searchString.toLowerCase().contains(query);
     }
 
-    // Override create table to check if the table is empty
-    // If empty then add default exercises
+    /**
+     * Creates the exerciseInfo table in the database if it does not exist.
+     * If the table is created and empty, default exercises are added ot the table.
+     */
     @Override
     public void createTable() {
         try (Statement statement = SqliteConnection.getInstance().createStatement()){
@@ -189,6 +230,11 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         }
     }
 
+    /**
+     * Checks if the table is empty
+     * @return True if there are no rows in the table, otherwise false.
+     * @throws SQLException if an error occurs.
+     */
     private boolean isTableEmpty() throws SQLException {
         String query = "SELECT COUNT (*) AS count FROM " + tableName();
         try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)) {
@@ -202,6 +248,11 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return false;
     }
 
+    /**
+     * A list of default exercises for the user.
+     * Uses an userId of -1.
+     * @throws SQLException if an error occurs.
+     */
     private void addDefaultExercises() throws SQLException {
         addDefaultItem(new ExerciseInfo(-1, "Barbell Bench Press", "Chest", "Triceps, Shoulders", "Barbell bench press is essential for chest development, also working triceps and shoulders.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Dumbbell Bench Press", "Chest", "Triceps, Shoulders", "Dumbbell bench press allows a greater range of motion for the chest, engaging stabilizer muscles.", -1));
@@ -271,6 +322,11 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         addDefaultItem(new ExerciseInfo(-1, "Stiff Leg Deadlift", "Hamstrings", "Lower Back", "Stiff leg deadlifts increase hamstring engagement by reducing knee bend.", -1));
     }
 
+    /**
+     * Finds alternative exercises based on the target exercise's primary and secondary muscle group.
+     * @param exerciseName The name of the target exercise to find alternatives of.
+     * @return The list of alternative exercises of the target exercise.
+     */
     public List<ExerciseInfo> findAlternatives(String exerciseName) {
         // Find the exercise info for the specified exercise name
         ExerciseInfo targetExercise = getAllItems()
@@ -301,6 +357,15 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 .toList();
     }
 
+    /**
+     * Checks if exercise in the list is an alternative based on the muscles.
+     * Method compares the primary and secondary muscle groups of the target exercise.
+     * Primary muscle group of the target exercise has to be part of the exercise.
+     * @param exerciseInfo The ExerciseInfo object to be compared.
+     * @param targetPrimaryMuscles Primary muscle group of the target exercise.
+     * @param targetSecondaryMuscles Secondary muscle groups of the target exercise.
+     * @return True if criteria is met, otherwise false.
+     */
     private boolean isAlternativeMatched(ExerciseInfo exerciseInfo, String targetPrimaryMuscles, String[] targetSecondaryMuscles) {
         String exercisePrimaryMuscle = exerciseInfo.getPrimaryMuscleGroups();
         String[] exerciseSecondaryMuscles = exerciseInfo.getSecondaryMuscleGroups().split(",\\s*");
