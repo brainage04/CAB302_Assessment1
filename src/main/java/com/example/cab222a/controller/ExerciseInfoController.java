@@ -16,6 +16,10 @@ import java.util.List;
 
 import static com.example.cab222a.controller.MainController.changeScene;
 
+/**
+ * Controller class to manage ExerciseInfo view for JavaFX.
+ * Allows users to view, edit, search and find alternatives of exercises.
+ */
 public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseInfo> {
 
     public Button alternativeExerciseButton;
@@ -46,6 +50,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML private VBox itemContainer;
 
+    /**
+     * When an item is selected, it displays the text fields and area with the exercise.
+     * @param exerciseInfo The item to select.
+     */
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo){
         super.selectItem(exerciseInfo);
@@ -56,6 +64,9 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         descriptionTextArea.setText(exerciseInfo.getDescription());
     }
 
+    /**
+     * Confirms the edit of the selected ExerciseInfo item.
+     */
     @Override
     protected void onEditConfirm() {
         // Get the selected item from the list view
@@ -70,8 +81,11 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
-    // Override due to implementing search
-    // Should update current list depending on user search query
+    /**
+     * Syncs the list of ExerciseINfo items with the list view.
+     * Sync is also dependent on the search.
+     * Displays list in alphabetical order.
+     */
     @Override
     protected void syncItems() {
         itemListView.getItems().clear();
@@ -89,6 +103,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         itemContainer.setVisible(hasExerciseInfo);
     }
 
+    /**
+     * Searches for an alternative exercise based on the selected exercise's name and displays them in the list view.
+     * If there are no alternatives, an alert is shown to the user.
+     */
     @FXML
     private void onAlternativeButtonClick() {
         ExerciseInfo selectedExercise = itemListView.getSelectionModel().getSelectedItem();
@@ -113,6 +131,11 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    /**
+     * Creates and returns a TextArea with predefined properties.
+     * @param id The ID to assign to the TextArea
+     * @return A predefined TextArea.
+     */
     public static TextArea customTextArea(String id) {
         TextArea textArea = new TextArea();
         textArea.setId(id);
@@ -122,6 +145,9 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         return textArea;
     }
 
+    /**
+     * Initialises the ExerciseInfoController for the view.
+     */
     @FXML
     public void initialize(){
         // Initialise exerciseInfoDAO to access methods
