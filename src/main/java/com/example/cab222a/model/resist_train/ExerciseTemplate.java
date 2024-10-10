@@ -66,7 +66,10 @@ public class ExerciseTemplate {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    // Override toString to display exercise name in ComboBox
+    @Override
+    public String toString() {
+        return name; // Adjust this if you'd like a more descriptive display, e.g., `name + " (" + type + ")"`
+    }
 }
-
-
-

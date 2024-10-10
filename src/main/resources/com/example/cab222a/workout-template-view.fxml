@@ -31,6 +31,7 @@
         <ComboBox fx:id="exerciseChoiceBox" promptText="Choose an exercise"/>
 
         <Button text="Add Exercise" onAction="#handleAddExercise"/>
+        <Button text="Remove Exercise" onAction="#handleRemoveExercise"/> <!-- New Button -->
         <Button text="Save Workout" onAction="#handleSaveWorkout"/>
         <Button text="Back" onAction="#handleBackButtonClick"/>
     </VBox>
