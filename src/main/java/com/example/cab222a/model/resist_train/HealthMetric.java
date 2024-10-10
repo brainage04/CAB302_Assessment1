@@ -4,6 +4,9 @@ import com.example.cab222a.model.core.NamedObject;
 
 import java.sql.Date;
 
+/**
+ * Ton do Javadoc for this class pls and thank you
+ */
 public class HealthMetric extends NamedObject {
     private int userID;
     private String metricType;

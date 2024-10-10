@@ -23,11 +23,6 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return "exerciseInfo";
     }
 
-    /**
-     * Returns the SQL string for creating the ExerciseInfo table with its variables.
-     * This is then used for the create table method.
-     * @return SQL creation statement for table.
-     */
     @Override
     protected String createTableVariables() {
         return "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -39,12 +34,6 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 + "FOREIGN KEY (userId) REFERENCES users(id)";
     }
 
-    /**
-     * Prepares a SQL statement to add a new exercise for the current user.
-     * @param item ExerciseInfo object to be added
-     * @return A statement to be executed.
-     * @throws SQLException if an error occurs.
-     */
     @Override
     protected PreparedStatement addItemStatement(ExerciseInfo item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -57,8 +46,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     }
 
     /**
-     * Prepares a SQL statement to add default exercises where userId will be -1.
-     * This method is used to initialise default exercises.
+     * Prepares an SQL statement to add a default item to the database.
      * @param item The ExerciseInfo object to be added as a default exercise.
      * @return A statement ready for execution.
      * @throws SQLException if an error occurs.
@@ -126,23 +114,12 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return null;
     }
 
-    /**
-     * Prepares  a SQL statement to retrieve an exercise based on the provided exercise name.
-     * @param name The name of hte exercise to retireve from the database.
-     * @return A statement that contains the SQL query to find the exercise based on the name.
-     * @throws SQLException if an error occurs.
-     */
     protected PreparedStatement getItemStatement(String name) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE name = ?");
         statement.setString(1, name);
         return statement;
     }
 
-    /**
-     * Retrieves the ExerciseInfo object from the database base on the getItemStatement exercise.
-     * @param name The name of the exercise to retrieve
-     * @return An ExerciseInfo object containing its details if found or null.
-     */
     public ExerciseInfo getItem(String name) {
         try (ResultSet set = getItemStatement(name).executeQuery()) {
             if (set.next()) {

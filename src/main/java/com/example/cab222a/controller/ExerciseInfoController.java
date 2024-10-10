@@ -14,22 +14,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.cab222a.controller.MainController.changeScene;
-
 /**
  * Controller class to manage ExerciseInfo view for JavaFX.
- * Allows users to view, edit, search and find alternatives of exercises.
+ * Allows users to perform Create, Read, Update, Delete (CRUD) operations alternatives of exercises.
  */
 public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseInfo> {
-
     public Button alternativeExerciseButton;
 
     @Override
-    public AbstractObjectDAO<ExerciseInfo> initItemDAO(){ return new ExerciseInfoDAO(); }
+    public AbstractObjectDAO<ExerciseInfo> initItemDAO() { return new ExerciseInfoDAO(); }
     @Override
-    public String initNextScene() { return "main-view.fxml"; }
+    public String getNextSceneName() { return "main-view.fxml"; }
     @Override
-    public String initPreviousScene() { return "main-view.fxml"; }
+    public String getPreviousSceneName() { return "main-view.fxml"; }
     @Override
     public ExerciseInfo generateDefaultItem() {
         return new ExerciseInfo("New Exercise", "Primary Muscle", "", "Description of exercise.");
@@ -50,12 +47,8 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     @FXML private VBox itemContainer;
 
-    /**
-     * When an item is selected, it displays the text fields and area with the exercise.
-     * @param exerciseInfo The item to select.
-     */
     @Override
-    protected void selectItem(ExerciseInfo exerciseInfo){
+    protected void selectItem(ExerciseInfo exerciseInfo) {
         super.selectItem(exerciseInfo);
 
         primaryMuscleTextField.setText(exerciseInfo.getPrimaryMuscleGroups());
@@ -64,9 +57,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         descriptionTextArea.setText(exerciseInfo.getDescription());
     }
 
-    /**
-     * Confirms the edit of the selected ExerciseInfo item.
-     */
     @Override
     protected void onEditConfirm() {
         // Get the selected item from the list view
@@ -81,11 +71,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
-    /**
-     * Syncs the list of ExerciseINfo items with the list view.
-     * Sync is also dependent on the search.
-     * Displays list in alphabetical order.
-     */
     @Override
     protected void syncItems() {
         itemListView.getItems().clear();
@@ -145,14 +130,9 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         return textArea;
     }
 
-    /**
-     * Initialises the ExerciseInfoController for the view.
-     */
     @FXML
-    public void initialize(){
-        // Initialise exerciseInfoDAO to access methods
-        exerciseInfoDAO = new ExerciseInfoDAO();
-
+    @Override
+    public void initialize() {
         // Set relevant labels
         Label itemLabel = new Label("Exercise Name:");
         setNameTextField(MainController.customTextField("nameTextField"));

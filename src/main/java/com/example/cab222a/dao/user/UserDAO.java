@@ -8,6 +8,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO for the User class that handles the CRUD
+ * operations within the database.
+ */
 public class UserDAO extends AbstractObjectDAO<User> {
     @Override
     public String tableName() {

@@ -13,6 +13,10 @@ public class HelloApplication extends Application {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 360;
 
+    /**
+     * Creates the database file if it does not already exist.
+     * @return Returns true if the file already exists, false if it does not already exist.
+     */
     public boolean createDb() {
         File file = new File("main.db");
         if (!file.exists()) {
@@ -27,6 +31,11 @@ public class HelloApplication extends Application {
         return false;
     }
 
+    /**
+     * Handles starting of the application.
+     * @param stage The stage for the JavaFX application.
+     * @throws IOException If the scene to be loaded does not exist.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         // create empty main.db file if it does not exist
@@ -40,6 +49,10 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    /**
+     * Starts the application.
+     * @param args Arguments to be passed to the application.
+     */
     public static void main(String[] args) {
         launch();
     }

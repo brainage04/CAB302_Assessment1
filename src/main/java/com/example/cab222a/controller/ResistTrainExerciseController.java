@@ -15,17 +15,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for the resistance training exercise view
+ * (resist-train-exercise-view.fxml).
+ */
 public class ResistTrainExerciseController extends SqliteControllerFunctions<ResistTrainExercise> {
     @Override
     public AbstractObjectDAO<ResistTrainExercise> initItemDAO() {
         return new ResistTrainExerciseDAO();
     }
     @Override
-    public String initNextScene() {
+    public String getNextSceneName() {
         return "resist-train-set-view.fxml";
     }
     @Override
-    public String initPreviousScene() {
+    public String getPreviousSceneName() {
         return "resist-train-session-view.fxml";
     }
     @Override
@@ -61,8 +65,8 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
         }
     }
 
-    @Override
     @FXML
+    @Override
     public void onEditButtonClick() throws IOException {
         ResistTrainExercise selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -76,6 +80,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
     }
 
     @FXML
+    @Override
     public void initialize() {
         // populate item container
         // <Label text="Exercise Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />

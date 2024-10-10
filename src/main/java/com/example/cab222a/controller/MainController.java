@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for the main stage (main-view.fxml).
+ */
 public class MainController {
     @FXML
     public Button resistTrainButton;
@@ -31,8 +34,15 @@ public class MainController {
     public Button bloodPressureButton;
     @FXML
     public Button sleepButton;
+    /**
+     * Dynamic label which welcomes the user with their first name.
+     */
     @FXML
     public Label welcomeBackLabel;
+    /**
+     * Label currently used to display information about the
+     * current user to verify that the DAO is working as intended.
+     */
     @FXML
     public Label debugLabel;
 
@@ -97,6 +107,14 @@ public class MainController {
         debugLabel.setText(SqliteConnection.getCurrentUser().toString());
     }
 
+    // todo: move methods below into a helper/utils class among with other various methods in the codebase
+
+    /**
+     * Helper method to change the scene of the current stage from one scene to another.
+     * @param source The Button which was clicked to initialize this transition.
+     * @param sceneName The destination scene's file name.
+     * @throws IOException If the scene does not exist.
+     */
     public static void changeScene(Button source, String sceneName) throws IOException {
         Stage stage = (Stage) source.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
@@ -104,6 +122,11 @@ public class MainController {
         stage.setScene(scene);
     }
 
+    /**
+     * Helper method to create a custom TextField for controllers with DAO requirements.
+     * @param id The JavaFX ID of the TextField.
+     * @return The newly created TextField.
+     */
     public static TextField customTextField(String id) {
         TextField textField = new TextField();
         textField.setId(id);
