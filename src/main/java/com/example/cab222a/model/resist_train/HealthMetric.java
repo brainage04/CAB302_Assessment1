@@ -13,7 +13,6 @@ public class HealthMetric extends NamedObject {
     public HealthMetric(int id, int userID, String metricType, double measurement, Date date) {
         super(id, metricType);
         this.userID = userID;
-        this.metricType = metricType;
         this.measurement = measurement;
         this.date = date;
     }
@@ -21,7 +20,13 @@ public class HealthMetric extends NamedObject {
     public HealthMetric(String metricType, int userID, double measurement, Date date){
         super(metricType);
         this.userID = userID;
-        this.metricType = metricType;
+        this.measurement = measurement;
+        this.date = date;
+    }
+
+    public HealthMetric(int userID, String metricType, double measurement, Date date) {
+        super(metricType);
+        this.userID = userID;
         this.measurement = measurement;
         this.date = date;
     }
@@ -54,7 +59,7 @@ public class HealthMetric extends NamedObject {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Date date){
         this.date = date;
     }
 
@@ -67,4 +72,5 @@ public class HealthMetric extends NamedObject {
                 ", measurement=" + getMeasurement() +
                 ", date=" + getDate() + "}";
     }
+
 }
