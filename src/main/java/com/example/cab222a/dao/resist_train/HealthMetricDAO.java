@@ -6,9 +6,7 @@ import com.example.cab222a.model.resist_train.HealthMetric;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 
 public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
@@ -29,8 +27,9 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
     @Override
     protected PreparedStatement addItemStatement(HealthMetric item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, metricType, measurement, date) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, SqliteConnection.getCurrentUser().getId());
+        String sql = "INSERT INTO healthMetric (userID, metricType, measurement, date) VALUES (?, ?, ?, ?)";
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(sql);
+        statement.setInt(1, item.getUserID());
         statement.setString(2, item.getMetricType());
         statement.setDouble(3, item.getMeasurement());
         statement.setDate(4, item.getDate());
@@ -39,17 +38,19 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
     @Override
     protected PreparedStatement updateItemStatement(HealthMetric item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET metricType = ?, measurement = ?, date = ? WHERE id = ?");
-        statement.setString(2, item.getMetricType());
-        statement.setDouble(3, item.getMeasurement());
-        statement.setDate(4, item.getDate());
-        statement.setInt(5, item.getId());
+        String sql = "UPDATE healthMetric SET metricType = ?, measurement = ?, date = ? WHERE id = ?";
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(sql);
+        statement.setString(1, item.getMetricType());
+        statement.setDouble(2, item.getMeasurement());
+        statement.setDate(3, item.getDate());
+        statement.setInt(4, item.getId());
         return statement;
     }
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userID = ?");
+        String sql = "SELECT * FROM healthMetric WHERE userID = ?";
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(sql);
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
         return statement;
     }
@@ -57,7 +58,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     @Override
     public HealthMetric getItem(int id) {
         try (ResultSet set = getItemStatement(id).executeQuery()) {
-            if(set.next()) {
+            if (set.next()) {
                 int userId = set.getInt("userId");
                 String metricType = set.getString("metricType");
                 double measurement = set.getDouble("measurement");
@@ -75,7 +76,6 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     @Override
     public List<HealthMetric> getAllItems() {
         List<HealthMetric> items = new ArrayList<>();
-
         try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
                 int id = set.getInt("id");
@@ -84,8 +84,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
                 double measurement = set.getDouble("measurement");
                 Date date = set.getDate("date");
 
-                items.add (new HealthMetric(id, userId, metricType, measurement, date));
-
+                items.add(new HealthMetric(id, userId, metricType, measurement, date));
             }
         } catch (SQLException e) {
             e.printStackTrace();
