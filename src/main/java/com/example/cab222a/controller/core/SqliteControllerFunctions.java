@@ -241,7 +241,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
      * Deletes an item from the database.
      */
     @FXML
-    private void onDelete() {
+    protected void onDelete() {
         // Get the selected item from the list view
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {

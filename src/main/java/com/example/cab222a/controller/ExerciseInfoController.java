@@ -50,6 +50,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo) {
         super.selectItem(exerciseInfo);
+        System.out.println("Selected Exercise: " + exerciseInfo.getName() + ", UserID: " + exerciseInfo.getUserId());
 
         primaryMuscleTextField.setText(exerciseInfo.getPrimaryMuscleGroups());
         secondaryMuscleTextField.setText(exerciseInfo.getSecondaryMuscleGroups());
@@ -62,11 +63,21 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         // Get the selected item from the list view
         ExerciseInfo selectedItem = getItemListView().getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            selectedItem.setName(getNameTextField().getText());
-            selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
-            selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
-            selectedItem.setDescription(descriptionTextArea.getText());
-            getItemDAO().updateItem(selectedItem);
+            if(selectedItem.getUserId() != -1){
+                selectedItem.setName(getNameTextField().getText());
+                selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
+                selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
+                selectedItem.setDescription(descriptionTextArea.getText());
+                getItemDAO().updateItem(selectedItem);
+
+            }
+            else {
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Cannot edit default exercises.");
+                errorAlert.setContentText(selectedItem.getName() + " is a default exercise.");
+                errorAlert.showAndWait();
+            }
             syncItems();
         }
     }
@@ -116,6 +127,24 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    @Override
+    @FXML
+    protected void onDelete() {
+        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            if (selectedItem.getUserId() != -1) {
+                getItemDAO().deleteItem(selectedItem.getId());
+                syncItems();
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Cannot delete default exercises.");
+                errorAlert.setContentText(selectedItem.getName() + " is a default exercise.");
+                errorAlert.showAndWait();
+            }
+        }
+    }
+
     /**
      * Creates and returns a TextArea with predefined properties.
      * @param id The ID to assign to the TextArea
@@ -133,6 +162,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     @FXML
     @Override
     public void initialize() {
+        exerciseInfoDAO = new ExerciseInfoDAO();
         // Set relevant labels
         Label itemLabel = new Label("Exercise Name:");
         setNameTextField(MainController.customTextField("nameTextField"));
