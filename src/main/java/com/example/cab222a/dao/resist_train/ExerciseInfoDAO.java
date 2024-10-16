@@ -65,16 +65,14 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      * Adds a new item to the database.
      *
      * @param item The ExerciseInfo item to add.
-     * @return The number of rows affected by the statement.
      */
-    public int addDefaultItem(ExerciseInfo item) {
+    public void addDefaultItem(ExerciseInfo item) {
         try {
-            return addDefaultItemStatement(item).executeUpdate();
+            addDefaultItemStatement(item).executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return 0;
     }
 
     @Override
@@ -104,8 +102,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 String primaryMuscleGroups = set.getString("primaryMuscleGroups");
                 String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
                 String description = set.getString("description");
+                int userId = set.getInt("userId");
 
-                return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description);
+                return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,12 +147,13 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
                 int id = set.getInt("id");
+                int userId = set.getInt("userId");
                 String name = set.getString("name");
                 String primaryMuscleGroups = set.getString("primaryMuscleGroups");
                 String secondaryMuscleGroups = set.getString("secondaryMuscleGroups");
                 String description = set.getString("description");
 
-                items.add(new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description));
+                items.add(new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
