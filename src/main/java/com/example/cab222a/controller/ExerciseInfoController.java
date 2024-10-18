@@ -63,6 +63,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         // Get the selected item from the list view
         ExerciseInfo selectedItem = getItemListView().getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
+            // User cannot edit default items where userId is -1.
             if(selectedItem.getUserId() != -1){
                 selectedItem.setName(getNameTextField().getText());
                 selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());

@@ -24,4 +24,27 @@ public class HealthMetricTest {
         testItem.setId(test);
         assertEquals(test, testItem.getId());
     }
+
+    @Test void testMetricType() {
+        assertEquals(testItem.getName(), "Weight(kg)");
+        String test = "Steps";
+        testItem.setMetricType(test);
+        assertEquals(test, testItem.getMetricType());
+    }
+
+    @Test void testMeasurement() {
+        assertEquals(testItem.getMeasurement(), 65);
+        double test = 70;
+        testItem.setMeasurement(test);
+        assertEquals(test, testItem.getMeasurement());
+    }
+
+    @Test void testDate() {
+        Date date = new Date (2024, 10 , 1);
+        assertEquals(testItem.getDate(), date);
+
+        Date testDate = new Date (2025, 11, 3);
+        testItem.setDate(testDate);
+        assertEquals(testItem.getDate(), testDate);
+    }
 }

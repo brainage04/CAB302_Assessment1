@@ -46,7 +46,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     }
 
     /**
-     * Prepares an SQL statement to add a default item to the database.
+     * Prepares a SQL statement to add a default item to the database.
      * @param item The ExerciseInfo object to be added as a default exercise.
      * @return A statement ready for execution.
      * @throws SQLException if an error occurs.
@@ -113,12 +113,23 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return null;
     }
 
+    /**
+     * Prepares a SQL statement to retrieve an item based on its name.
+     * @param name Name of the exercise
+     * @return A statement ready for execution
+     * @throws SQLException if an error occurs
+     */
     protected PreparedStatement getItemStatement(String name) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE name = ?");
         statement.setString(1, name);
         return statement;
     }
 
+    /**
+     * Retrieves an ExerciseInfo item from the database by its name
+     * @param name The name of the exercise to retrieve
+     * @return An ExerciseInfo object with the retrieved data, or null if no item is found.
+     */
     public ExerciseInfo getItem(String name) {
         try (ResultSet set = getItemStatement(name).executeQuery()) {
             if (set.next()) {
