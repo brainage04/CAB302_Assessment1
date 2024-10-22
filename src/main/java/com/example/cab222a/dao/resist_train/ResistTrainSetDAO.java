@@ -57,6 +57,29 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
         return statement;
     }
 
+    // New method to get sets for a specific exercise
+    public List<ResistTrainSet> getSetsForExercise(int exerciseId) {
+        List<ResistTrainSet> sets = new ArrayList<>();
+        try {
+            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE exerciseId = ?");
+            statement.setInt(1, exerciseId);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                int id = set.getInt("id");
+                String name = set.getString("name");
+                int weight = set.getInt("weight");
+                int reps = set.getInt("reps");
+                int rest = set.getInt("rest");
+                int repsInReserve = set.getInt("repsInReserve");
+
+                sets.add(new ResistTrainSet(id, name, exerciseId, weight, reps, rest, repsInReserve));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sets;
+    }
+
     @Override
     public ResistTrainSet getItem(int id) {
         try (ResultSet set = getItemStatement(id).executeQuery()) {

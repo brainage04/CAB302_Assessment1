@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercise> {
+
     @Override
     public String tableName() {
         return "resistTrainExercises";
@@ -26,7 +27,9 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
 
     @Override
     protected PreparedStatement addItemStatement(ResistTrainExercise item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, sessionId, exerciseInfoId) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                "INSERT INTO " + tableName() + " (name, sessionId, exerciseInfoId) VALUES (?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, item.getName());
         statement.setInt(2, SqliteConnection.getCurrentResistTrainSession().getId());
         statement.setInt(3, item.getExerciseInfoId());
@@ -35,7 +38,8 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
 
     @Override
     protected PreparedStatement updateItemStatement(ResistTrainExercise item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, sessionId = ?, exerciseInfoId = ? WHERE id = ?");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                "UPDATE " + tableName() + " SET name = ?, sessionId = ?, exerciseInfoId = ? WHERE id = ?");
         statement.setString(1, item.getName());
         statement.setInt(2, item.getSessionId());
         statement.setInt(3, item.getExerciseInfoId());
@@ -45,7 +49,8 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE sessionId = ?");
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                "SELECT * FROM " + tableName() + " WHERE sessionId = ?");
         statement.setInt(1, SqliteConnection.getCurrentResistTrainSession().getId());
         return statement;
     }
@@ -63,14 +68,12 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
     @Override
     public List<ResistTrainExercise> getAllItems() {
         List<ResistTrainExercise> items = new ArrayList<>();
-
         try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
                 int id = set.getInt("id");
@@ -78,14 +81,33 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
                 int sessionId = set.getInt("sessionId");
                 int exerciseInfoId = set.getInt("exerciseInfoId");
 
-                items.add(
-                        new ResistTrainExercise(id, name, sessionId, exerciseInfoId)
-                );
+                items.add(new ResistTrainExercise(id, name, sessionId, exerciseInfoId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return items;
+    }
 
+    // This is the new method you should add for fetching all exercises for a specific session
+    public List<ResistTrainExercise> getAllItemsForSession(int sessionId) {
+        List<ResistTrainExercise> items = new ArrayList<>();
+        try {
+            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                    "SELECT * FROM " + tableName() + " WHERE sessionId = ?");
+            statement.setInt(1, sessionId);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next()) {
+                int id = set.getInt("id");
+                String name = set.getString("name");
+                int exerciseInfoId = set.getInt("exerciseInfoId");
+
+                items.add(new ResistTrainExercise(id, name, sessionId, exerciseInfoId));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return items;
     }
 }
