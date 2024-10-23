@@ -32,11 +32,20 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         statement.setInt(1, id);
         return statement;
     }
+
+    protected PreparedStatement getHealthMetricItemStatement(int userID) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE userID = ?");
+        statement.setInt(1, userID);
+        return statement;
+    }
+
     protected abstract PreparedStatement getAllItemsStatement() throws SQLException;
 
     public int addItem(T item) {
         System.out.println("Adding item to table " + tableName() + ": \n" + item.toString());
+        System.out.println("statment:" + item);
         try (PreparedStatement statement = addItemStatement(item)) {
+
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows > 0) {

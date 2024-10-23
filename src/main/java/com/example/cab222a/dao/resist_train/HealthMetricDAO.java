@@ -21,7 +21,10 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     protected String createTableVariables() {
         return "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "userID INTEGER NOT NULL, " +
-                "metricType VARCHAR NOT NULL, " +
+                "weight DOUBLE NOT NULL, " +
+                "bmi DOUBLE NOT NULL, " +
+                "bodyFatPercentage DOUBLE NOT NULL, " +
+                "hydrationLevels DOUBLE NOT NULL, " +
                 "measurement DOUBLE NOT NULL, " +
                 "date DATE NOT NULL, " +
                 "FOREIGN KEY (userId) REFERENCES users(id)";
@@ -29,23 +32,32 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
     @Override
     protected PreparedStatement addItemStatement(HealthMetric item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, metricType, measurement, date) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                "INSERT INTO " + tableName() + " (userId, weight,bmi,bodyFatPercentage,hydrationLevels, measurement, date) VALUES (?, ?, ?, ?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
-        statement.setString(2, item.getMetricType());
-        statement.setDouble(3, item.getMeasurement());
-        statement.setDate(4, item.getDate());
+        statement.setDouble(2, item.getWeight());
+        statement.setDouble(3, item.getBmi());
+        statement.setDouble(4, item.getBodyFatPercentage());
+        statement.setDouble(5, item.getHydrationLevels());
+        statement.setDouble(6, item.getMeasurement());
+        statement.setDate(7, item.getDate());
         return statement;
     }
 
     @Override
     protected PreparedStatement updateItemStatement(HealthMetric item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET metricType = ?, measurement = ?, date = ? WHERE id = ?");
-        statement.setString(2, item.getMetricType());
-        statement.setDouble(3, item.getMeasurement());
-        statement.setDate(4, item.getDate());
-        statement.setInt(5, item.getId());
-        return statement;
+        return null;
     }
+
+//    @Override
+//    protected PreparedStatement updateItemStatement(HealthMetric item) throws SQLException {
+//        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET metricType = ?, measurement = ?, date = ? WHERE id = ?");
+//        statement.setString(2, item.getMetricType());
+//        statement.setDouble(3, item.getMeasurement());
+//        statement.setDate(4, item.getDate());
+//        statement.setInt(5, item.getId());
+//        return statement;
+//    }
 
     @Override
     protected PreparedStatement getAllItemsStatement() throws SQLException {
@@ -55,15 +67,18 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     }
 
     @Override
-    public HealthMetric getItem(int id) {
-        try (ResultSet set = getItemStatement(id).executeQuery()) {
+    public HealthMetric getItem(int userId) {
+        try (ResultSet set = getHealthMetricItemStatement(userId).executeQuery()) {
             if(set.next()) {
-                int userId = set.getInt("userId");
-                String metricType = set.getString("metricType");
+                int userID = set.getInt("userID");
+                double weight = set.getDouble("weight");
+                double bmi = set.getDouble("bmi");
+                double bodyFatPercentage = set.getDouble("bodyFatPercentage");
+                double hydrationLevels = set.getDouble("hydrationLevels");
                 double measurement = set.getDouble("measurement");
                 Date date = set.getDate("date");
 
-                return new HealthMetric(id, userId, metricType, measurement, date);
+                return new HealthMetric( userID, weight,bmi,bodyFatPercentage,hydrationLevels, measurement, date);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,13 +93,15 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
         try (ResultSet set = getAllItemsStatement().executeQuery()) {
             while (set.next()) {
-                int id = set.getInt("id");
                 int userId = set.getInt("userId");
-                String metricType = set.getString("metricType");
+                double weight = set.getDouble("weight");
+                double bmi = set.getDouble("bmi");
+                double bodyFatPercentage = set.getDouble("bodyFatPercentage");
+                double hydrationLevels = set.getDouble("hydrationLevels");
                 double measurement = set.getDouble("measurement");
                 Date date = set.getDate("date");
 
-                items.add (new HealthMetric(id, userId, metricType, measurement, date));
+                items.add (new HealthMetric( userId, weight,bmi,bodyFatPercentage,hydrationLevels, measurement, date));
 
             }
         } catch (SQLException e) {
