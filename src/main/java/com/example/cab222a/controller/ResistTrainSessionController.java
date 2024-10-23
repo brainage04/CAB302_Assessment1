@@ -48,7 +48,9 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         MainController.changeScene(editButton, nextScene);
     }
 
-    protected void copySession(ResistTrainSession oldSession) {
+    public void copySession() {
+        ResistTrainSession oldSession = itemListView.getSelectionModel().getSelectedItem();
+
         // copy session, add to DB, get session ID for exercises
         ResistTrainSession newSession = new ResistTrainSession(
                 "Copy of " + oldSession.getName(),
@@ -86,6 +88,8 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
                 setDAO.addItem(newSet);
             }
         }
+
+        super.syncItems();
     }
 
     @FXML

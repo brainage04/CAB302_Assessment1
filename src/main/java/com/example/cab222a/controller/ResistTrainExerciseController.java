@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -91,6 +92,20 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
             getItemDAO().updateItem(selectedItem);
             syncItems();
         }
+    }
+
+    @Override
+    @FXML
+    public void onEditButtonClick() throws IOException {
+        ResistTrainExercise selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+
+        SqliteConnection.setCurrentResistTrainExercise(selectedItem);
+        System.out.println("Resist train EXERCISE stored in memory:\n" + selectedItem);
+
+        MainController.changeScene(editButton, nextScene);
     }
 
     @FXML

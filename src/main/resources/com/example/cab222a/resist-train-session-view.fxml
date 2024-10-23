@@ -35,6 +35,7 @@
                     <Button text="Cancel" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCancel"/>
                     <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
                 </HBox>
+                <Button text="Make a Copy" maxWidth="Infinity" onAction="#copySession"/>
             </VBox>
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
