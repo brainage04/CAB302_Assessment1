@@ -6,7 +6,6 @@ import com.example.cab222a.model.resist_train.HealthMetric;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,6 +30,16 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     protected PreparedStatement addItemStatement(HealthMetric item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, metricType, measurement, date) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, SqliteConnection.getCurrentUser().getId());
+        statement.setString(2, item.getMetricType());
+        statement.setDouble(3, item.getMeasurement());
+        statement.setDate(4, item.getDate());
+        return statement;
+    }
+
+    @Override
+    protected PreparedStatement addCopiedItemStatement(HealthMetric item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, metricType, measurement, date) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        statement.setInt(1, item.getUserID());
         statement.setString(2, item.getMetricType());
         statement.setDouble(3, item.getMeasurement());
         statement.setDate(4, item.getDate());

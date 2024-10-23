@@ -37,6 +37,17 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
     }
 
     @Override
+    protected PreparedStatement addCopiedItemStatement(ResistTrainExercise item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
+                "INSERT INTO " + tableName() + " (name, sessionId, exerciseInfoId) VALUES (?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, item.getName());
+        statement.setInt(2, item.getSessionId());
+        statement.setInt(3, item.getExerciseInfoId());
+        return statement;
+    }
+
+    @Override
     protected PreparedStatement updateItemStatement(ResistTrainExercise item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
                 "UPDATE " + tableName() + " SET name = ?, sessionId = ?, exerciseInfoId = ? WHERE id = ?");
@@ -92,9 +103,12 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
     // This is the new method you should add for fetching all exercises for a specific session
     public List<ResistTrainExercise> getAllItemsForSession(int sessionId) {
         List<ResistTrainExercise> items = new ArrayList<>();
-        try {
-            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
-                    "SELECT * FROM " + tableName() + " WHERE sessionId = ?");
+        try (
+                PreparedStatement statement =
+                        SqliteConnection.getInstance().prepareStatement(
+                                "SELECT * FROM " + tableName() + " WHERE sessionId = ?"
+                        )
+        ) {
             statement.setInt(1, sessionId);
             ResultSet set = statement.executeQuery();
 

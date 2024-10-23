@@ -40,6 +40,10 @@ public class UserDAO extends AbstractObjectDAO<User> {
         return statement;
     }
 
+    protected PreparedStatement addCopiedItemStatement(User item) throws SQLException {
+        return addItemStatement(item);
+    }
+
     protected PreparedStatement updateItemStatement(User item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET created = ?, firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?");
         statement.setDate(1, item.getCreated());

@@ -35,11 +35,20 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
     protected abstract String createTableVariables();
     /**
      * Prepares an SQL statement to add an item to the database table.
+     * Relies on the value of parent elements (e.g. ResistTrainExercise relying on ID of current ResistTrainSession)
      * @param item Item to be added to the database.
      * @return A prepared statement ready to be executed.
      * @throws SQLException If the PreparedStatement contains invalid syntax.
      */
     protected abstract PreparedStatement addItemStatement(T item) throws SQLException;
+    /**
+     * Prepares an SQL statement to add a copied item to the database table.
+     * Does not rely on the value of parent elements (e.g. ResistTrainExercise relying on ID of current ResistTrainSession)
+     * @param item Item to be added to the database.
+     * @return A prepared statement ready to be executed.
+     * @throws SQLException If the PreparedStatement contains invalid syntax.
+     */
+    protected abstract PreparedStatement addCopiedItemStatement(T item) throws SQLException;
     /**
      * Prepares an SQL statement to update an item in the database table based on its primary keys.
      * @param item The item to update.
@@ -84,11 +93,32 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
             if (affectedRows > 0) {
                 ResultSet set = statement.getGeneratedKeys();
 
-                if (set.next()) {
-                    int id = set.getInt(1);
-                    System.out.println("Item added. New item ID: " + id);
-                    return id;
-                }
+                set.next();
+
+                int id = set.getInt(1);
+                System.out.println("Item added. New item ID: " + id);
+                return id;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int addCopiedItem(T item) {
+        System.out.println("Adding item to table " + tableName() + ": \n" + item.toString());
+        try (PreparedStatement statement = addCopiedItemStatement(item)) {
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet set = statement.getGeneratedKeys();
+
+                set.next();
+
+                int id = set.getInt(1);
+                System.out.println("Item added. New item ID: " + id);
+                return id;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,16 +132,16 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
     public abstract List<T> getAllItems();
 
     public void updateItem(T item) {
-        try {
-            updateItemStatement(item).executeUpdate();
+        try (PreparedStatement statement = updateItemStatement(item)) {
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void deleteItem(int id) {
-        try {
-            deleteItemStatement(id).executeUpdate();
+        try (PreparedStatement statement = deleteItemStatement(id)) {
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

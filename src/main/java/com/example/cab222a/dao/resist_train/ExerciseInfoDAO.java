@@ -45,6 +45,17 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return statement;
     }
 
+    @Override
+    protected PreparedStatement addCopiedItemStatement(ExerciseInfo item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        statement.setInt(1, item.getUserId());
+        statement.setString(2, item.getName());
+        statement.setString(3, item.getPrimaryMuscleGroups());
+        statement.setString(4, item.getSecondaryMuscleGroups());
+        statement.setString(5, item.getDescription());
+        return statement;
+    }
+
     /**
      * Prepares a SQL statement to add a default item to the database.
      * @param item The ExerciseInfo object to be added as a default exercise.
@@ -67,8 +78,8 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      * @param item The ExerciseInfo item to add.
      */
     public void addDefaultItem(ExerciseInfo item) {
-        try {
-            addDefaultItemStatement(item).executeUpdate();
+        try (PreparedStatement statement = addDefaultItemStatement(item)) {
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -229,11 +240,8 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
             // Count returns the number of rows in a table form
             // If the value in the first/only column is a 0 then return true
             // else return false
-            if (result.getInt(1) == 0) {
-                return true;
-            }
+            return result.getInt(1) == 0;
         }
-        return false;
     }
 
     /**
