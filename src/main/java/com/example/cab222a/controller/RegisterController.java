@@ -90,6 +90,21 @@ public class RegisterController {
             return;
         }
 
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) { // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+            errorMessageLabel.setText("Password requires a minimum of 8 characters, at least one letter and one number.");
+            return;
+        }
+
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){ // https://regexr.com/3e48o
+            errorMessageLabel.setText("Enter a valid email address.");
+            return;
+        }
+
+        if (userDAO.emailExists(email)){
+            errorMessageLabel.setText("Email already exist.");
+            return;
+        }
+
         User user = new User(new Date(System.currentTimeMillis()), firstName, lastName, email, password, phone);
         int userId = userDAO.addItem(user);
         user.setId(userId);
