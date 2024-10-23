@@ -2,6 +2,7 @@ module com.example.cab222a {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires bcrypt;
 
     exports com.example.cab222a;
     opens com.example.cab222a to javafx.fxml;

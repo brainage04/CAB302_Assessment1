@@ -8,6 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * DAO for the User class that handles the CRUD
  * operations within the database.
@@ -31,23 +33,29 @@ public class UserDAO extends AbstractObjectDAO<User> {
 
     protected PreparedStatement addItemStatement(User item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (created, firstName, lastName, email, phone, password) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, item.getPassword().toCharArray());
+
         statement.setDate(1, item.getCreated());
         statement.setString(2, item.getFirstName());
         statement.setString(3, item.getLastName());
         statement.setString(4, item.getEmail());
         statement.setString(5, item.getPhone());
-        statement.setString(6, item.getPassword());
+        statement.setString(6, hashedPassword);
         return statement;
     }
 
     protected PreparedStatement updateItemStatement(User item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET created = ?, firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?");
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, item.getPassword().toCharArray());
+
+
         statement.setDate(1, item.getCreated());
         statement.setString(2, item.getFirstName());
         statement.setString(3, item.getLastName());
         statement.setString(4, item.getEmail());
         statement.setString(5, item.getPhone());
-        statement.setString(6, item.getPassword());
+        statement.setString(6, hashedPassword);
         statement.setInt(7, item.getId());
         return statement;
     }
@@ -78,19 +86,23 @@ public class UserDAO extends AbstractObjectDAO<User> {
     }
 
     public User getItem(String email, String password) {
-        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE email = ? AND password = ?")) {
+        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE email = ?")) {
             statement.setString(1, email);
-            statement.setString(2, password);
+            //statement.setString(2, password);
             ResultSet set = statement.executeQuery();
 
             if (set.next()) {
-                int id = set.getInt("id");
-                Date created = set.getDate("created");
-                String firstName = set.getString("firstName");
-                String lastName = set.getString("lastName");
-                String phone = set.getString("phone");
-
-                return new User(id, created, firstName, lastName, email, phone, password);
+                String passwordHash = set.getString("password");
+                BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), passwordHash);
+                if(result.verified){
+                    int id = set.getInt("id");
+                    Date created = set.getDate("created");
+                    String firstName = set.getString("firstName");
+                    String lastName = set.getString("lastName");
+                    String phone = set.getString("phone");
+                    
+                    return new User(id, created, firstName, lastName, email, phone, passwordHash);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
