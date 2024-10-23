@@ -3,13 +3,18 @@ package com.example.cab222a.controller;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
+import com.example.cab222a.dao.resist_train.ResistTrainExerciseDAO;
+import com.example.cab222a.dao.resist_train.ResistTrainSetDAO;
+import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import com.example.cab222a.dao.resist_train.ResistTrainSessionDAO;
+import com.example.cab222a.model.resist_train.ResistTrainSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
 public class ResistTrainSessionController extends SqliteControllerFunctions<ResistTrainSession> {
     @Override
@@ -41,6 +46,46 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         System.out.println("Resist train SESSION stored in memory:\n" + selectedItem);
 
         MainController.changeScene(editButton, nextScene);
+    }
+
+    protected void copySession(ResistTrainSession oldSession) {
+        // copy session, add to DB, get session ID for exercises
+        ResistTrainSession newSession = new ResistTrainSession(
+                "Copy of " + oldSession.getName(),
+                oldSession.getUserId(),
+                oldSession.getCreated()
+        );
+        newSession.setId(getItemDAO().addItem(newSession));
+
+        // get exercises with old ID, for each exercise, copy with new ID
+        ResistTrainExerciseDAO sessionDAO = new ResistTrainExerciseDAO();
+        List<ResistTrainExercise> oldExercises = sessionDAO.getAllItemsForSession(oldSession.getId());
+
+        for (ResistTrainExercise oldExercise : oldExercises) {
+            ResistTrainExercise newExercise = new ResistTrainExercise(
+                    oldExercise.getName(),
+                    newSession.getId(), // replace old id with new id
+                    oldExercise.getExerciseInfoId()
+            );
+            newExercise.setId(sessionDAO.addItem(newExercise));
+
+            // get sets with old ID, for each set, copy with new ID
+            ResistTrainSetDAO setDAO = new ResistTrainSetDAO();
+            List<ResistTrainSet> oldSets = setDAO.getSetsForExercise(oldExercise.getId());
+
+            for (ResistTrainSet oldSet : oldSets) {
+                ResistTrainSet newSet = new ResistTrainSet(
+                        oldSet.getName(),
+                        newExercise.getId(), // replace old id with new id
+                        oldSet.getWeight(),
+                        oldSet.getReps(),
+                        oldSet.getRest(),
+                        oldSet.getReps()
+                );
+                // setting new IDs for new sets not needed - this is the last layer of relations in the series
+                setDAO.addItem(newSet);
+            }
+        }
     }
 
     @FXML
