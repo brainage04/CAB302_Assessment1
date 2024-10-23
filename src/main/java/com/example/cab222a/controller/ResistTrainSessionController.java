@@ -55,7 +55,7 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         ResistTrainSession newSession = new ResistTrainSession(
                 "Copy of " + oldSession.getName(),
                 oldSession.getUserId(),
-                oldSession.getCreated()
+                new Date(System.currentTimeMillis())
         );
         newSession.setId(getItemDAO().addItem(newSession));
 
