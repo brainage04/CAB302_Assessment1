@@ -2,6 +2,8 @@ package com.example.cab222a.controller;
 
 import com.example.cab222a.dao.resist_train.HealthMetricDAO;
 import com.example.cab222a.model.resist_train.HealthMetric;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +20,18 @@ public class MetricController {
     @FXML
     private TableView<HealthMetric> metricTableView;
 
+    @FXML
+    private TableColumn<HealthMetric, Double> weightColumn;
+    @FXML
+    private TableColumn<HealthMetric, Double> bmiColumn;
+    @FXML
+    private TableColumn<HealthMetric, Double> bodyFatPercentageColumn;
+    @FXML
+    private TableColumn<HealthMetric, Double> hydrationLevelsColumn;
+    @FXML
+    private TableColumn<HealthMetric, Double> measurementColumn;
+    @FXML
+    private TableColumn<HealthMetric, Date> dateColumn;
 
     @FXML
     private TextField measurementTextField;
@@ -44,38 +58,32 @@ public class MetricController {
 
     @FXML
     public void initialize() {
-
-//        metricTypeComboBox.getItems().addAll("Weight", "BMI", "Body Fat Percentage", "Hydration Levels");
-
-
-
-        TableColumn<HealthMetric, String> weightColumn = new TableColumn<>("Weight");
-        weightColumn.setCellValueFactory(new PropertyValueFactory<>("Weight"));
-
-        TableColumn<HealthMetric, Double> measurementColumn = new TableColumn<>("Measurement");
+        // Initialize Table Columns
+        weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        bmiColumn.setCellValueFactory(new PropertyValueFactory<>("bmi"));
+        bodyFatPercentageColumn.setCellValueFactory(new PropertyValueFactory<>("bodyFatPercentage"));
+        hydrationLevelsColumn.setCellValueFactory(new PropertyValueFactory<>("hydrationLevels"));
         measurementColumn.setCellValueFactory(new PropertyValueFactory<>("measurement"));
-
-        TableColumn<HealthMetric, Date> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
 
-        metricTableView.getColumns().addAll(weightColumn, measurementColumn, dateColumn);
 
-
+        // Load Metrics
         loadMetricsFromDatabase();
 
-
+        // Button Event Handlers
         addMetricButton.setOnAction(e -> addMetric());
-//        updateMetricButton.setOnAction(e -> updateMetric());
-//        deleteMetricButton.setOnAction(e -> deleteMetric());
-    }
 
+        // updateMetricButton.setOnAction(e -> updateMetric());
+        // deleteMetricButton.setOnAction(e -> deleteMetric());
+    }
 
     private void loadMetricsFromDatabase() {
         List<HealthMetric> metrics = new HealthMetricDAO().getAllItems();
-        metricTableView.getItems().setAll(metrics);
+        System.out.println("Loaded metric: " + metrics);
+        ObservableList<HealthMetric> observableMetrics = FXCollections.observableArrayList(metrics);
+        metricTableView.setItems(observableMetrics);
     }
-
 
     private void addMetric() {
         try {
@@ -93,44 +101,11 @@ public class MetricController {
 
             loadMetricsFromDatabase();
         } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid input! Please enter a valid number.");
+            statusLabel.setText("Invalid input! Please enter valid numbers.");
         }
     }
 
-
-//    private void updateMetric() {
-//        HealthMetric selectedMetric = metricTableView.getSelectionModel().getSelectedItem();
-//        if (selectedMetric != null) {
-//            try {
-//                selectedMetric.setMeasurement(Double.parseDouble(measurementTextField.getText()));
-//                selectedMetric.setMetricType(metricTypeComboBox.getValue());
-//
-//                new HealthMetricDAO().updateItem(selectedMetric);
-//                statusLabel.setText("Metric updated successfully!");
-//
-//                loadMetricsFromDatabase();
-//            } catch (NumberFormatException e) {
-//                statusLabel.setText("Invalid input! Please enter a valid number.");
-//            }
-//        } else {
-//            statusLabel.setText("Please select a metric to update.");
-//        }
-//    }
-
-//    private void deleteMetric() {
-//        HealthMetric selectedMetric = metricTableView.getSelectionModel().getSelectedItem();
-//        if (selectedMetric != null) {
-//            new HealthMetricDAO().deleteItem(selectedMetric.getId());
-//            statusLabel.setText("Metric deleted successfully!");
-//
-//            loadMetricsFromDatabase();
-//        } else {
-//            statusLabel.setText("Please select a metric to delete.");
-//        }
-//    }
-
-
     private int getCurrentUserId() {
-        return 1;
+        return 1;  // Replace with logic to get current user's ID
     }
 }

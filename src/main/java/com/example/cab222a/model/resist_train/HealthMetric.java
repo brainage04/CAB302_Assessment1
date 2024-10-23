@@ -39,7 +39,7 @@ public class HealthMetric extends NamedObject {
         this.bodyFatPercentage = bodyFatPercentage;
         this.hydrationLevels = hydrationLevels;
     }
-
+    // Getters and Setters
     public int getUserID() {
         return userID;
     }
