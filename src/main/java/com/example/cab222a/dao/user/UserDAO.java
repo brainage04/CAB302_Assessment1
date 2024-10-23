@@ -128,4 +128,20 @@ public class UserDAO extends AbstractObjectDAO<User> {
 
         return users;
     }
+
+    public boolean emailExists(String email) {
+        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(query)){
+            statement.setString(1, email);
+            ResultSet set = statement.executeQuery();
+            if (set.next()) {
+                return set.getInt(1) > 0;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
