@@ -38,6 +38,8 @@ public class MainController {
      * Dynamic label which welcomes the user with their first name.
      */
     @FXML
+    public Button metricButton;
+    @FXML
     public Label welcomeBackLabel;
     /**
      * Label currently used to display information about the
@@ -92,6 +94,10 @@ public class MainController {
     @FXML
     public void onSleepButtonClick() throws IOException {
         changeScene(resistTrainButton, "sleep-view.fxml");
+    }
+    @FXML
+    public void onMetricButtonClick() throws IOException {
+        changeScene(resistTrainButton, "metric-view.fxml");
     }
 
     @FXML

@@ -26,6 +26,7 @@
         <Button text="Body Fat Percentage" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBodyFatButtonClick" fx:id="bodyFatButton"/>
         <Button text="Blood Pressure" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBloodPressureButtonClick" fx:id="bloodPressureButton"/>
         <Button text="Sleep" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onSleepButtonClick" fx:id="sleepButton"/>
+        <Button text="Metric" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMetricButtonClick" fx:id="metricButton"/>
     </HBox>
     <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
 </VBox>
