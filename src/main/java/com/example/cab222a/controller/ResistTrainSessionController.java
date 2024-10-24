@@ -41,14 +41,27 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
     private void updateTotalHeaviestSets(ResistTrainSession session) {
         List<ResistTrainExercise> exercises = new ResistTrainExerciseDAO().getAllItemsForSession(session.getId());
 
-        double totalWeight = exercises.stream()
-                .map(exercise -> new ResistTrainSetDAO().getSetsForExercise(exercise.getId()))
+        // Debug: Check how many exercises were found
+        System.out.println("Exercises found: " + exercises.size());
+
+        int totalWeight = exercises.stream()
+                .map(exercise -> {
+                    List<ResistTrainSet> sets = new ResistTrainSetDAO().getSetsForExercise(exercise.getId());
+
+                    // Debug: Print how many sets were found for each exercise
+                    System.out.println("Exercise ID: " + exercise.getId() + " - Sets found: " + sets.size());
+
+                    return sets;
+                })
                 .map(sets -> sets.stream()
                         .max((set1, set2) -> Double.compare(set1.getWeight(), set2.getWeight()))
                         .map(ResistTrainSet::getWeight)
-                        .orElse(0))
+                        .orElse(0)) // Default to 0 if no sets found
                 .mapToInt(Integer::intValue)
                 .sum();
+
+        // Debug: Print the total weight calculated
+        System.out.println("Total Heaviest Sets Weight: " + totalWeight + " kg");
 
         totalHeaviestSetsLabel.setText("Total Heaviest Sets: " + totalWeight + " kg");
     }

@@ -35,6 +35,10 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
         statement.setInt(4, item.getReps());
         statement.setInt(5, item.getRest());
         statement.setInt(6, item.getRepsInReserve());
+
+        // ADD THIS LINE to verify set is saved
+        System.out.println("Set added: " + item.getName() + " - Weight: " + item.getWeight());
+
         return statement;
     }
 
@@ -74,6 +78,9 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
 
                 sets.add(new ResistTrainSet(id, name, exerciseId, weight, reps, rest, repsInReserve));
             }
+            // ADD THIS LINE to check how many sets were fetched
+            System.out.println("Exercise ID: " + exerciseId + " - Sets found: " + sets.size());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
