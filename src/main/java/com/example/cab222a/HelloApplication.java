@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     public static final String TITLE = "DT Fitness Tracker";
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = 360;
+    public static final int WIDTH = 960;
+    public static final int HEIGHT = 540;
 
     /**
      * Creates the database file if it does not already exist.

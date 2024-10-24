@@ -2,8 +2,11 @@ package com.example.cab222a.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Controller for the initial stage (hello-view.fxml).
@@ -13,6 +16,9 @@ public class HelloController {
     private Button loginButton;
     @FXML
     private Button registerButton;
+
+    @FXML
+    private ImageView logo;
 
     /**
      * Transitions to the login stage.
@@ -30,5 +36,11 @@ public class HelloController {
     @FXML
     public void onRegisterButtonClick() throws IOException {
         MainController.changeScene(registerButton, "register-view.fxml");
+    }
+
+    @FXML
+    public void initialize() {
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo750width.png")));
+        logo.setImage(image);
     }
 }

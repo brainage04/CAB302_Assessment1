@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <?import javafx.scene.control.TextField?>
-<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ExerciseInfoController">
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ExerciseInfoController" stylesheets="@style.css">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
