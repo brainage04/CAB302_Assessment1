@@ -67,10 +67,10 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      * @param item The ExerciseInfo item to add.
      */
     public void addDefaultItem(ExerciseInfo item) {
-        try {
-            addDefaultItemStatement(item).executeUpdate();
+        try (PreparedStatement statement = addDefaultItemStatement(item)) {
+            statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }
@@ -107,7 +107,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -141,7 +141,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -167,7 +167,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 items.add(new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;
@@ -214,7 +214,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 addDefaultExercises();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -225,23 +225,21 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      */
     private boolean isTableEmpty() throws SQLException {
         String query = "SELECT COUNT (*) AS count FROM " + tableName();
-        try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)) {
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+            ResultSet result = statement.executeQuery(query);
+
             // Count returns the number of rows in a table form
             // If the value in the first/only column is a 0 then return true
             // else return false
-            if (result.getInt(1) == 0) {
-                return true;
-            }
+            return result.getInt(1) == 0;
         }
-        return false;
     }
 
     /**
      * A list of default exercises for the user.
-     * Uses an userId of -1.
-     * @throws SQLException if an error occurs.
+     * Uses a user ID of -1.
      */
-    private void addDefaultExercises() throws SQLException {
+    private void addDefaultExercises() {
         addDefaultItem(new ExerciseInfo(-1, "Barbell Bench Press", "Chest", "Triceps, Shoulders", "Barbell bench press is essential for chest development, also working triceps and shoulders.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Dumbbell Bench Press", "Chest", "Triceps, Shoulders", "Dumbbell bench press allows a greater range of motion for the chest, engaging stabilizer muscles.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Incline Barbell Bench Press", "Upper Chest", "Triceps, Shoulders", "Incline bench press emphasizes the upper chest while working triceps and shoulders.", -1));

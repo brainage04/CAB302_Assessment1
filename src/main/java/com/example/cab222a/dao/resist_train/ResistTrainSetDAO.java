@@ -43,6 +43,18 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
     }
 
     @Override
+    protected PreparedStatement addCopiedItemStatement(ResistTrainSet item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, exerciseId, weight, reps, rest, repsInReserve) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, item.getName());
+        statement.setInt(2, item.getExerciseId());
+        statement.setInt(3, item.getWeight());
+        statement.setInt(4, item.getReps());
+        statement.setInt(5, item.getRest());
+        statement.setInt(6, item.getRepsInReserve());
+        return statement;
+    }
+
+    @Override
     protected PreparedStatement updateItemStatement(ResistTrainSet item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, weight = ?, reps = ?, rest = ?, repsInReserve = ? WHERE id = ?");
         statement.setString(1, item.getName());
@@ -64,8 +76,13 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
     // New method to get sets for a specific exercise
     public List<ResistTrainSet> getSetsForExercise(int exerciseId) {
         List<ResistTrainSet> sets = new ArrayList<>();
-        try {
-            PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE exerciseId = ?");
+        try (
+                PreparedStatement statement =
+                        SqliteConnection.getInstance().prepareStatement(
+                                "SELECT * FROM " + tableName() + " WHERE exerciseId = ?"
+                        )
+        ) {
+
             statement.setInt(1, exerciseId);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
@@ -82,7 +99,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
             System.out.println("Exercise ID: " + exerciseId + " - Sets found: " + sets.size());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return sets;
     }
@@ -101,7 +118,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
                 return new ResistTrainSet(id, name, exerciseId, weight, reps, rest, repsInReserve);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -126,7 +143,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;

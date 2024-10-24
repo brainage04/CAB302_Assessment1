@@ -33,6 +33,15 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
     }
 
     @Override
+    protected PreparedStatement addCopiedItemStatement(ResistTrainSession item) throws SQLException {
+        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (name, userId, created) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        statement.setString(1, item.getName());
+        statement.setInt(2, item.getUserId());
+        statement.setDate(3, item.getCreated());
+        return statement;
+    }
+
+    @Override
     protected PreparedStatement updateItemStatement(ResistTrainSession item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("UPDATE " + tableName() + " SET name = ?, created = ? WHERE id = ?");
         statement.setString(1, item.getName());
@@ -59,7 +68,7 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
                 return new ResistTrainSession(id, name, userId, created);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -81,7 +90,7 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;

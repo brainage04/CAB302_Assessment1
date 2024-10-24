@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
     }
 
     @FXML
-    private ComboBox exerciseField;
+    private ComboBox<String> exerciseField;
     @FXML
     private Label heaviestSetLabel; // Label to show heaviest set details
 
@@ -63,7 +64,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
 
             // Find the heaviest set (based on weight)
             ResistTrainSet heaviestSet = sets.stream()
-                    .max((set1, set2) -> Double.compare(set1.getWeight(), set2.getWeight()))
+                    .max(Comparator.comparingDouble(ResistTrainSet::getWeight))
                     .orElse(null);
 
             if (heaviestSet != null) {
@@ -85,7 +86,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
         if (selectedItem != null) {
             selectedItem.setName(getNameTextField().getText());
 
-            String name = (String) exerciseField.getValue();
+            String name = exerciseField.getValue();
             ExerciseInfo exerciseInfo = new ExerciseInfoDAO().getItem(name);
 
             selectedItem.setExerciseInfoId(exerciseInfo.getId());
@@ -118,7 +119,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
 
         Label exerciseLabel = new Label("Exercise:");
         List<String> exerciseNames = new ExerciseInfoDAO().getAllItems().stream().map(ExerciseInfo::getName).toList();
-        exerciseField = new ComboBox(FXCollections.observableArrayList(exerciseNames));
+        exerciseField = new ComboBox<>(FXCollections.observableArrayList(exerciseNames));
         exerciseField.setMaxWidth(Double.POSITIVE_INFINITY);
         getGridPaneContainer().add(exerciseLabel, 0, 1);
         getGridPaneContainer().add(exerciseField, 1, 1);

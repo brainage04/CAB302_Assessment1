@@ -49,6 +49,12 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
         </dependency>
+<!--        https://github.com/patrickfav/bcrypt-->
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bcrypt</artifactId>
+            <version>0.10.2</version>
+        </dependency>
     </dependencies>
 
 

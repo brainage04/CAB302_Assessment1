@@ -23,8 +23,10 @@ public class SqliteConnection {
         String url = "jdbc:sqlite:main.db";
         try {
             instance = DriverManager.getConnection(url);
-        } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+            instance.setAutoCommit(true);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

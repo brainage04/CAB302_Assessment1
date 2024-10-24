@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -92,7 +91,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         boolean hasExerciseInfo = !exerciseInfo.isEmpty();
 
-        Collections.sort(mutableExerciseInfo, Comparator.comparing(ExerciseInfo::getName, String.CASE_INSENSITIVE_ORDER));
+        mutableExerciseInfo.sort(Comparator.comparing(ExerciseInfo::getName, String.CASE_INSENSITIVE_ORDER));
 
         if (hasExerciseInfo) {
             itemListView.getItems().addAll(mutableExerciseInfo);
@@ -154,8 +153,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     public static TextArea customTextArea(String id) {
         TextArea textArea = new TextArea();
         textArea.setId(id);
-        textArea.setMaxWidth(250);
-        textArea.prefHeight(50);
         textArea.setWrapText(true);
         return textArea;
     }

@@ -6,6 +6,7 @@ import com.example.cab222a.model.user.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class RegisterController {
      * Text field for the password of the user.
      */
     @FXML
-    public TextField passwordTextField;
+    public PasswordField passwordTextField;
 
     @FXML
     private Button registerButton;
@@ -86,6 +87,21 @@ public class RegisterController {
         }
         if (password.isBlank()) {
             errorMessageLabel.setText("Please enter a password.");
+            return;
+        }
+
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) { // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+            errorMessageLabel.setText("Password requires a minimum of 8 characters, at least one letter and one number.");
+            return;
+        }
+
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){ // https://regexr.com/3e48o
+            errorMessageLabel.setText("Enter a valid email address.");
+            return;
+        }
+
+        if (userDAO.emailExists(email)){
+            errorMessageLabel.setText("Email already exist.");
             return;
         }
 

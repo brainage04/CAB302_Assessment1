@@ -8,9 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Controller for the main stage (main-view.fxml).
@@ -22,18 +25,6 @@ public class MainController {
     public Button cardioTrainButton;
     @FXML
     public Button exerciseInfoButton;
-    @FXML
-    public Button heightButton;
-    @FXML
-    public Button weightButton;
-    @FXML
-    public Button bodyMassIndexButton;
-    @FXML
-    public Button bodyFatButton;
-    @FXML
-    public Button bloodPressureButton;
-    @FXML
-    public Button sleepButton;
     /**
      * Dynamic label which welcomes the user with their first name.
      */
@@ -47,6 +38,7 @@ public class MainController {
      */
     @FXML
     public Label debugLabel;
+    public ImageView logo;
 
     @FXML
     private Button logoutButton;
@@ -67,35 +59,6 @@ public class MainController {
     }
 
     @FXML
-    public void onHeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "height-view.fxml");
-    }
-
-    @FXML
-    public void onWeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "weight-view.fxml");
-    }
-
-    @FXML
-    public void onBodyMassIndexButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-mass-index-view.fxml");
-    }
-
-    @FXML
-    public void onBodyFatButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-fat-view.fxml");
-    }
-
-    @FXML
-    public void onBloodPressureButtonClick() throws IOException {
-        changeScene(resistTrainButton, "blood-pressure-view.fxml");
-    }
-
-    @FXML
-    public void onSleepButtonClick() throws IOException {
-        changeScene(resistTrainButton, "sleep-view.fxml");
-    }
-    @FXML
     public void onMetricButtonClick() throws IOException {
         changeScene(resistTrainButton, "metric-view.fxml");
     }
@@ -110,7 +73,9 @@ public class MainController {
     @FXML
     public void initialize() {
         welcomeBackLabel.setText("Welcome back, " + SqliteConnection.getCurrentUser().getFirstName() + "!");
-        debugLabel.setText(SqliteConnection.getCurrentUser().toString());
+        //debugLabel.setText(SqliteConnection.getCurrentUser().toString());
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo750width.png")));
+        logo.setImage(image);
     }
 
     // todo: move methods below into a helper/utils class among with other various methods in the codebase
@@ -139,4 +104,5 @@ public class MainController {
         textField.setMaxWidth(Double.POSITIVE_INFINITY);
         return textField;
     }
+
 }

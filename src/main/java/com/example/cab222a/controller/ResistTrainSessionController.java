@@ -85,6 +85,8 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
     }
 
     public void copySession() {
+        System.out.println("COPYING SESSION");
+
         ResistTrainSession oldSession = itemListView.getSelectionModel().getSelectedItem();
 
         // copy session, add to DB, get session ID for exercises
@@ -95,9 +97,11 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         );
         newSession.setId(getItemDAO().addItem(newSession));
 
+        System.out.printf("Session - Old ID: %d, New ID: %d%n", oldSession.getId(), newSession.getId());
+
         // get exercises with old ID, for each exercise, copy with new ID
-        ResistTrainExerciseDAO sessionDAO = new ResistTrainExerciseDAO();
-        List<ResistTrainExercise> oldExercises = sessionDAO.getAllItemsForSession(oldSession.getId());
+        ResistTrainExerciseDAO exerciseDAO = new ResistTrainExerciseDAO();
+        List<ResistTrainExercise> oldExercises = exerciseDAO.getAllItemsForSession(oldSession.getId());
 
         for (ResistTrainExercise oldExercise : oldExercises) {
             ResistTrainExercise newExercise = new ResistTrainExercise(
@@ -105,7 +109,9 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
                     newSession.getId(), // replace old id with new id
                     oldExercise.getExerciseInfoId()
             );
-            newExercise.setId(sessionDAO.addItem(newExercise));
+            newExercise.setId(exerciseDAO.addCopiedItem(newExercise));
+
+            System.out.printf("Exercise - Old ID: %d, New ID: %d%n", oldExercise.getId(), newExercise.getId());
 
             // get sets with old ID, for each set, copy with new ID
             ResistTrainSetDAO setDAO = new ResistTrainSetDAO();
@@ -120,12 +126,15 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
                         oldSet.getRest(),
                         oldSet.getReps()
                 );
-                // setting new IDs for new sets not needed - this is the last layer of relations in the series
-                setDAO.addItem(newSet);
+                newSet.setId(setDAO.addCopiedItem(newSet));
+
+                System.out.printf("Set - Old ID: %d, New ID: %d%n", oldSet.getId(), newSet.getId());
             }
         }
 
         super.syncItems();
+
+        System.out.println("SESSION COPIED");
     }
 
     @FXML

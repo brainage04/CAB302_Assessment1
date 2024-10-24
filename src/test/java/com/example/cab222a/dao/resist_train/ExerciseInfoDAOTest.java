@@ -6,7 +6,6 @@ import com.example.cab222a.model.resist_train.ExerciseInfo;
 import com.example.cab222a.mock_dao.core.AbstractObjectMockDAO;
 import org.junit.jupiter.api.*;
 
-import java.sql.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
