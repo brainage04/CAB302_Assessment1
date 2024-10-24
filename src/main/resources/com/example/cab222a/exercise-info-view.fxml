@@ -37,7 +37,7 @@
 
                 <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                     <columnConstraints>
-                        <ColumnConstraints minWidth="100" />
+                        <ColumnConstraints minWidth="150" />
                         <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
                 </GridPane>
