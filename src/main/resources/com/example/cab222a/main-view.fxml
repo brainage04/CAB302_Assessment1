@@ -6,21 +6,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
 <?import javafx.scene.layout.HBox?>
 <VBox spacing="20.0" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.MainController" stylesheets="@style.css">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-
+    <ImageView fx:id="logo" preserveRatio="true"/>
     <Label text="Welcome back, user!" fx:id="welcomeBackLabel" wrapText="true"/>
     <Label text="put debug information here" fx:id="debugLabel" wrapText="true"/>
     <HBox maxWidth="Infinity" alignment="TOP_CENTER">
         <Button text="Resistance Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onResistTrainButtonClick" fx:id="resistTrainButton"/>
-        <Button text="Cardiovascular Training" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCardioTrainButtonClick" fx:id="cardioTrainButton"/>
-        <Button text="Exercise Information" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onExerciseInformationButtonClick" fx:id="exerciseInfoButton"/>
-    </HBox>
-    <HBox maxWidth="Infinity" alignment="TOP_CENTER">
         <Button text="Health Metrics" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMetricButtonClick" fx:id="metricButton"/>
+        <Button text="Exercise Information" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onExerciseInformationButtonClick" fx:id="exerciseInfoButton"/>
     </HBox>
     <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
 </VBox>

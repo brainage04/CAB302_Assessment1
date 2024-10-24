@@ -8,9 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Controller for the main stage (main-view.fxml).
@@ -35,6 +38,7 @@ public class MainController {
      */
     @FXML
     public Label debugLabel;
+    public ImageView logo;
 
     @FXML
     private Button logoutButton;
@@ -70,6 +74,8 @@ public class MainController {
     public void initialize() {
         welcomeBackLabel.setText("Welcome back, " + SqliteConnection.getCurrentUser().getFirstName() + "!");
         debugLabel.setText(SqliteConnection.getCurrentUser().toString());
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo750width.png")));
+        logo.setImage(image);
     }
 
     // todo: move methods below into a helper/utils class among with other various methods in the codebase
@@ -98,4 +104,5 @@ public class MainController {
         textField.setMaxWidth(Double.POSITIVE_INFINITY);
         return textField;
     }
+
 }

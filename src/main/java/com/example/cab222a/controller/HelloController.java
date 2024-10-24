@@ -18,7 +18,7 @@ public class HelloController {
     private Button registerButton;
 
     @FXML
-    private ImageView logo;
+    public ImageView logo;
 
     /**
      * Transitions to the login stage.
