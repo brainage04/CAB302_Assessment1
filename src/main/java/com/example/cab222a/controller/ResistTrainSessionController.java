@@ -3,8 +3,10 @@ package com.example.cab222a.controller;
 import com.example.cab222a.common.SqliteConnection;
 import com.example.cab222a.controller.core.SqliteControllerFunctions;
 import com.example.cab222a.dao.core.AbstractObjectDAO;
+import com.example.cab222a.dao.resist_train.ExerciseInfoDAO;
 import com.example.cab222a.dao.resist_train.ResistTrainExerciseDAO;
 import com.example.cab222a.dao.resist_train.ResistTrainSetDAO;
+import com.example.cab222a.model.resist_train.ExerciseInfo;
 import com.example.cab222a.model.resist_train.ResistTrainExercise;
 import com.example.cab222a.model.resist_train.ResistTrainSession;
 import com.example.cab222a.dao.resist_train.ResistTrainSessionDAO;
@@ -35,6 +37,13 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
     @Override
     public ResistTrainSession generateDefaultItem() {
         return new ResistTrainSession("New Session", SqliteConnection.getCurrentUser().getId(), new Date(System.currentTimeMillis()));
+    }
+
+
+    @Override
+    protected void selectItem(ResistTrainSession item) {
+        super.selectItem(item);
+        updateTotalHeaviestSets(item);
     }
 
     // Method to calculate the total of the heaviest sets for all exercises in the session
