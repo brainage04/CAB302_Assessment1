@@ -73,7 +73,7 @@ public class MainController {
     @FXML
     public void initialize() {
         welcomeBackLabel.setText("Welcome back, " + SqliteConnection.getCurrentUser().getFirstName() + "!");
-        debugLabel.setText(SqliteConnection.getCurrentUser().toString());
+        //debugLabel.setText(SqliteConnection.getCurrentUser().toString());
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logo750width.png")));
         logo.setImage(image);
     }

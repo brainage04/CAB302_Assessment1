@@ -16,13 +16,15 @@
     </padding>
 
     <Label text="Select an item to view or edit." />
+
     <HBox VBox.vgrow="ALWAYS" spacing="20.0">
-        <VBox spacing="10.0">
-            <ListView fx:id="itemListView" />
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+            <ListView fx:id="itemListView" VBox.vgrow="ALWAYS"/>
             <Button text="New" maxWidth="Infinity" onAction="#onAdd"/>
         </VBox>
-        <VBox spacing="10.0" prefWidth="400">
-            <VBox spacing="10.0" fx:id="itemContainer">
+
+        <VBox spacing="10.0" prefWidth="400" HBox.hgrow="ALWAYS">
+            <VBox spacing="10.0" fx:id="itemContainer" VBox.vgrow="ALWAYS">
                 <Label fx:id="detailsLabel" text="Details" alignment="TOP_CENTER"/>
                 <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                     <columnConstraints>
@@ -36,7 +38,8 @@
                     <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
                 </HBox>
             </VBox>
-            <VBox spacing="10.0">
+
+            <VBox spacing="10.0" VBox.vgrow="ALWAYS">
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
                 </HBox>

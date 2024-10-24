@@ -153,8 +153,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     public static TextArea customTextArea(String id) {
         TextArea textArea = new TextArea();
         textArea.setId(id);
-        textArea.setMaxWidth(250);
-        textArea.prefHeight(50);
         textArea.setWrapText(true);
         return textArea;
     }

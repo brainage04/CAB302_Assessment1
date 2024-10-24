@@ -16,7 +16,7 @@
 
     <ImageView fx:id="logo" preserveRatio="true"/>
 
-    <Label text="Welcome to DT Fitness Tracker. Please login or register to continue."
+    <Label text="Welcome to DT's Fitness Tracker. Please login or register to continue."
            wrapText="true"
     />
 

@@ -11,35 +11,44 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+
+
 <VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.ExerciseInfoController" stylesheets="@style.css">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
     <Label text="Select an exercise to view or edit." />
+
     <HBox VBox.vgrow="ALWAYS" spacing="20.0">
-        <VBox spacing="10.0">
-            <TextField fx:id="searchTextField" promptText="Search by name or muscle group" />
-            <HBox spacing = "10.0">
-                <ListView fx:id="itemListView" />
-            </HBox>
+
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="searchTextField" promptText="Search by name or muscle group" maxWidth="Infinity"/>
+
+            <ListView fx:id="itemListView" maxWidth="Infinity" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
+
             <Button text="New" maxWidth="Infinity" onAction="#onAdd"/>
         </VBox>
-        <VBox spacing="10.0" prefWidth="400">
+
+        <VBox spacing="10.0" prefWidth="600" HBox.hgrow="ALWAYS">
             <VBox spacing="10.0" fx:id="itemContainer">
                 <Label fx:id="detailsLabel" text="Details" alignment="TOP_CENTER"/>
+
                 <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
                     <columnConstraints>
-                        <ColumnConstraints minWidth="70" />
-                        <ColumnConstraints hgrow="ALWAYS"/>
+                        <ColumnConstraints minWidth="100" />
+                        <ColumnConstraints hgrow="ALWAYS" />
                     </columnConstraints>
                 </GridPane>
+
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Confirm Edit" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
                     <Button text="Cancel" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCancel"/>
                     <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
                 </HBox>
             </VBox>
+
             <VBox spacing="10.0">
                 <HBox maxWidth="Infinity" alignment="CENTER">
                     <Button text="Alternatives" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onAlternativeButtonClick" fx:id="alternativeExerciseButton"/>
@@ -47,5 +56,6 @@
                 </HBox>
             </VBox>
         </VBox>
+
     </HBox>
 </VBox>
