@@ -17,6 +17,9 @@ import java.sql.Date;
 import java.util.List;
 
 public class ResistTrainSessionController extends SqliteControllerFunctions<ResistTrainSession> {
+    @FXML
+    private Label totalHeaviestSetsLabel;  // New label to display total weight
+
     @Override
     public AbstractObjectDAO<ResistTrainSession> initItemDAO() {
         return new ResistTrainSessionDAO();
@@ -34,6 +37,23 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
         return new ResistTrainSession("New Session", SqliteConnection.getCurrentUser().getId(), new Date(System.currentTimeMillis()));
     }
 
+    // Method to calculate the total of the heaviest sets for all exercises in the session
+    private void updateTotalHeaviestSets(ResistTrainSession session) {
+        List<ResistTrainExercise> exercises = new ResistTrainExerciseDAO().getAllItemsForSession(session.getId());
+
+        double totalWeight = exercises.stream()
+                .map(exercise -> new ResistTrainSetDAO().getSetsForExercise(exercise.getId()))
+                .map(sets -> sets.stream()
+                        .max((set1, set2) -> Double.compare(set1.getWeight(), set2.getWeight()))
+                        .map(ResistTrainSet::getWeight)
+                        .orElse(0))
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        totalHeaviestSetsLabel.setText("Total Heaviest Sets: " + totalWeight + " kg");
+    }
+
+
     @Override
     @FXML
     public void onEditButtonClick() throws IOException {
@@ -44,6 +64,9 @@ public class ResistTrainSessionController extends SqliteControllerFunctions<Resi
 
         SqliteConnection.setCurrentResistTrainSession(selectedItem);
         System.out.println("Resist train SESSION stored in memory:\n" + selectedItem);
+
+        // Update the total heaviest sets label
+        updateTotalHeaviestSets(selectedItem);
 
         MainController.changeScene(editButton, nextScene);
     }
