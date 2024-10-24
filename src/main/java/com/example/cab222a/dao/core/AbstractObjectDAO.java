@@ -102,7 +102,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
                 return id;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return 0;
@@ -123,7 +123,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
                 return id;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return 0;
@@ -137,7 +137,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         try (PreparedStatement statement = updateItemStatement(item)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -145,7 +145,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         try (PreparedStatement statement = deleteItemStatement(id)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -156,7 +156,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("DROP TABLE " + tableName());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -168,7 +168,7 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
         try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

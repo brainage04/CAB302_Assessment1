@@ -79,7 +79,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
                 return new User(id, created, firstName, lastName, email, phone, password);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -105,7 +105,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -131,7 +131,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return users;
@@ -147,7 +147,7 @@ public class UserDAO extends AbstractObjectDAO<User> {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return false;
     }

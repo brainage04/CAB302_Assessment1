@@ -68,7 +68,7 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
                 return new ResistTrainSession(id, name, userId, created);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -90,7 +90,7 @@ public class ResistTrainSessionDAO extends AbstractObjectDAO<ResistTrainSession>
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;
