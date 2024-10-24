@@ -20,6 +20,8 @@ public class SqliteConnection {
         String url = "jdbc:sqlite:main.db";
         try {
             instance = DriverManager.getConnection(url);
+            instance.setAutoCommit(true);
+
         } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();
         }

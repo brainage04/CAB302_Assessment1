@@ -27,7 +27,8 @@
 
     <Button text="Add Metric" fx:id="addMetricButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
     <Button text="Update Metric" fx:id="updateMetricButton" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-    <Button text="Delete Metric" fx:id="deleteMetricButton" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.halignment="RIGHT" />
+    <Button text="Delete Metric" fx:id="deleteMetricButton" GridPane.columnIndex="2" GridPane.rowIndex="6" onAction="#deleteMetric" />
+
 
     <TableView fx:id="metricTableView" GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2">
         <columns>

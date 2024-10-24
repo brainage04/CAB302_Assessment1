@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MetricController {
@@ -56,6 +57,8 @@ public class MetricController {
     @FXML
     private Label statusLabel;
 
+    private HealthMetricDAO healthMetricDAO = new HealthMetricDAO();
+
     @FXML
     public void initialize() {
         // Initialize Table Columns
@@ -66,26 +69,23 @@ public class MetricController {
         measurementColumn.setCellValueFactory(new PropertyValueFactory<>("measurement"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-
-
         // Load Metrics
         loadMetricsFromDatabase();
 
         // Button Event Handlers
         addMetricButton.setOnAction(e -> addMetric());
-
-        // updateMetricButton.setOnAction(e -> updateMetric());
-        // deleteMetricButton.setOnAction(e -> deleteMetric());
+        deleteMetricButton.setOnAction(event -> deleteMetric());
     }
 
     private void loadMetricsFromDatabase() {
-        List<HealthMetric> metrics = new HealthMetricDAO().getAllItems();
+        List<HealthMetric> metrics = healthMetricDAO.getAllItems();
         System.out.println("Loaded metric: " + metrics);
         ObservableList<HealthMetric> observableMetrics = FXCollections.observableArrayList(metrics);
         metricTableView.setItems(observableMetrics);
     }
 
-    private void addMetric() {
+    @FXML
+    public void addMetric() {
         try {
             double weight = Double.parseDouble(weightTextField.getText());
             double bmi = Double.parseDouble(bmiTextField.getText());
@@ -96,7 +96,7 @@ public class MetricController {
 
             HealthMetric newMetric = new HealthMetric(getCurrentUserId(), weight, bmi, bodyFatPercentage, hydrationLevels, measurement, currentDate);
 
-            new HealthMetricDAO().addItem(newMetric);
+            healthMetricDAO.addItem(newMetric);
             statusLabel.setText("Metric added successfully!");
 
             loadMetricsFromDatabase();
@@ -104,6 +104,24 @@ public class MetricController {
             statusLabel.setText("Invalid input! Please enter valid numbers.");
         }
     }
+
+    @FXML
+    public void deleteMetric() {
+        HealthMetric selectedMetric = metricTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedMetric != null) {
+            System.out.println("Selected Metric ID: " + selectedMetric.getId());
+            healthMetricDAO.deleteItem(selectedMetric.getId());
+
+            metricTableView.getItems().remove(selectedMetric);
+
+            statusLabel.setText("Metric deleted successfully!");
+        } else {
+            statusLabel.setText("No metric selected.");
+        }
+    }
+
+
 
     private int getCurrentUserId() {
         return 1;  // Replace with logic to get current user's ID

@@ -41,6 +41,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
         statement.setDouble(5, item.getHydrationLevels());
         statement.setDouble(6, item.getMeasurement());
         statement.setDate(7, item.getDate());
+
         return statement;
     }
 
