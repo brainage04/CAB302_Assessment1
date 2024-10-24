@@ -1,3 +1,10 @@
 module:com.example.cab222a
 com.example.cab222a
 com.example.cab222a.controller
+com.example.cab222a.controller.core
+com.example.cab222a.dao.core
+com.example.cab222a.dao.resist_train
+com.example.cab222a.dao.user
+com.example.cab222a.model.core
+com.example.cab222a.model.resist_train
+com.example.cab222a.model.user
