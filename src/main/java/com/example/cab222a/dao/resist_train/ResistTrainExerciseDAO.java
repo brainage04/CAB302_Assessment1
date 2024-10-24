@@ -77,7 +77,7 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
                 return new ResistTrainExercise(id, name, sessionId, exerciseInfoId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
                 items.add(new ResistTrainExercise(id, name, sessionId, exerciseInfoId));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return items;
     }
@@ -120,7 +120,7 @@ public class ResistTrainExerciseDAO extends AbstractObjectDAO<ResistTrainExercis
                 items.add(new ResistTrainExercise(id, name, sessionId, exerciseInfoId));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return items;
     }

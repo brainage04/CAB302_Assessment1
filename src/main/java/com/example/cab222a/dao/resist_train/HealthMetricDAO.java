@@ -80,7 +80,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
                 return new HealthMetric(id, name, HealthMetricType.values()[metricTypeOrdinal], userId, measurement, created);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -105,7 +105,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;
@@ -129,7 +129,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;

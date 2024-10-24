@@ -70,7 +70,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         try (PreparedStatement statement = addDefaultItemStatement(item)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }
@@ -107,7 +107,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -141,7 +141,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 return new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -167,7 +167,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 items.add(new ExerciseInfo(id, name, primaryMuscleGroups, secondaryMuscleGroups, description, userId));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;
@@ -214,7 +214,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
                 addDefaultExercises();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -225,7 +225,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      */
     private boolean isTableEmpty() throws SQLException {
         String query = "SELECT COUNT (*) AS count FROM " + tableName();
-        try (ResultSet result = SqliteConnection.getInstance().createStatement().executeQuery(query)) {
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
+            ResultSet result = statement.executeQuery(query);
+
             // Count returns the number of rows in a table form
             // If the value in the first/only column is a 0 then return true
             // else return false

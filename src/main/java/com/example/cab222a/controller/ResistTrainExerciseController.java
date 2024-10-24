@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
 
             // Find the heaviest set (based on weight)
             ResistTrainSet heaviestSet = sets.stream()
-                    .max((set1, set2) -> Double.compare(set1.getWeight(), set2.getWeight()))
+                    .max(Comparator.comparingDouble(ResistTrainSet::getWeight))
                     .orElse(null);
 
             if (heaviestSet != null) {

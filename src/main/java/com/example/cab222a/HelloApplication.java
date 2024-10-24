@@ -23,7 +23,7 @@ public class HelloApplication extends Application {
             try {
                 return file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 

@@ -25,8 +25,8 @@ public class SqliteConnection {
             instance = DriverManager.getConnection(url);
             instance.setAutoCommit(true);
 
-        } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

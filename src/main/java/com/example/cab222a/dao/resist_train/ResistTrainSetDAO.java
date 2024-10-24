@@ -92,7 +92,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
                 sets.add(new ResistTrainSet(id, name, exerciseId, weight, reps, rest, repsInReserve));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return sets;
     }
@@ -111,7 +111,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
                 return new ResistTrainSet(id, name, exerciseId, weight, reps, rest, repsInReserve);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -136,7 +136,7 @@ public class ResistTrainSetDAO extends AbstractObjectDAO<ResistTrainSet> {
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return items;
