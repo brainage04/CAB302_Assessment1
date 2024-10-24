@@ -22,18 +22,6 @@ public class MainController {
     public Button cardioTrainButton;
     @FXML
     public Button exerciseInfoButton;
-    @FXML
-    public Button heightButton;
-    @FXML
-    public Button weightButton;
-    @FXML
-    public Button bodyMassIndexButton;
-    @FXML
-    public Button bodyFatButton;
-    @FXML
-    public Button bloodPressureButton;
-    @FXML
-    public Button sleepButton;
     /**
      * Dynamic label which welcomes the user with their first name.
      */
@@ -66,35 +54,6 @@ public class MainController {
         changeScene(exerciseInfoButton, "exercise-info-view.fxml");
     }
 
-    @FXML
-    public void onHeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "height-view.fxml");
-    }
-
-    @FXML
-    public void onWeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "weight-view.fxml");
-    }
-
-    @FXML
-    public void onBodyMassIndexButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-mass-index-view.fxml");
-    }
-
-    @FXML
-    public void onBodyFatButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-fat-view.fxml");
-    }
-
-    @FXML
-    public void onBloodPressureButtonClick() throws IOException {
-        changeScene(resistTrainButton, "blood-pressure-view.fxml");
-    }
-
-    @FXML
-    public void onSleepButtonClick() throws IOException {
-        changeScene(resistTrainButton, "sleep-view.fxml");
-    }
     @FXML
     public void onMetricButtonClick() throws IOException {
         changeScene(resistTrainButton, "metric-view.fxml");

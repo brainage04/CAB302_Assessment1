@@ -10,88 +10,69 @@ import java.sql.Date;
  * Used to track various metrics such as Weight, BMI, Steps, etc.
  */
 public class HealthMetric extends NamedObject {
-    private int userID;
-    private String metricType;
+    private HealthMetricType metricType;
+    private int userId;
     private double measurement;
-    private Date date;
+    private Date created;
 
     /**
      * Constructs a HealthMetric object with the specific id, userId, metricType, measurement and date.
      * @param id The ID of the metric record.
-     * @param userID The ID of the user which this session belongs to.
+     * @param userId The ID of the user which this session belongs to.
      * @param metricType The type of health metric (e.g. Weight, Steps)
      * @param measurement THe value of the metric (e.g. 65kg, 10000 steps).
-     * @param date The date when the metric was recorded.
+     * @param created The date when the metric was created.
      */
-    public HealthMetric(int id, int userID, String metricType, double measurement, Date date) {
-        super(id, metricType);
-        this.userID = userID;
+    public HealthMetric(int id, String name, HealthMetricType metricType, int userId, double measurement, Date created) {
+        super(id, name);
+        this.metricType = metricType;
+        this.userId = userId;
         this.measurement = measurement;
-        this.date = date;
+        this.created = created;
     }
 
     /**
      * Constructs a HealthMetric object with the specific metricType, userId, measurement and date.
      * @param metricType The type of health metric (e.g. Weight, Steps)
-     * @param userID The ID of the user which this session belongs to.
+     * @param userId The ID of the user which this session belongs to.
      * @param measurement THe value of the metric (e.g. 65kg, 10000 steps).
-     * @param date The date when the metric was recorded.
+     * @param created The date when the metric was created.
      */
-    public HealthMetric(String metricType, int userID, double measurement, Date date){
-        super(metricType);
-        this.userID = userID;
+    public HealthMetric(String name, HealthMetricType metricType, int userId, double measurement, Date created) {
+        super(name);
+        this.metricType = metricType;
+        this.userId = userId;
         this.measurement = measurement;
-        this.date = date;
+        this.created = created;
     }
 
-    /**
-     * Constructs a HealthMetric object with the specific userId, metricType, measurement and date.
-     * @param userID The ID of the user which this session belongs to.
-     * @param metricType The type of health metric (e.g. Weight, Steps)
-     * @param measurement THe value of the metric (e.g. 65kg, 10000 steps).
-     * @param date The date when the metric was recorded.
-     */
-    public HealthMetric(int userID, String metricType, double measurement, Date date) {
-        super(metricType);
-        this.userID = userID;
-        this.measurement = measurement;
-        this.date = date;
-    }
-
-    /**
-     *  Returns the ID of the user associated with the metric record.
-     * @return  UserId as an integer
-     */
-    public int getUserID() {
-        return userID;
-    }
-
-    /**
-     * Sets the user ID for the metric record.
-     * @param userID The ID of the user this metric will be associated to.
-     */
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    /**
-     * Returns the type of health metric
-     * @return The metric type as a string.
-     */
-    public String getMetricType() {
+    // Getters and Setters
+    public HealthMetricType getMetricType() {
         return metricType;
     }
 
-    /**
-     * Sets the type of health metric
-     * @param metricType The metric type.
-     */
-    public void setMetricType(String metricType) {
+    public void setMetricType(HealthMetricType metricType) {
         this.metricType = metricType;
     }
 
     /**
-     * Returns the measurement of the metric type.
+     *
+     * @return The ID of the user associated with the record.
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * Sets the user ID associated with the record.
+     * @param userId The ID of the user this metric will be associated with.
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * Gets the measurement.
      * @return The measurement as a double.
      */
     public double getMeasurement() {
@@ -99,27 +80,27 @@ public class HealthMetric extends NamedObject {
     }
 
     /**
-     * Sets the measurement value for the metric record.
-     * @param measurement The measurement value of the metric type.
+     * Sets the measurement.
+     * @param measurement The measurement as a double.
      */
     public void setMeasurement(double measurement) {
         this.measurement = measurement;
     }
 
     /**
-     * Returns the date when this metric was recorded
+     * Returns the date when this metric was created.
      * @return The date as a Date object.
      */
-    public Date getDate() {
-        return date;
+    public Date getCreated() {
+        return created;
     }
 
     /**
-     * Sets the date when this health metric was recorded.
-     * @param date The new date value.
+     * Sets the date when this health metric was created.
+     * @param created The new date value.
      */
-    public void setDate(Date date){
-        this.date = date;
+    public void setCreated(Date created){
+        this.created = created;
     }
 
     /**
@@ -130,10 +111,11 @@ public class HealthMetric extends NamedObject {
     public String toString() {
         return "HealthMetric{" +
                 "id=" + getId() +
+                ", name=" + getName() +
+                ", userID=" + getUserId() +
                 ", metricType=" + getMetricType() +
-                ", userID=" + getUserID() +
                 ", measurement=" + getMeasurement() +
-                ", date=" + getDate() + "}";
+                ", date=" + getCreated() + "}";
     }
 
 }

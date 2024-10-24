@@ -41,7 +41,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
     }
 
     @FXML
-    private ComboBox exerciseField;
+    private ComboBox<String> exerciseField;
     @FXML
     private Label heaviestSetLabel; // Label to show heaviest set details
 
@@ -85,7 +85,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
         if (selectedItem != null) {
             selectedItem.setName(getNameTextField().getText());
 
-            String name = (String) exerciseField.getValue();
+            String name = exerciseField.getValue();
             ExerciseInfo exerciseInfo = new ExerciseInfoDAO().getItem(name);
 
             selectedItem.setExerciseInfoId(exerciseInfo.getId());
@@ -118,7 +118,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
 
         Label exerciseLabel = new Label("Exercise:");
         List<String> exerciseNames = new ExerciseInfoDAO().getAllItems().stream().map(ExerciseInfo::getName).toList();
-        exerciseField = new ComboBox(FXCollections.observableArrayList(exerciseNames));
+        exerciseField = new ComboBox<>(FXCollections.observableArrayList(exerciseNames));
         exerciseField.setMaxWidth(Double.POSITIVE_INFINITY);
         getGridPaneContainer().add(exerciseLabel, 0, 1);
         getGridPaneContainer().add(exerciseField, 1, 1);

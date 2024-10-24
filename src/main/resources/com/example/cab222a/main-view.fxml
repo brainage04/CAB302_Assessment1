@@ -20,13 +20,7 @@
         <Button text="Exercise Information" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onExerciseInformationButtonClick" fx:id="exerciseInfoButton"/>
     </HBox>
     <HBox maxWidth="Infinity" alignment="TOP_CENTER">
-        <Button text="Height" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onHeightButtonClick" fx:id="heightButton"/>
-        <Button text="Weight" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onWeightButtonClick" fx:id="weightButton"/>
-        <Button text="Body Mass Index" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBodyMassIndexButtonClick" fx:id="bodyMassIndexButton"/>
-        <Button text="Body Fat Percentage" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBodyFatButtonClick" fx:id="bodyFatButton"/>
-        <Button text="Blood Pressure" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onBloodPressureButtonClick" fx:id="bloodPressureButton"/>
-        <Button text="Sleep" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onSleepButtonClick" fx:id="sleepButton"/>
-        <Button text="Metric" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMetricButtonClick" fx:id="metricButton"/>
+        <Button text="Health Metrics" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onMetricButtonClick" fx:id="metricButton"/>
     </HBox>
     <Button text="Logout" maxWidth="Infinity" onAction="#onLogoutButtonClick" fx:id="logoutButton"/>
 </VBox>

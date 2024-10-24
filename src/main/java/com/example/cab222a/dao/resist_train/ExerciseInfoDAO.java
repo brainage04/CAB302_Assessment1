@@ -45,17 +45,6 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
         return statement;
     }
 
-    @Override
-    protected PreparedStatement addCopiedItemStatement(ExerciseInfo item) throws SQLException {
-        PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("INSERT INTO " + tableName() + " (userId, name, primaryMuscleGroups, secondaryMuscleGroups, description) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, item.getUserId());
-        statement.setString(2, item.getName());
-        statement.setString(3, item.getPrimaryMuscleGroups());
-        statement.setString(4, item.getSecondaryMuscleGroups());
-        statement.setString(5, item.getDescription());
-        return statement;
-    }
-
     /**
      * Prepares a SQL statement to add a default item to the database.
      * @param item The ExerciseInfo object to be added as a default exercise.
@@ -246,10 +235,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * A list of default exercises for the user.
-     * Uses an userId of -1.
-     * @throws SQLException if an error occurs.
+     * Uses a user ID of -1.
      */
-    private void addDefaultExercises() throws SQLException {
+    private void addDefaultExercises() {
         addDefaultItem(new ExerciseInfo(-1, "Barbell Bench Press", "Chest", "Triceps, Shoulders", "Barbell bench press is essential for chest development, also working triceps and shoulders.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Dumbbell Bench Press", "Chest", "Triceps, Shoulders", "Dumbbell bench press allows a greater range of motion for the chest, engaging stabilizer muscles.", -1));
         addDefaultItem(new ExerciseInfo(-1, "Incline Barbell Bench Press", "Upper Chest", "Triceps, Shoulders", "Incline bench press emphasizes the upper chest while working triceps and shoulders.", -1));

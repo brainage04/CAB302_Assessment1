@@ -48,7 +48,9 @@ public abstract class AbstractObjectDAO<T extends IdentifiedObject> implements I
      * @return A prepared statement ready to be executed.
      * @throws SQLException If the PreparedStatement contains invalid syntax.
      */
-    protected abstract PreparedStatement addCopiedItemStatement(T item) throws SQLException;
+    protected PreparedStatement addCopiedItemStatement(T item) throws SQLException {
+        return addItemStatement(item);
+    }
     /**
      * Prepares an SQL statement to update an item in the database table based on its primary keys.
      * @param item The item to update.

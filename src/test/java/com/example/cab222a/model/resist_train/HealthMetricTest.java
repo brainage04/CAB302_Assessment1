@@ -11,40 +11,43 @@ public class HealthMetricTest {
     private HealthMetric testItem;
 
     @BeforeEach void setUp() {
-        testItem = new HealthMetric (-1,
-                1,
-                "Weight(kg)",
-                65,
-                new Date(2024, 10,1));
+        testItem = new HealthMetric(
+                -1,
+                "New Metric",
+                HealthMetricType.HEIGHT,
+                -1,
+                180,
+                new Date(1_000_000_000)
+        );
     }
 
     @Test void testId() {
         assertEquals(testItem.getId(), -1);
-        int test = 2;
+        int test = -2;
         testItem.setId(test);
         assertEquals(test, testItem.getId());
     }
 
     @Test void testMetricType() {
-        assertEquals(testItem.getName(), "Weight(kg)");
-        String test = "Steps";
-        testItem.setMetricType(test);
-        assertEquals(test, testItem.getMetricType());
+        assertEquals(testItem.getMetricType(), HealthMetricType.HEIGHT);
+
+        testItem.setMetricType(HealthMetricType.WEIGHT);
+        assertEquals(HealthMetricType.WEIGHT, testItem.getMetricType());
     }
 
     @Test void testMeasurement() {
-        assertEquals(testItem.getMeasurement(), 65);
-        double test = 70;
-        testItem.setMeasurement(test);
-        assertEquals(test, testItem.getMeasurement());
+        assertEquals(testItem.getMeasurement(), 180);
+
+        testItem.setMeasurement(70);
+        assertEquals(70, testItem.getMeasurement());
     }
 
     @Test void testDate() {
-        Date date = new Date (2024, 10 , 1);
-        assertEquals(testItem.getDate(), date);
+        assertEquals(testItem.getCreated(), new Date(1_000_000_000));
 
-        Date testDate = new Date (2025, 11, 3);
-        testItem.setDate(testDate);
-        assertEquals(testItem.getDate(), testDate);
+        Date testDate = new Date(System.currentTimeMillis());
+
+        testItem.setCreated(testDate);
+        assertEquals(testItem.getCreated(), testDate);
     }
 }
