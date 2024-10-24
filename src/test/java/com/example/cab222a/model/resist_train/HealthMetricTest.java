@@ -36,7 +36,7 @@ public class HealthMetricTest {
     }
 
     @Test void testMeasurement() {
-        assertEquals(testItem.getMeasurement(), 65);
+        assertEquals(testItem.getMeasurement(), 180);
 
         testItem.setMeasurement(70);
         assertEquals(70, testItem.getMeasurement());
