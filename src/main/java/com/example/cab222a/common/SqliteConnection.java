@@ -16,6 +16,9 @@ public class SqliteConnection {
     private static ResistTrainExercise currentResistTrainExercise = null;
     private static ExerciseInfo currentExerciseInfo = null;
 
+    /**
+     * Instantiates this class and establishes a connection to this application's database.
+     */
     private SqliteConnection() {
         String url = "jdbc:sqlite:main.db";
         try {
@@ -27,6 +30,10 @@ public class SqliteConnection {
         }
     }
 
+    /**
+     *
+     * @return A new SQLite Connection to this application's database.
+     */
     public static Connection getInstance() {
         if (instance == null) {
             new SqliteConnection();
@@ -34,37 +41,74 @@ public class SqliteConnection {
         return instance;
     }
 
+    /**
+     *
+     * @return The user currently logged into the application.
+     */
     public static User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Updates the current user of the application in this utility class for future use in other classes.
+     * @param currentUser The user currently logged into the application.
+     */
     public static void setCurrentUser(User currentUser) {
         SqliteConnection.currentUser = currentUser;
     }
 
+    /**
+     * Logs the current user out of the application.
+     */
     public static void logOut() {
         setCurrentUser(null);
     }
 
+    /**
+     *
+     * @return The current resistance training session being modified by the user.
+     */
     public static ResistTrainSession getCurrentResistTrainSession() {
         return currentResistTrainSession;
     }
 
+    /**
+     * Updates the current resistance training session of the application in this utility class for future use in other classes.
+     * @param currentResistTrainSession The resistance training session currently being modified.
+     */
     public static void setCurrentResistTrainSession(ResistTrainSession currentResistTrainSession) {
         SqliteConnection.currentResistTrainSession = currentResistTrainSession;
     }
 
+    /**
+     *
+     * @return The current resistance training exercise being modified by the user.
+     */
     public static ResistTrainExercise getCurrentResistTrainExercise() {
         return currentResistTrainExercise;
     }
 
+    /**
+     * Updates the current resistance training exercise of the application in this utility class for future use in other classes.
+     * @param currentResistTrainExercise The resistance training exercise currently being modified.
+     */
     public static void setCurrentResistTrainExercise(ResistTrainExercise currentResistTrainExercise) {
         SqliteConnection.currentResistTrainExercise = currentResistTrainExercise;
     }
 
-    public static ExerciseInfo getCurrentExerciseInfo() { return currentExerciseInfo;}
+    /**
+     *
+     * @return The current exercise information being modified by the user.
+     */
+    public static ExerciseInfo getCurrentExerciseInfo() {
+        return currentExerciseInfo;
+    }
 
-    public static void setCurrentExerciseInfo ( ExerciseInfo currentExerciseInfo){
+    /**
+     * Updates the current resistance training exercise of the application in this utility class for future use in other classes.
+     * @param currentExerciseInfo The exercise information currently being modified.
+     */
+    public static void setCurrentExerciseInfo (ExerciseInfo currentExerciseInfo){
         SqliteConnection.currentExerciseInfo = currentExerciseInfo;
     }
 }

@@ -27,12 +27,12 @@ public class HealthMetricController extends SqliteControllerFunctions<HealthMetr
     }
 
     @Override
-    public String initNextScene() {
+    public String getNextSceneName() {
         return "";
     }
 
     @Override
-    public String initPreviousScene() {
+    public String getPreviousSceneName() {
         return "main-view.fxml";
     }
 

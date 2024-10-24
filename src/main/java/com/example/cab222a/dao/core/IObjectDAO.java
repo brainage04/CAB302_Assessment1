@@ -5,7 +5,7 @@ import com.example.cab222a.model.core.IdentifiedObject;
 import java.util.List;
 
 /**
- * Generic interface for a Data Access Object that handles the
+ * Generic interface for a DAO that handles the
  * CRUD operations for generic classes.
  */
 public interface IObjectDAO<T extends IdentifiedObject> {
@@ -47,7 +47,7 @@ public interface IObjectDAO<T extends IdentifiedObject> {
     void deleteItem(int id);
 
     /**
-     * Resets the table.
+     * Resets the table by deleting it (if it exists) and creating it.
      */
     void resetTable();
 }

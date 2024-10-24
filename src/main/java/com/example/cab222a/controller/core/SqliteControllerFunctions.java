@@ -12,6 +12,11 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Abstract class that contains commonly used elements and functions for
+ * interacting with Data Access Objects (DAOs).
+ * @param <T> The type of object the DAO will be interacting with.
+ */
 public abstract class SqliteControllerFunctions<T extends NamedObject> {
     @FXML protected ListView<T> itemListView;
     protected final AbstractObjectDAO<T> itemDAO;
@@ -29,47 +34,99 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
     @FXML protected VBox itemContainer;
     @FXML private GridPane gridPaneContainer;
 
+    /**
+     * Instantiates this class with the appropriate Data Access Object (DAO) as well as next and previous scene names.
+     */
     public SqliteControllerFunctions() {
         itemDAO = initItemDAO();
-        nextScene = initNextScene();
-        previousScene = initPreviousScene();
+        nextScene = getNextSceneName();
+        previousScene = getPreviousSceneName();
     }
 
     // abstract methods
+    /**
+     * Initialises the Data Access Object (DAO) for this controller.
+     * @return The DAO to be used for this controller.
+     */
     public abstract AbstractObjectDAO<T> initItemDAO();
-    public abstract String initNextScene();
-    public abstract String initPreviousScene();
+    /**
+     *
+     * @return The name of the next scene file.
+     */
+    public abstract String getNextSceneName();
+    /**
+     *
+     * @return The name of the previous scene file.
+     */
+    public abstract String getPreviousSceneName();
+    /**
+     * Helper method to generate default paramaters for the generic type specified.
+     * @return The default item generated.
+     */
     public abstract T generateDefaultItem();
 
     // getters/setters
+    /**
+     *
+     * @return The ListView for this controller.
+     */
     public ListView<T> getItemListView() {
         return itemListView;
     }
 
+    /**
+     *
+     * @return The DAO for this controller.
+     */
     public AbstractObjectDAO<T> getItemDAO() {
         return itemDAO;
     }
 
+    /**
+     *
+     * @return The TextField containing the name of the scene.
+     */
     public TextField getNameTextField() {
         return nameTextField;
     }
 
+    /**
+     *
+     * @return The Label containing details of the current and previous scenes.
+     */
     public Label getDetailsLabel() {
         return detailsLabel;
     }
 
+    /**
+     *
+     * @return The Button which transitions to a scene where the user can
+     * perform CRUD operations on items related to the item being edited.
+     */
     public Button getEditButton() {
         return editButton;
     }
 
-    public void setNameTextField(TextField nameTextField) {
+    /**
+     * Helper method which sets the name TextField of the scene.
+     * @param nameTextField The TextField to assign as this controller's name TextField.
+     */
+    protected void setNameTextField(TextField nameTextField) {
         this.nameTextField = nameTextField;
     }
 
+    /**
+     *
+     * @return The main container of this scene.
+     */
     public VBox getItemContainer() {
         return itemContainer;
     }
 
+    /**
+     *
+     * @return The container for CRUD controls of this scene's database table.
+     */
     public GridPane getGridPaneContainer() {
         return gridPaneContainer;
     }
@@ -151,6 +208,9 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         itemContainer.setVisible(hasItem);
     }
 
+    /**
+     * Edits an item in the database.
+     */
     @FXML
     protected void onEditConfirm() {
         // Get the selected item from the list view
@@ -162,6 +222,10 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         }
     }
 
+    /**
+     * Reverts modifications made to an item's properties in the GUI,
+     * restoring them to what they were before any modifications.
+     */
     @FXML
     private void onCancel() {
         // Find the selected item
@@ -173,8 +237,11 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         }
     }
 
+    /**
+     * Deletes an item from the database.
+     */
     @FXML
-    private void onDelete() {
+    protected void onDelete() {
         // Get the selected item from the list view
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
@@ -183,6 +250,9 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         }
     }
 
+    /**
+     * Adds an item to the database.
+     */
     @FXML
     private void onAdd() {
         // Default values for a new item
@@ -198,6 +268,10 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         nameTextField.requestFocus();
     }
 
+    /**
+     * Transitions to the next scene.
+     * @throws IOException If the specified next scene does not exist.
+     */
     @FXML
     public void onEditButtonClick() throws IOException {
         T selectedItem = itemListView.getSelectionModel().getSelectedItem();
@@ -208,13 +282,22 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
         MainController.changeScene(editButton, nextScene);
     }
 
+    /**
+     * Transitions to the previous scene.
+     * @throws IOException If the specified previous scene does not exist.
+     */
     @FXML
     public void onGoBackButtonClick() throws IOException {
         MainController.changeScene(goBackButton, previousScene);
     }
 
+    /**
+     * Initialises the controller by setting up the cell factory and
+     * reading items from the database for the list view.
+     */
     @FXML
     public void initialize() {
+        // todo: create helper method for overriding methods that build GridPaneContainers
         itemListView.setCellFactory(this::renderCell);
         syncItems();
         // Select the first item and display its information

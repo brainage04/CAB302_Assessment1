@@ -35,7 +35,7 @@
                     </columnConstraints>
                 </GridPane>
                 <HBox maxWidth="Infinity" alignment="CENTER">
-                    <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
+                    <Button text="Confirm Edit" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
                     <Button text="Cancel" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCancel"/>
                     <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
                 </HBox>

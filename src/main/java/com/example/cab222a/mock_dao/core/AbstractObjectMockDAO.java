@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract class for a Data Access Object that handles the
- * CRUD operations for generic classes within memory.
+ * Abstract class for a DAO that handles CRUD
+ * operations for generic classes within memory.
  */
 public class AbstractObjectMockDAO<T extends IdentifiedObject> implements IObjectDAO<T> {
     protected List<T> items;
     protected int autoIncrementedId;
 
+    /**
+     * Constructor that resets (creates) the mock "table" (list) on instantiation.
+     */
     public AbstractObjectMockDAO() {
         resetTable();
     }
@@ -51,6 +54,7 @@ public class AbstractObjectMockDAO<T extends IdentifiedObject> implements IObjec
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getId() == id) {
                 items.remove(i);
+                return;
             }
         }
     }

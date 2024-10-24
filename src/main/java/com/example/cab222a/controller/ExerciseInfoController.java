@@ -10,22 +10,22 @@ import javafx.scene.layout.VBox;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.cab222a.controller.MainController.changeScene;
-
+/**
+ * Controller class to manage ExerciseInfo view for JavaFX.
+ * Allows users to perform Create, Read, Update, Delete (CRUD) operations alternatives of exercises.
+ */
 public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseInfo> {
-
     public Button alternativeExerciseButton;
 
     @Override
-    public AbstractObjectDAO<ExerciseInfo> initItemDAO(){ return new ExerciseInfoDAO(); }
+    public AbstractObjectDAO<ExerciseInfo> initItemDAO() { return new ExerciseInfoDAO(); }
     @Override
-    public String initNextScene() { return "main-view.fxml"; }
+    public String getNextSceneName() { return "main-view.fxml"; }
     @Override
-    public String initPreviousScene() { return "main-view.fxml"; }
+    public String getPreviousSceneName() { return "main-view.fxml"; }
     @Override
     public ExerciseInfo generateDefaultItem() {
         return new ExerciseInfo("New Exercise", "Primary Muscle", "", "Description of exercise.");
@@ -47,8 +47,9 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     @FXML private VBox itemContainer;
 
     @Override
-    protected void selectItem(ExerciseInfo exerciseInfo){
+    protected void selectItem(ExerciseInfo exerciseInfo) {
         super.selectItem(exerciseInfo);
+        System.out.println("Selected Exercise: " + exerciseInfo.getName() + ", UserID: " + exerciseInfo.getUserId());
 
         primaryMuscleTextField.setText(exerciseInfo.getPrimaryMuscleGroups());
         secondaryMuscleTextField.setText(exerciseInfo.getSecondaryMuscleGroups());
@@ -61,17 +62,26 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         // Get the selected item from the list view
         ExerciseInfo selectedItem = getItemListView().getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            selectedItem.setName(getNameTextField().getText());
-            selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
-            selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
-            selectedItem.setDescription(descriptionTextArea.getText());
-            getItemDAO().updateItem(selectedItem);
+            // User cannot edit default items where userId is -1.
+            if(selectedItem.getUserId() != -1){
+                selectedItem.setName(getNameTextField().getText());
+                selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
+                selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
+                selectedItem.setDescription(descriptionTextArea.getText());
+                getItemDAO().updateItem(selectedItem);
+
+            }
+            else {
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Cannot edit default exercises.");
+                errorAlert.setContentText(selectedItem.getName() + " is a default exercise.");
+                errorAlert.showAndWait();
+            }
             syncItems();
         }
     }
 
-    // Override due to implementing search
-    // Should update current list depending on user search query
     @Override
     protected void syncItems() {
         itemListView.getItems().clear();
@@ -81,7 +91,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         boolean hasExerciseInfo = !exerciseInfo.isEmpty();
 
-        Collections.sort(mutableExerciseInfo, Comparator.comparing(ExerciseInfo::getName, String.CASE_INSENSITIVE_ORDER));
+        mutableExerciseInfo.sort(Comparator.comparing(ExerciseInfo::getName, String.CASE_INSENSITIVE_ORDER));
 
         if (hasExerciseInfo) {
             itemListView.getItems().addAll(mutableExerciseInfo);
@@ -89,6 +99,10 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         itemContainer.setVisible(hasExerciseInfo);
     }
 
+    /**
+     * Searches for an alternative exercise based on the selected exercise's name and displays them in the list view.
+     * If there are no alternatives, an alert is shown to the user.
+     */
     @FXML
     private void onAlternativeButtonClick() {
         ExerciseInfo selectedExercise = itemListView.getSelectionModel().getSelectedItem();
@@ -113,6 +127,29 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         }
     }
 
+    @Override
+    @FXML
+    protected void onDelete() {
+        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            if (selectedItem.getUserId() != -1) {
+                getItemDAO().deleteItem(selectedItem.getId());
+                syncItems();
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Cannot delete default exercises.");
+                errorAlert.setContentText(selectedItem.getName() + " is a default exercise.");
+                errorAlert.showAndWait();
+            }
+        }
+    }
+
+    /**
+     * Creates and returns a TextArea with predefined properties.
+     * @param id The ID to assign to the TextArea
+     * @return A predefined TextArea.
+     */
     public static TextArea customTextArea(String id) {
         TextArea textArea = new TextArea();
         textArea.setId(id);
@@ -123,10 +160,9 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     }
 
     @FXML
-    public void initialize(){
-        // Initialise exerciseInfoDAO to access methods
+    @Override
+    public void initialize() {
         exerciseInfoDAO = new ExerciseInfoDAO();
-
         // Set relevant labels
         Label itemLabel = new Label("Exercise Name:");
         setNameTextField(MainController.customTextField("nameTextField"));

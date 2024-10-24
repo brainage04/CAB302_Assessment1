@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for the main stage (main-view.fxml).
+ */
 public class MainController {
     @FXML
     public Button resistTrainButton;
@@ -19,22 +22,17 @@ public class MainController {
     public Button cardioTrainButton;
     @FXML
     public Button exerciseInfoButton;
-    @FXML
-    public Button heightButton;
-    @FXML
-    public Button weightButton;
-    @FXML
-    public Button bodyMassIndexButton;
-    @FXML
-    public Button bodyFatButton;
-    @FXML
-    public Button bloodPressureButton;
-    @FXML
-    public Button sleepButton;
+    /**
+     * Dynamic label which welcomes the user with their first name.
+     */
     @FXML
     public Button metricButton;
     @FXML
     public Label welcomeBackLabel;
+    /**
+     * Label currently used to display information about the
+     * current user to verify that the DAO is working as intended.
+     */
     @FXML
     public Label debugLabel;
 
@@ -57,35 +55,6 @@ public class MainController {
     }
 
     @FXML
-    public void onHeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "height-view.fxml");
-    }
-
-    @FXML
-    public void onWeightButtonClick() throws IOException {
-        changeScene(resistTrainButton, "weight-view.fxml");
-    }
-
-    @FXML
-    public void onBodyMassIndexButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-mass-index-view.fxml");
-    }
-
-    @FXML
-    public void onBodyFatButtonClick() throws IOException {
-        changeScene(resistTrainButton, "body-fat-view.fxml");
-    }
-
-    @FXML
-    public void onBloodPressureButtonClick() throws IOException {
-        changeScene(resistTrainButton, "blood-pressure-view.fxml");
-    }
-
-    @FXML
-    public void onSleepButtonClick() throws IOException {
-        changeScene(resistTrainButton, "sleep-view.fxml");
-    }
-    @FXML
     public void onMetricButtonClick() throws IOException {
         changeScene(resistTrainButton, "metric-view.fxml");
     }
@@ -103,6 +72,14 @@ public class MainController {
         debugLabel.setText(SqliteConnection.getCurrentUser().toString());
     }
 
+    // todo: move methods below into a helper/utils class among with other various methods in the codebase
+
+    /**
+     * Helper method to change the scene of the current stage from one scene to another.
+     * @param source The Button which was clicked to initialize this transition.
+     * @param sceneName The destination scene's file name.
+     * @throws IOException If the scene does not exist.
+     */
     public static void changeScene(Button source, String sceneName) throws IOException {
         Stage stage = (Stage) source.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(sceneName));
@@ -110,6 +87,11 @@ public class MainController {
         stage.setScene(scene);
     }
 
+    /**
+     * Helper method to create a custom TextField for controllers with DAO requirements.
+     * @param id The JavaFX ID of the TextField.
+     * @return The newly created TextField.
+     */
     public static TextField customTextField(String id) {
         TextField textField = new TextField();
         textField.setId(id);

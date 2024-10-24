@@ -31,10 +31,10 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
     @Override
     protected PreparedStatement addItemStatement(HealthMetric item) throws SQLException {
         PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(
-                "INSERT INTO " + tableName() + " (name, metricType, userId, measurement, created) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO " + tableName() + " (name, userId, metricType, measurement, created) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, item.getName());
-        statement.setInt(2, item.getMetricType().ordinal());
-        statement.setInt(3, SqliteConnection.getCurrentUser().getId());
+        statement.setInt(2, SqliteConnection.getCurrentUser().getId());
+        statement.setInt(3, item.getMetricType().ordinal());
         statement.setDouble(4, item.getMeasurement());
         statement.setDate(5, item.getCreated());
         return statement;
@@ -69,7 +69,7 @@ public class HealthMetricDAO extends AbstractObjectDAO<HealthMetric> {
 
     @Override
     public HealthMetric getItem(int id) {
-        try (ResultSet set = getHealthMetricItemStatement(id).executeQuery()) {
+        try (ResultSet set = getItemStatement(id).executeQuery()) {
             if (set.next()) {
                 String name = set.getString("name");
                 int userId = set.getInt("userId");

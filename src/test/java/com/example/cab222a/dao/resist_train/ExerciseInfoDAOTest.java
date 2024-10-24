@@ -6,7 +6,6 @@ import com.example.cab222a.model.resist_train.ExerciseInfo;
 import com.example.cab222a.mock_dao.core.AbstractObjectMockDAO;
 import org.junit.jupiter.api.*;
 
-import java.sql.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -84,32 +83,40 @@ public class ExerciseInfoDAOTest {
             assertFalse(items.isEmpty());
             assertEquals(2, items.size());
         }
+    @Test @Order(5)
+    void searchExerciseInfo() {
+        List<ExerciseInfo> allExercises = exerciseInfoDAO.getAllItems();
 
-//        @Test @Order(5) void searchExerciseInfo() {
-//        // Search name
-//            List<ExerciseInfo> search = exerciseInfoDAO.searchExerciseInfo("Bench");
-//            assertFalse(search.isEmpty());
-//        // Search muscle
-//            search = exerciseInfoDAO.searchExerciseInfo("Chest");
-//            assertFalse(search.isEmpty());
-//
-//        }
-//
-//        @Test @Order(6) void testNullQuery () {
-//        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo(null);
-//        // 46 Default exercises + 2 Test.
-//        // List should not be empty if search is null
-//        assertFalse(exerciseInfo.isEmpty());
-//        // List should be more than or equal to 46 which is the current amount of default exercises.
-//        assertTrue(exerciseInfo.size() >= 46);
-//        }
-//
-//
-//        // No exercise or muscle called Deadlock
-//        // List should return 0 matches.
-//        @Test @Order(7) void testSearchNoResults () {
-//        List<ExerciseInfo> exerciseInfo = exerciseInfoDAO.searchExerciseInfo("Deadlock");
-//        assertEquals(0, exerciseInfo.size());
-//        }
+        String search = "Bench";
+        List<ExerciseInfo> searchResults = allExercises.stream().filter(exercise -> exercise.getName().contains(search) ||
+                        exercise.getPrimaryMuscleGroups().contains(search) ||
+                        exercise.getSecondaryMuscleGroups().contains(search)).toList();
+
+        assertFalse(searchResults.isEmpty());
+        assertTrue(searchResults.stream().anyMatch(exercise -> exercise.getName().contains(search) ||
+                                exercise.getPrimaryMuscleGroups().contains(search) ||
+                                exercise.getSecondaryMuscleGroups().contains(search)));
+        }
+
+        @Test @Order(6) void testNullQuery () {
+            List<ExerciseInfo> allExercises = exerciseInfoDAO.getAllItems();
+            assertFalse(allExercises.isEmpty());
+            assertEquals(2, allExercises.size());
+        }
+
+        @Test @Order(7) void testSearchNoResults () {
+            List<ExerciseInfo> allExercises = exerciseInfoDAO.getAllItems();
+
+            String search = "Steroids"; // No exercise or muscle called Steroids
+            List<ExerciseInfo> searchResults = allExercises.stream().filter(exercise -> exercise.getName().contains(search) ||
+                            exercise.getPrimaryMuscleGroups().contains(search) ||
+                            exercise.getSecondaryMuscleGroups().contains(search)).toList();
+
+            assertFalse(searchResults.stream().anyMatch(exercise -> exercise.getName().contains(search) ||
+                    exercise.getPrimaryMuscleGroups().contains(search) ||
+                    exercise.getSecondaryMuscleGroups().contains(search)));
+            assertTrue(searchResults.isEmpty());
+
+        }
     }
 

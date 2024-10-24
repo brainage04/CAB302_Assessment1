@@ -14,11 +14,11 @@ public class ResistTrainSetController extends SqliteControllerFunctions<ResistTr
         return new ResistTrainSetDAO();
     }
     @Override
-    public String initNextScene() {
+    public String getNextSceneName() {
         return null;
     }
     @Override
-    public String initPreviousScene() {
+    public String getPreviousSceneName() {
         return "resist-train-exercise-view.fxml";
     }
     @Override
