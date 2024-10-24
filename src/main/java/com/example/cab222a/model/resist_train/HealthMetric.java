@@ -5,79 +5,42 @@ import com.example.cab222a.model.core.NamedObject;
 import java.sql.Date;
 
 public class HealthMetric extends NamedObject {
+    private HealthMetricType metricType;
     private int userID;
     private double measurement;
-    private Date date;
-    private double weight;
-    private double bmi;
-    private double bodyFatPercentage;
-    private double hydrationLevels;
+    private Date created;
 
-
-    public HealthMetric(int id, int userID, String metricType, double measurement, Date date) {
-        super(id, metricType);
+    public HealthMetric(int id, String name, HealthMetricType metricType, int userID, double measurement, Date created) {
+        super(id, name);
+        this.metricType = metricType;
         this.userID = userID;
         this.measurement = measurement;
-        this.date = date;
+        this.created = created;
     }
 
-//    public HealthMetric(String metricType, int userID, double measurement, Date date){
-//        super(metricType);
-//        this.userID = userID;
-//        this.measurement = measurement;
-//        this.date = date;
-//    }
-
-
-    public HealthMetric( int userID, double weight, double bmi, double bodyFatPercentage, double hydrationLevels,double measurement,Date date) {
-        super(String.valueOf(userID));
-        this.measurement = measurement;
+    public HealthMetric(String name, HealthMetricType metricType, int userID, double measurement, Date created) {
+        super(name);
+        this.metricType = metricType;
         this.userID = userID;
-        this.date = date;
-        this.weight = weight;
-        this.bmi = bmi;
-        this.bodyFatPercentage = bodyFatPercentage;
-        this.hydrationLevels = hydrationLevels;
+        this.measurement = measurement;
+        this.created = created;
     }
+
     // Getters and Setters
-    public int getUserID() {
+    public HealthMetricType getMetricType() {
+        return metricType;
+    }
+
+    public void setMetricType(HealthMetricType metricType) {
+        this.metricType = metricType;
+    }
+
+    public int getUserId() {
         return userID;
     }
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public double getBmi() {
-        return bmi;
-    }
-
-    public void setBmi(double bmi) {
-        this.bmi = bmi;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public double getBodyFatPercentage() {
-        return bodyFatPercentage;
-    }
-
-    public void setBodyFatPercentage(double bodyFatPercentage) {
-        this.bodyFatPercentage = bodyFatPercentage;
-    }
-
-    public double getHydrationLevels() {
-        return hydrationLevels;
-    }
-
-    public void setHydrationLevels(double hydrationLevels) {
-        this.hydrationLevels = hydrationLevels;
     }
 
     public double getMeasurement() {
@@ -88,25 +51,23 @@ public class HealthMetric extends NamedObject {
         this.measurement = measurement;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setDate(Date date){
-        this.date = date;
+    public void setCreated(Date created){
+        this.created = created;
     }
 
     @Override
     public String toString() {
         return "HealthMetric{" +
                 "id=" + getId() +
-                ", userID=" + getUserID() +
-                ", weight=" + getWeight() +
-                ", bmi=" + getBmi() +
-                ", BodyFatPercentage=" + getBodyFatPercentage() +
-                ", HydrationLevels=" + getHydrationLevels() +
+                ", name=" + getName() +
+                ", userID=" + getUserId() +
+                ", metricType=" + getMetricType() +
                 ", measurement=" + getMeasurement() +
-                ", date=" + getDate() + "}";
+                ", date=" + getCreated() + "}";
     }
 
 }

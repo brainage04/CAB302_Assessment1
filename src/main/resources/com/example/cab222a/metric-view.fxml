@@ -1,45 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.cab222a.controller.MetricController"
-          alignment="CENTER" hgap="10" vgap="10">
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.cab222a.controller.HealthMetricController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 
-    <Label text="Metric Tracker" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-
-    <Label text="Weight:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <TextField fx:id="weightTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-    <Label text="BMI:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <TextField fx:id="bmiTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-    <Label text="Body Fat Percentage:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <TextField fx:id="bodyFatPercentageTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-    <Label text="Hydration Levels:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <TextField fx:id="hydrationLevelsTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-    <Label text="Measurement:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <TextField fx:id="measurementTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-    <Button text="Add Metric" fx:id="addMetricButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-    <Button text="Update Metric" fx:id="updateMetricButton" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-    <Button text="Delete Metric" fx:id="deleteMetricButton" GridPane.columnIndex="2" GridPane.rowIndex="6" onAction="#deleteMetric" />
-
-
-    <TableView fx:id="metricTableView" GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2">
-        <columns>
-            <TableColumn fx:id="weightColumn" text="Weight" />
-            <TableColumn fx:id="bmiColumn" text="BMI" />
-            <TableColumn fx:id="bodyFatPercentageColumn" text="Body Fat Percentage" />
-            <TableColumn fx:id="hydrationLevelsColumn" text="Hydration Levels" />
-            <TableColumn fx:id="measurementColumn" text="Measurement" />
-            <TableColumn fx:id="dateColumn" text="Date" />
-        </columns>
-    </TableView>
-
-    <Label fx:id="statusLabel" GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="2" style="-fx-text-fill: green;" />
-</GridPane>
+    <Label text="Select an item to view or edit." />
+    <HBox VBox.vgrow="ALWAYS" spacing="20.0">
+        <VBox spacing="10.0">
+            <ListView fx:id="itemListView" />
+            <Button text="New" maxWidth="Infinity" onAction="#onAdd"/>
+        </VBox>
+        <VBox spacing="10.0" prefWidth="400">
+            <VBox spacing="10.0" fx:id="itemContainer">
+                <Label fx:id="detailsLabel" text="Details" alignment="TOP_CENTER"/>
+                <GridPane fx:id="gridPaneContainer" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="70" />
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+                </GridPane>
+                <HBox maxWidth="Infinity" alignment="CENTER">
+                    <Button text="Confirm" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onEditConfirm"/>
+                    <Button text="Cancel" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onCancel"/>
+                    <Button text="Delete" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onDelete"/>
+                </HBox>
+            </VBox>
+            <VBox spacing="10.0">
+                <GridPane fx:id="filterBox" hgap="5.0" vgap="5.0" alignment="TOP_CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="70" />
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+                </GridPane>
+                <HBox maxWidth="Infinity" alignment="CENTER">
+                    <Button text="Go Back" HBox.hgrow="ALWAYS" maxWidth="Infinity" onAction="#onGoBackButtonClick" fx:id="goBackButton"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</VBox>

@@ -11,11 +11,13 @@ public class HealthMetricTest {
     private HealthMetric testItem;
 
     @BeforeEach void setUp() {
-        testItem = new HealthMetric (-1,
-                1,
-                "Weight(kg)",
+        testItem = new HealthMetric(
+                "Weight for 24 Oct 2024",
+                HealthMetricType.WEIGHT,
+                -1,
                 65,
-                new Date(2024, 10,1));
+                new Date(System.currentTimeMillis())
+        );
     }
 
     @Test void testId() {

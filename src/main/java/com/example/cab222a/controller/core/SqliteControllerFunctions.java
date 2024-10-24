@@ -26,7 +26,7 @@ public abstract class SqliteControllerFunctions<T extends NamedObject> {
     protected final String nextScene;
     private final String previousScene;
 
-    @FXML private VBox itemContainer;
+    @FXML protected VBox itemContainer;
     @FXML private GridPane gridPaneContainer;
 
     public SqliteControllerFunctions() {
