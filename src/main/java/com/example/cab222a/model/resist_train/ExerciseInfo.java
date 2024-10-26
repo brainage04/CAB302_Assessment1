@@ -15,10 +15,11 @@ public class ExerciseInfo extends NamedObject {
     /**
      * Constructs a new ExerciseInfo object with the specified name, primary muscle group, secondary muscle groups and description.
      * Constructor currently has limited use.
-     * @param name The name of the exercise.
-     * @param primaryMuscleGroups The primary muscle group used by the exercise.
+     *
+     * @param name                  The name of the exercise.
+     * @param primaryMuscleGroups   The primary muscle group used by the exercise.
      * @param secondaryMuscleGroups The secondary muscle groups used by the exercise.
-     * @param description A description of the exercise.
+     * @param description           A description of the exercise.
      */
     public ExerciseInfo(String name, String primaryMuscleGroups, String secondaryMuscleGroups, String description) {
         super(name);
@@ -30,11 +31,12 @@ public class ExerciseInfo extends NamedObject {
     /**
      * Constructs a new ExerciseInfo object with the specified id, name, primary muscle group, secondary muscle groups and description.
      * Constructor is used in the get item methods in the ExerciseInfoDAO.
-     * @param id The unique identifier of the exercise.
-     * @param name The name of the exercise.
-     * @param primaryMuscleGroups The primary muscle group used by the exercise.
+     *
+     * @param id                    The unique identifier of the exercise.
+     * @param name                  The name of the exercise.
+     * @param primaryMuscleGroups   The primary muscle group used by the exercise.
      * @param secondaryMuscleGroups The secondary muscle groups used by the exercise.
-     * @param description A description of the exercise.
+     * @param description           A description of the exercise.
      */
     public ExerciseInfo(int id, String name, String primaryMuscleGroups, String secondaryMuscleGroups, String description) {
         super(id, name);
@@ -46,12 +48,13 @@ public class ExerciseInfo extends NamedObject {
     /**
      * Constructs a new ExerciseInfo object with the specified id, name, primary muscle group, secondary muscle groups, description and userID.
      * Constructor is used to create default exercises and user specific exercises.
-     * @param id The unique identifier of the exercise.
-     * @param name The name of the exercise.
-     * @param primaryMuscleGroups The primary muscle group used by the exercise.
+     *
+     * @param id                    The unique identifier of the exercise.
+     * @param name                  The name of the exercise.
+     * @param primaryMuscleGroups   The primary muscle group used by the exercise.
      * @param secondaryMuscleGroups The secondary muscle groups used by the exercise.
-     * @param description A description of the exercise.
-     * @param userId The ID of the user associated with the exercise.
+     * @param description           A description of the exercise.
+     * @param userId                The ID of the user associated with the exercise.
      */
     public ExerciseInfo(int id, String name, String primaryMuscleGroups, String secondaryMuscleGroups, String description, int userId) {
         super(id, name);
@@ -63,6 +66,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Gets the ID of the user associated with the exercise.
+     *
      * @return User ID associated.
      */
     public int getUserId() {
@@ -71,6 +75,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Sets the user ID associated with the exercise.
+     *
      * @param userId The userID to set
      */
     public void setUserId(int userId) {
@@ -79,6 +84,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Gets primary muscle groups of the exercise.
+     *
      * @return A string of the primary muscle group.
      */
     public String getPrimaryMuscleGroups() {
@@ -87,6 +93,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Sets the primary muscle group of the exercise.
+     *
      * @param primaryMuscleGroups A string of the primary muscle group to set.
      */
     public void setPrimaryMuscleGroups(String primaryMuscleGroups) {
@@ -95,6 +102,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Gets the secondary muscle groups of the exercise.
+     *
      * @return A string of the secondary muscle groups.
      */
     public String getSecondaryMuscleGroups() {
@@ -103,6 +111,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Sets the secondary muscle group of the exercise.
+     *
      * @param secondaryMuscleGroups A string of the secondary muscle group to set.
      */
     public void setSecondaryMuscleGroups(String secondaryMuscleGroups) {
@@ -111,6 +120,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Gets the description of the exercise.
+     *
      * @return A string of the description of the exercise.
      */
     public String getDescription() {
@@ -119,6 +129,7 @@ public class ExerciseInfo extends NamedObject {
 
     /**
      * Sets the description of the exercise.
+     *
      * @param description A string of the description to set.
      */
     public void setDescription(String description) {

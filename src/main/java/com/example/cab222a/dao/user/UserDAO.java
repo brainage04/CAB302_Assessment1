@@ -88,19 +88,18 @@ public class UserDAO extends AbstractObjectDAO<User> {
     public User getItem(String email, String password) {
         try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement("SELECT * FROM " + tableName() + " WHERE email = ?")) {
             statement.setString(1, email);
-            //statement.setString(2, password);
             ResultSet set = statement.executeQuery();
 
             if (set.next()) {
                 String passwordHash = set.getString("password");
                 BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), passwordHash);
-                if(result.verified){
+                if (result.verified) {
                     int id = set.getInt("id");
                     Date created = set.getDate("created");
                     String firstName = set.getString("firstName");
                     String lastName = set.getString("lastName");
                     String phone = set.getString("phone");
-                    
+
                     return new User(id, created, firstName, lastName, email, phone, passwordHash);
                 }
             }
@@ -139,14 +138,13 @@ public class UserDAO extends AbstractObjectDAO<User> {
 
     public boolean emailExists(String email) {
         String query = "SELECT COUNT(*) FROM users WHERE email = ?";
-        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(query)){
+        try (PreparedStatement statement = SqliteConnection.getInstance().prepareStatement(query)) {
             statement.setString(1, email);
             ResultSet set = statement.executeQuery();
             if (set.next()) {
                 return set.getInt(1) > 0;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return false;

@@ -16,6 +16,7 @@ import java.util.List;
 public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     /**
      * Returns name of the table in the database.
+     *
      * @return Table name as a string
      */
     @Override
@@ -47,6 +48,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Prepares a SQL statement to add a default item to the database.
+     *
      * @param item The ExerciseInfo object to be added as a default exercise.
      * @return A statement ready for execution.
      * @throws SQLException if an error occurs.
@@ -115,6 +117,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Prepares a SQL statement to retrieve an item based on its name.
+     *
      * @param name Name of the exercise
      * @return A statement ready for execution
      * @throws SQLException if an error occurs
@@ -127,6 +130,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Retrieves an ExerciseInfo item from the database by its name
+     *
      * @param name The name of the exercise to retrieve
      * @return An ExerciseInfo object with the retrieved data, or null if no item is found.
      */
@@ -149,6 +153,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Retrieves all ExerciseInfo items associated with the current user + the default exercises.
+     *
      * @return A list of ExerciseInfo objects of the user.
      */
     @Override
@@ -176,6 +181,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
     /**
      * Searches for exercises that match the query string.
      * Search looks for matches in the exercise name, primary muscle group or secondary muscle group.
+     *
      * @param query The search query string
      * @return A list of ExerciseInfo objects that match the query.
      */
@@ -188,8 +194,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Determines if an ExerciseInfo object matches the search query.
+     *
      * @param exerciseInfo The ExerciseInfo object to check.
-     * @param query The search query string
+     * @param query        The search query string
      * @return True if the ExerciseInfo objects matches the query, otherwise false.
      */
     private boolean isExerciseInfoMatched(ExerciseInfo exerciseInfo, String query) {
@@ -207,7 +214,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      */
     @Override
     public void createTable() {
-        try (Statement statement = SqliteConnection.getInstance().createStatement()){
+        try (Statement statement = SqliteConnection.getInstance().createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS " + tableName() + " (" + createTableVariables() + ")");
 
             if (isTableEmpty()) {
@@ -220,6 +227,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Checks if the table is empty
+     *
      * @return True if there are no rows in the table, otherwise false.
      * @throws SQLException if an error occurs.
      */
@@ -310,6 +318,7 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
 
     /**
      * Finds alternative exercises based on the target exercise's primary and secondary muscle group.
+     *
      * @param exerciseName The name of the target exercise to find alternatives of.
      * @return The list of alternative exercises of the target exercise.
      */
@@ -347,8 +356,9 @@ public class ExerciseInfoDAO extends AbstractObjectDAO<ExerciseInfo> {
      * Checks if exercise in the list is an alternative based on the muscles.
      * Method compares the primary and secondary muscle groups of the target exercise.
      * Primary muscle group of the target exercise has to be part of the exercise.
-     * @param exerciseInfo The ExerciseInfo object to be compared.
-     * @param targetPrimaryMuscles Primary muscle group of the target exercise.
+     *
+     * @param exerciseInfo           The ExerciseInfo object to be compared.
+     * @param targetPrimaryMuscles   Primary muscle group of the target exercise.
      * @param targetSecondaryMuscles Secondary muscle groups of the target exercise.
      * @return True if criteria is met, otherwise false.
      */

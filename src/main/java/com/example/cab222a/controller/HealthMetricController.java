@@ -118,7 +118,8 @@ public class HealthMetricController extends SqliteControllerFunctions<HealthMetr
         }
     }
 
-    @FXML private GridPane filterBox;
+    @FXML
+    private GridPane filterBox;
 
     @FXML
     @Override
@@ -154,7 +155,6 @@ public class HealthMetricController extends SqliteControllerFunctions<HealthMetr
 
         getGridPaneContainer().add(metricLabel, 0, 2);
         getGridPaneContainer().add(metricField, 1, 2);
-
 
 
         Label filterLabel = new Label("Filter by:");

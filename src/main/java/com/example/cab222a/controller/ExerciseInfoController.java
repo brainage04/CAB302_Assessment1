@@ -21,20 +21,31 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     public Button alternativeExerciseButton;
 
     @Override
-    public AbstractObjectDAO<ExerciseInfo> initItemDAO() { return new ExerciseInfoDAO(); }
+    public AbstractObjectDAO<ExerciseInfo> initItemDAO() {
+        return new ExerciseInfoDAO();
+    }
+
     @Override
-    public String getNextSceneName() { return "main-view.fxml"; }
+    public String getNextSceneName() {
+        return "main-view.fxml";
+    }
+
     @Override
-    public String getPreviousSceneName() { return "main-view.fxml"; }
+    public String getPreviousSceneName() {
+        return "main-view.fxml";
+    }
+
     @Override
     public ExerciseInfo generateDefaultItem() {
         return new ExerciseInfo("New Exercise", "Primary Muscle", "", "Description of exercise.");
     }
 
-    @FXML private TextField primaryMuscleTextField;
-    @FXML private TextField secondaryMuscleTextField;
-    //@FXML private TextField descriptionTextField;
-    @FXML private TextArea descriptionTextArea;
+    @FXML
+    private TextField primaryMuscleTextField;
+    @FXML
+    private TextField secondaryMuscleTextField;
+    @FXML
+    private TextArea descriptionTextArea;
 
     @FXML
     private ListView<ExerciseInfo> itemListView;
@@ -44,7 +55,8 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
     @FXML
     private TextField searchTextField;
 
-    @FXML private VBox itemContainer;
+    @FXML
+    private VBox itemContainer;
 
     @Override
     protected void selectItem(ExerciseInfo exerciseInfo) {
@@ -63,15 +75,14 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
         ExerciseInfo selectedItem = getItemListView().getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             // User cannot edit default items where userId is -1.
-            if(selectedItem.getUserId() != -1){
+            if (selectedItem.getUserId() != -1) {
                 selectedItem.setName(getNameTextField().getText());
                 selectedItem.setPrimaryMuscleGroups(primaryMuscleTextField.getText());
                 selectedItem.setSecondaryMuscleGroups(secondaryMuscleTextField.getText());
                 selectedItem.setDescription(descriptionTextArea.getText());
                 getItemDAO().updateItem(selectedItem);
 
-            }
-            else {
+            } else {
                 Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
                 errorAlert.setTitle("Error");
                 errorAlert.setHeaderText("Cannot edit default exercises.");
@@ -116,8 +127,6 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
                 itemListView.getItems().clear();
                 itemListView.getItems().addAll(alternativeExercises);
             } else {
-                // https://stackoverflow.com/questions/39149242/how-can-i-do-an-error-messages-in-javafx
-                // If no alternatives are found
                 Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
                 errorAlert.setTitle("No Alternatives Found");
                 errorAlert.setHeaderText("Alternatives not found");
@@ -147,6 +156,7 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
     /**
      * Creates and returns a TextArea with predefined properties.
+     *
      * @param id The ID to assign to the TextArea
      * @return A predefined TextArea.
      */
@@ -190,21 +200,4 @@ public class ExerciseInfoController extends SqliteControllerFunctions<ExerciseIn
 
         super.initialize();
     }
-
-    // If we ever need the edit button again.
-    // We do already have edit confirm
-
-//    @Override
-//    @FXML
-//    public void onEditButtonClick() throws IOException {
-//        ExerciseInfo selectedItem = itemListView.getSelectionModel().getSelectedItem();
-//        if (selectedItem == null) {
-//            return;
-//        }
-//
-//        SqliteConnection.setCurrentExerciseInfo(selectedItem);
-//        System.out.println("Exercise INFO stored in memory:\n" + selectedItem);
-//
-//        MainController.changeScene(editButton, nextScene);
-//    }
 }
