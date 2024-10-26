@@ -54,7 +54,7 @@ public class MainController {
     }
 
     @FXML
-    public void onExerciseInformationButtonClick () throws IOException {
+    public void onExerciseInformationButtonClick() throws IOException {
         changeScene(exerciseInfoButton, "exercise-info-view.fxml");
     }
 
@@ -82,7 +82,8 @@ public class MainController {
 
     /**
      * Helper method to change the scene of the current stage from one scene to another.
-     * @param source The Button which was clicked to initialize this transition.
+     *
+     * @param source    The Button which was clicked to initialize this transition.
      * @param sceneName The destination scene's file name.
      * @throws IOException If the scene does not exist.
      */
@@ -95,6 +96,7 @@ public class MainController {
 
     /**
      * Helper method to create a custom TextField for controllers with DAO requirements.
+     *
      * @param id The JavaFX ID of the TextField.
      * @return The newly created TextField.
      */
