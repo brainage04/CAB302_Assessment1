@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
             ExerciseInfo exerciseInfo = new ExerciseInfoDAO().getItem(name);
 
             selectedItem.setExerciseInfoId(exerciseInfo.getId());
+            selectedItem.setName(exerciseInfo.getName());
             getItemDAO().updateItem(selectedItem);
             syncItems();
         }
@@ -119,7 +121,9 @@ public class ResistTrainExerciseController extends SqliteControllerFunctions<Res
 
         Label exerciseLabel = new Label("Exercise:");
         List<String> exerciseNames = new ExerciseInfoDAO().getAllItems().stream().map(ExerciseInfo::getName).toList();
-        exerciseField = new ComboBox<>(FXCollections.observableArrayList(exerciseNames));
+        List<String> mutableExerciseNames = new ArrayList<>(exerciseNames);
+        mutableExerciseNames.sort(String.CASE_INSENSITIVE_ORDER);
+        exerciseField = new ComboBox<>(FXCollections.observableArrayList(mutableExerciseNames));
         exerciseField.setMaxWidth(Double.POSITIVE_INFINITY);
         getGridPaneContainer().add(exerciseLabel, 0, 1);
         getGridPaneContainer().add(exerciseField, 1, 1);
